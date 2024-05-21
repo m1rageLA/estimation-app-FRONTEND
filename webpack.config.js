@@ -3,10 +3,12 @@ const { VueLoaderPlugin } = require("vue-loader");
 
 module.exports = {
   // WebPack build PROJ. starting from main.js
+  mode: 'development',
   entry: "./src/main.js",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -34,5 +36,9 @@ module.exports = {
     compress: true,
     port: 9000,
     hot: true,
+    watchFiles: ['public/**/*'],
+    client: {
+      logging: 'none' // Устанавливаем уровень логирования на минимальный
+    },
   },
 };

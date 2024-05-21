@@ -1,12 +1,13 @@
 <template>
   <div>
-    <p>Hello world!</p>
+    <p>Hellwsaasdadso weord!</p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'App',
+
 };
 </script>
 
