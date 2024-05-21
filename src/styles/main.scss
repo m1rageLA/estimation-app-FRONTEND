@@ -1,0 +1,17 @@
+@import './common/variables';
+@import './modules/sidebar';
+@import './modules/workspace';
+@import './modules/listElement';
+
+body {
+    background-color: $BACKGROUND_COLOR;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+}
