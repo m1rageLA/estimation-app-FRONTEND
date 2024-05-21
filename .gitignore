@@ -1,0 +1,36 @@
+# Файлы, созданные операционной системой
+.DS_Store
+Thumbs.db
+
+# Папка с зависимостями Node.js
+/node_modules
+
+# Папка с собранными файлами сборщика, например, webpack или Rollup
+/dist
+
+# Сгенерированные файлы и папки
+/build
+/out
+
+# Папка для временных файлов
+/tmp
+
+# Логи и отчеты об ошибках
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Локальные конфигурационные файлы
+.env.local
+.env.*.local
+
+# Файлы конфигурации IDE
+.idea/
+.vscode/
+
+# Файлы с настройками проекта, не нужные для распространения
+*.iml
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
