@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <Sidebar></Sidebar>
-   <Workspace></Workspace>
+    <Workspace></Workspace>
 
   </div>
 </template>

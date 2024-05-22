@@ -2,8 +2,9 @@
     <li class="listElement">
         <img :src="ImageUrl" alt="website"></img>
         <p>{{ProjectName}}</p>
-        <p>{{Estimate}}</p>
         <p>{{Client}}</p>
+        <p>{{Estimate}}</p>
+
     </li>
 </template>
 <script>

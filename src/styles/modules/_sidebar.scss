@@ -1,5 +1,9 @@
 .sidebar {
-    width: 18%;
-    height: 100%;
-    background-color: $PRIMARY_COLOR;
+  background-color: $PRIMARY_COLOR;
+  padding: 10px;
+  width: 500px;
+}
+
+.liElement {
+    color: $THIRD_TEXT_COLOR;
 }

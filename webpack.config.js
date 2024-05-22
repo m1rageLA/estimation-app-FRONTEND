@@ -38,7 +38,7 @@ module.exports = {
     hot: true,
     watchFiles: ['public/**/*'],
     client: {
-      logging: 'none' // Устанавливаем уровень логирования на минимальный
+      logging: 'none' // Level of logs is min
     },
   },
 };
