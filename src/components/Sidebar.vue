@@ -1,9 +1,9 @@
-<template>
+<template class="qwe" style="width: 20%;">
     <v-card>
         <v-layout>
-            <v-navigation-drawer v-model="drawer" :rail="rail" permanent class="sidebar">
-                <v-list-item prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"  class="liElement" title="John Leider" nav
-                    color="white">
+            <v-navigation-drawer v-model="drawer" :rail="rail" permanent class="sidebar" style="width: 20%;">
+                <v-list-item prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg" class="liElement"
+                    title="John Leider" nav color="white">
                     <template v-slot:append>
                     </template>
                 </v-list-item>
@@ -11,20 +11,28 @@
                 <v-divider></v-divider>
 
                 <v-list density="compact" nav>
-                    <v-list-item prepend-icon="mdi-home-city" title="Home" value="home" class="liElement">
+                    <v-list-item :to="'/home'" prepend-icon="mdi-home-city" title="Home" value="home" class="liElement">
                         <template #prepend>
                             <v-icon color="white">mdi-home-city</v-icon>
                         </template>
                     </v-list-item>
-                    <v-list-item prepend-icon="mdi-account" title="My Account" value="account" class="liElement">
+                    <v-list-item :to="'/account'" prepend-icon="mdi-account" title="My Account" value="account"
+                        class="liElement">
                         <template #prepend>
                             <v-icon color="white">mdi-account</v-icon>
                         </template>
                     </v-list-item>
 
-                    <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users" class="liElement">
+                    <v-list-item :to="'/clients'" prepend-icon="mdi-account-group-outline" title="Clients" value="Clients"
+                        class="liElement">
                         <template #prepend>
                             <v-icon color="white">mdi-account-group-outline</v-icon>
+                        </template>
+                    </v-list-item>
+                    <v-list-item :to="'/projects'" prepend-icon="mdi mdi-sitemap-outline" title="Projects" value="Projects"
+                        class="liElement">
+                        <template #prepend>
+                            <v-icon color="white">mdi mdi-sitemap-outline</v-icon>
                         </template>
                     </v-list-item>
                 </v-list>

@@ -1,16 +1,16 @@
 <template>
   <div class="container">
-    <Sidebar></Sidebar>
-    <Workspace></Workspace>
 
+      <Sidebar></Sidebar>
+      <router-view></router-view>
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue';
 // @ts-ignore
-import Workspace from './Workspace.vue';
 import Sidebar from './Sidebar.vue';
+import Workspace from './workspace/Projects.vue';
 
 export default defineComponent({
   name: 'App',

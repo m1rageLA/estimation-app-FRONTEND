@@ -82,7 +82,7 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import ListElement from './ListElement.vue';
+import ListElement from '../ListElement.vue';
 
 export default defineComponent({
     name: 'Workspace',

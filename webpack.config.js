@@ -3,12 +3,12 @@ const { VueLoaderPlugin } = require("vue-loader");
 
 module.exports = {
   // WebPack build PROJ. starting from main.js
-  mode: 'development',
+  mode: "development",
   entry: "./src/main.js",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
-    publicPath: '/',
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -26,19 +26,18 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new VueLoaderPlugin()
-  ],
+  plugins: [new VueLoaderPlugin()],
   devServer: {
     static: {
-      directory: path.join(__dirname, 'public'),
+      directory: path.join(__dirname, "public"),
     },
     compress: true,
     port: 9000,
     hot: true,
-    watchFiles: ['public/**/*'],
+    watchFiles: ["public/**/*"],
     client: {
-      logging: 'none' // Level of logs is min
+      logging: "none", // Level of logs is min
     },
+    historyApiFallback: true,
   },
 };
