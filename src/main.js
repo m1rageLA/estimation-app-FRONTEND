@@ -13,11 +13,13 @@ import "@mdi/font/css/materialdesignicons.css";
 import Home from './components/workspace/Projects.vue';
 import Projects from './components/workspace/Projects.vue';
 import Clients from './components/workspace/Clients.vue';
+import Estimation from './components/workspace/Estimation.vue'
 
 const routes = [ 
   { path: '/', component: Home },
   { path: '/projects', component: Projects },
   { path: '/clients', component: Clients },
+  { path: '/estimation', component: Estimation },
 ];
 
 const router = createRouter({

@@ -1,7 +1,7 @@
 .workspace {
     display: flex;
     justify-content: center;
-    width: 80%;
+    width: 100%;
     height: 100%;
     background-color: rgb(232, 232, 232);
 
@@ -18,22 +18,38 @@
 
     &__list {
         width: 100%;
-        height: 100%;
-        margin-top: 15px;
+        height: 100vh;
         box-shadow: 0 0 10px rgba(126, 126, 126, 0.5);
-    }
+        overflow: auto;
+        overflow-x: hidden;
+        padding: 15px 20px;
+        border-radius: 10px 10px 0 0;
 
-    ul {
-        width: 100%;
-        padding: 20px 15px;
+
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE и Edge */
+
+        &__list::-webkit-scrollbar {
+            display: none; /* Chrome */
+        }
+
+        li:hover {
+            background-color: rgb(223, 221, 221);
+        }
     }
 
     .list-markup {
         display: grid;
-        grid-template-columns: 0.5fr 1fr 1fr 1fr;
+        grid-template-columns: $workspace_column_marking;
         margin-left: 5px;
         margin-bottom: 10px;
+        margin-top: 10px;
         color: $SECONDARY_COLOR;
         font-size: 15px;
+        padding: 0 20px;
+
+        a:hover {
+            color: $SECONDARY_COLOR_HOVER;
+        }
     }
 }

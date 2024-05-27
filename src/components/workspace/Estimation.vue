@@ -2,7 +2,7 @@
     <div class="workspace">
         <div class="workspace__container">
             <div class="workspace__top-block">
-                <h2>Projects</h2>
+                <h2>Estimation</h2>
                 <div class="py-5">
                     <v-dialog v-model="dialog" max-width="500">
                         <template v-slot:activator="{ props: activatorProps }">

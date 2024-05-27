@@ -1,97 +1,97 @@
 <template>
-    <div class="workspace">
-        <div class="workspace__container">
-            <div class="workspace__top-block">
-                <h2>wddaweqwewEEWAEWEWAWEEAWEW</h2>
-                <div class="py-5">
-                    <v-dialog v-model="dialog" max-width="500">
-                        <template v-slot:activator="{ props: activatorProps }">
-                            <v-btn class="text-none font-weight-regular" prepend-icon="$vuetify" text="Edit Profile"
-                                variant="outlined" v-bind="activatorProps"></v-btn>
-                        </template>
-
-                        <v-card prepend-icon="mdi-account" title="Create item">
-                            <v-card-text>
-                                <v-row dense>
-                                    <v-col cols="12" md="12" sm="6">
-                                        <v-text-field label="Title" hint="Project Title" required></v-text-field>
-                                    </v-col>
-
-                                    <v-col cols="12" md="12" sm="6">
-                                        <v-text-field hint="Client Name" label="Clent"></v-text-field>
-                                    </v-col>
-
-                                    <v-col cols="12" sm="6">
-                                        <v-select
-                                            :items="['Single Page Website', 'Business Card Website', 'Landing Page', 'Corporate Website', 'E-commerce Website', 'Portfolio Website', 'Blog', 'News Website', 'Forum/Community Website', 'Educational Website', 'Other...']"
-                                            label="Site type*" required></v-select>
-                                    </v-col>
-
-                                    <v-col cols="12" sm="6">
-                                        <v-autocomplete
-                                            :items="['Full Website Development', 'Bug Fixing', 'Performance Optimization', 'Responsive Design', 'UI/UX Design', 'Third-Party Integrations', 'Maintenance and Updates', 'Back-End Development', 'Security and Data Protection', 'Data and System Migration']"
-                                            label="Technologies" auto-select-first multiple></v-autocomplete>
-                                    </v-col>
-
-                                    <v-col cols="12" md="12" sm="6">
-                                        <v-text-field hint="Total task cost" label="Estimate $"></v-text-field>
-                                    </v-col>
-                                </v-row>
-
-                                <!-- <small class="text-caption text-medium-emphasis">*indicates required field</small> -->
-                            </v-card-text>
-
-                            <v-divider></v-divider>
-
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-
-                                <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
-
-                                <v-btn color="primary" text="Save" variant="tonal" @click="dialog = false"></v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                </div>
-
-            </div>
-            <div class="workspace__list">
-                <ul>
-                    <div class="list-markup">
-                        <p>Image</p>
-                        <p>Title</p>
-                        <p>Client</p>
-                        <p>Estimate</p>
-                    </div>
-                    <ListElement
-                        ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
-                        ProjectName="First project" Estimate="1448 $" Client="Tymur Rozhkovskyi" />
-                    <ListElement
-                        ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
-                        ProjectName="Second" Estimate="608 $" Client="Wladislaw Dawiduk" />
-                    <ListElement
-                        ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
-                        ProjectName="Test35" Estimate="1200 $" Client="Dawid Kond" />
-                    <ListElement
-                        ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
-                        ProjectName="WebStore" Estimate="2540 $" Client="Jame Smit" />
-                </ul>
-            </div>
+  <div class="workspace">
+    <div class="workspace__container">
+      <div class="workspace__top-block">
+        <h2>Clients</h2>
+        <div class="py-5">
+          <v-dialog v-model="dialog" max-width="500">
+            <template v-slot:activator="{ props: activatorProps }">
+              <v-btn class="text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add client" variant="outlined"
+                v-bind="activatorProps"></v-btn>
+            </template>
+            <v-card prepend-icon="mdi-account" title="Add client item">
+              <v-card-text>
+                <v-row dense>
+                  <v-col cols="12" md="12" sm="6">
+                    <v-text-field label="Full name" hint="Tymur Rozhkovskyi" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="12" sm="6">
+                    <v-text-field hint="example@gmail.com" label="Email"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="12" sm="6">
+                    <v-text-field hint="United kingdom" label="Country"></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp" label="Avatar"
+                  placeholder="Pick an avatar" prepend-icon="mdi-camera"></v-file-input>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
+                <v-btn color="primary" text="Save" variant="tonal" @click="dialog = false"></v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </div>
+      </div>
+      <div class="list-markup">
+        <p>Image</p>
+        <p><a href="">Name (<b>a - z</b>)</a></p>
+        <p><a href="">Created at (<b>new</b>)</a></p>
+        <p><a href="">Email (<b>a - z</b>)</a></p>
+        <p>Edit</p>
+      </div>
+      <ul class="workspace__list">
+        <ul>
+          <ListElement v-for="client in clients" :key="client.id" :ImageUrl="client.imageUrl" :ProjectName="client.name"
+            :Estimate="client.email" :Client="client.created_at" />
+        </ul>
+      </ul>
     </div>
+  </div>
 </template>
+
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import ListElement from '../ListElement.vue';
+import axios from 'axios';
 
 export default defineComponent({
-    name: 'Clients',
-    components: {
-        ListElement
-    },
-    data: () => ({
-        dialog: false,
-    }),
+  name: 'Clients',
+  components: {
+    ListElement
+  },
+  setup() {
+    const dialog = ref(false);
+    const clients = ref([]);
+    const rules = [
+      value => {
+        return !value || !value.length || value[0].size < 2000000 || 'Avatar size should be less than 2 MB!'
+      },
+    ];
+
+    const getAllClients = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/clients');
+        clients.value = response.data;
+      } catch (error) {
+        console.error('Ошибка:', error);
+      }
+    };
+
+    onMounted(() => {
+      getAllClients();
+    });
+
+    return {
+      dialog,
+      clients,
+      rules,
+      getAllClients,
+    };
+  }
 });
 </script>
+
 <style lang="scss"></style>
