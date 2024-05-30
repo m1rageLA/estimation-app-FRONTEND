@@ -1,9 +1,10 @@
 <template>
     <li class="listElement">
-        <img :src="ImageUrl" alt="website"></img>
-        <p>{{ ProjectName }}</p>
-        <p>{{ Client }}</p>
-        <p>{{ Estimate }}</p>
+        <img :src="ImageUrl" alt="person" />
+        <p>{{ Name }}</p>
+        <p>{{ Created_ad }}</p>
+        <p>{{ Email }}</p>
+        <p style="margin-left: 10px;">{{ Country }}</p>
         <v-dialog v-model="dialog" max-width="500">
             <template v-slot:activator="{ props: activatorProps }">
                 <v-btn class="text-none font-weight-regular" icon="$vuetify"
@@ -15,13 +16,13 @@
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12" sm="6">
-                            <v-text-field label="Full name" hint="Tymur Rozhkovskyi" required></v-text-field>
+                            <v-text-field v-model="name" label="Full name" hint="Tymur Rozhkovskyi" required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12" sm="6">
-                            <v-text-field hint="example@gmail.com" label="Email"></v-text-field>
+                            <v-text-field v-model="email" hint="example@gmail.com" label="Email"></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12" sm="6">
-                            <v-text-field hint="United kingdom" label="Country"></v-text-field>
+                            <v-text-field v-model="country" hint="United kingdom" label="Country"></v-text-field>
                         </v-col>
                     </v-row>
                     <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp" label="Avatar"
@@ -36,9 +37,9 @@
             </v-card>
         </v-dialog>
 
-
     </li>
 </template>
+
 <script>
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiFileEditOutline } from '@mdi/js';
@@ -52,16 +53,21 @@ export default {
         return {
             path: mdiFileEditOutline,
             dialog: false,
+            name: this.Name,
+            email: this.Email,
+            country: this.Country
         }
     },
     props: {
-        ProjectName: String,
-        Estimate: Number,
-        Client: String,
-        ImageUrl: String
+        Country: String,
+        Name: String, // Исправлено с Number на String
+        Email: String,
+        ImageUrl: String, // Исправлено с Image на String
+        Created_ad: String,
     }
 }
 </script>
+
 <style lang="">
 
 </style>
