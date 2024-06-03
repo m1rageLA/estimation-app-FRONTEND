@@ -44,19 +44,27 @@
       <div class="list-markup">
         <p></p>
         <p>Image</p>
-        <p><a href="">Name (<b>a - z</b>)</a></p>
-        <p><a href="">Created at (<b>new</b>)</a></p>
-        <p><a href="">Email (<b>a - z</b>)</a></p>
-        <p><a href="">Country (<b>a - z</b>)</a></p>
+        <p><a href="#" @click.prevent="toggleSortOrder('name')" :class="{ 'active': sortKey === 'name' }">Name (<b>{{
+            nameSortOrder }}</b>)</a></p>
+        <p><a href="#" @click.prevent="toggleSortOrder('created_at')"
+            :class="{ 'active': sortKey === 'created_at' }">Created
+            at (<b>{{ createdAtSortOrder }}</b>)</a></p>
+        <p><a href="#" @click.prevent="toggleSortOrder('email')" :class="{ 'active': sortKey === 'email' }">Email (<b>{{
+            emailSortOrder }}</b>)</a></p>
+        <p><a href="#" @click.prevent="toggleSortOrder('country')" :class="{ 'active': sortKey === 'country' }">Country
+            (<b>{{
+            countrySortOrder }}</b>)</a></p>
+
         <p>Edit</p>
       </div>
       <ul class="workspace__list">
         <ul>
-          <ListElement v-for="client in clients" :ClientId="client.id"
+          <ListElement v-for="client in sortedClients(sortKey)" :key="client.id" :ClientId="client.id"
             :ImageUrl="client.avatar ? `http://localhost:8000/storage/${client.avatar}` : ''" :Name="client.name"
             :Email="client.email" :Country="client.country" :Created_ad="client.created_at"
             :updateClients="updateClients" />
         </ul>
+
       </ul>
     </div>
   </div>
@@ -73,6 +81,86 @@ export default defineComponent({
   name: 'Clients',
   components: {
     ListElement
+  },
+  data() {
+    return {
+      nameSortOrder: 'a - z',
+      createdAtSortOrder: 'new',
+      emailSortOrder: 'a - z',
+      countrySortOrder: 'a - z',
+      sortKey: 'created_at'
+    };
+  },
+  methods: {
+    toggleSortOrder(category) {
+      switch (category) {
+        case 'name':
+          this.nameSortOrder = this.nameSortOrder === 'a - z' ? 'z - a' : 'a - z';
+          break;
+        case 'created_at':
+          this.createdAtSortOrder = this.createdAtSortOrder === 'new' ? 'old' : 'new';
+          break;
+        case 'email':
+          this.emailSortOrder = this.emailSortOrder === 'a - z' ? 'z - a' : 'a - z';
+          break;
+        case 'country':
+          this.countrySortOrder = this.countrySortOrder === 'a - z' ? 'z - a' : 'a - z';
+          break;
+        default:
+          break;
+      }
+
+      this.sortKey = category;
+    },
+    sortedClients() {
+      let sortedArray = this.clients.slice();
+      const key = this.sortKey;
+
+      switch (key) {
+        case 'name':
+          sortedArray.sort((a, b) => {
+            if (this.nameSortOrder === 'a - z') {
+              return a.name.localeCompare(b.name);
+            } else {
+              return b.name.localeCompare(a.name);
+            }
+          });
+          break;
+        case 'created_at':
+          sortedArray.sort((a, b) => {
+            const dateA = new Date(a.created_at);
+            const dateB = new Date(b.created_at);
+            if (this.createdAtSortOrder === 'new') {
+              return dateB - dateA;
+            } else {
+              return dateA - dateB;
+            }
+          });
+          break;
+        case 'email':
+          sortedArray.sort((a, b) => {
+            if (this.emailSortOrder === 'a - z') {
+              return a.email.localeCompare(b.email);
+            } else {
+              return b.email.localeCompare(a.email);
+            }
+          });
+          break;
+        case 'country':
+          sortedArray.sort((a, b) => {
+            if (this.countrySortOrder === 'a - z') {
+              return a.country.localeCompare(b.country);
+            } else {
+              return b.country.localeCompare(a.country);
+            }
+          });
+          break;
+        default:
+          break;
+      }
+
+      return sortedArray;
+    }
   },
   setup() {
     const dialog = ref(false);
@@ -127,12 +215,12 @@ export default defineComponent({
         if (response.status === 201) {
           dialog.value = false;
           toast("Client created successfully!", {
-          "theme": "auto",
-          "type": "success",
-          "position": "top-center",
-          "autoClose": 1800,
-          "dangerouslyHTMLString": true
-        });
+            "theme": "auto",
+            "type": "success",
+            "position": "top-center",
+            "autoClose": 1800,
+            "dangerouslyHTMLString": true
+          });
           updateClients();
         }
       } catch (error) {

@@ -10,7 +10,7 @@ $li-height: 60px;
   height: $li-height;
   background-color: rgb(230, 228, 228);
   border-radius: 5px;
-//   margin: 5px 0;
+  margin: 5px 0;
   list-style: none;
   box-shadow: 0 0 2px rgba(126, 126, 126, 0.5);
 
@@ -65,3 +65,7 @@ $li-height: 60px;
     grid-column: 6;
   }
 }
+
+.active {
+    color: rgb(0, 174, 190) !important;
+  }
