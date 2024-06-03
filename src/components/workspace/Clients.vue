@@ -6,46 +6,56 @@
         <div class="py-5">
           <v-dialog v-model="dialog" max-width="500">
             <template v-slot:activator="{ props: activatorProps }">
-              <v-btn class="text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add client" variant="outlined"
-                v-bind="activatorProps"></v-btn>
+              <v-btn class="text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add client"
+                variant="outlined" v-bind="activatorProps"></v-btn>
             </template>
             <v-card prepend-icon="mdi-account" title="Add client item">
               <v-card-text>
-                <v-row dense>
-                  <v-col cols="12" md="12" sm="6">
-                    <v-text-field label="Full name" hint="Tymur Rozhkovskyi" required></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="12" sm="6">
-                    <v-text-field hint="example@gmail.com" label="Email"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="12" sm="6">
-                    <v-text-field hint="United kingdom" label="Country"></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp" label="Avatar"
-                  placeholder="Pick an avatar" prepend-icon="mdi-camera"></v-file-input>
+                <v-form @submit.prevent="submitForm">
+                  <v-row dense>
+                    <v-col cols="12" md="12" sm="6">
+                      <v-text-field v-model="form.name" label="Full name" hint="Tymur Rozhkovskyi"
+                        required></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12" sm="6">
+                      <v-text-field v-model="form.email" hint="example@gmail.com" label="Email"
+                        type="email"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12" sm="6">
+                      <v-text-field v-model="form.country" hint="United kingdom" label="Country"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12" sm="6">
+                      <v-file-input v-model="form.avatar" :rules="rules" accept="image/png, image/jpeg, image/bmp"
+                        label="Avatar" placeholder="Pick an avatar" prepend-icon="mdi-camera"></v-file-input>
+                    </v-col>
+                  </v-row>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
+                    <v-btn color="primary" text="Save" variant="tonal" type="submit">Save</v-btn>
+                  </v-card-actions>
+                </v-form>
               </v-card-text>
               <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
-                <v-btn color="primary" text="Save" variant="tonal" @click="dialog = false"></v-btn>
-              </v-card-actions>
             </v-card>
           </v-dialog>
         </div>
       </div>
       <div class="list-markup">
+        <p></p>
         <p>Image</p>
         <p><a href="">Name (<b>a - z</b>)</a></p>
         <p><a href="">Created at (<b>new</b>)</a></p>
         <p><a href="">Email (<b>a - z</b>)</a></p>
+        <p><a href="">Country (<b>a - z</b>)</a></p>
         <p>Edit</p>
       </div>
       <ul class="workspace__list">
         <ul>
-          <ListElement v-for="client in clients" :key="client.id" :ImageUrl="client.imageUrl" :ProjectName="client.name"
-            :Estimate="client.email" :Client="client.created_at" />
+          <ListElement v-for="client in clients" :ClientId="client.id"
+            :ImageUrl="client.avatar ? `http://localhost:8000/storage/${client.avatar}` : ''" :Name="client.name"
+            :Email="client.email" :Country="client.country" :Created_ad="client.created_at"
+            :updateClients="updateClients" />
         </ul>
       </ul>
     </div>
@@ -56,6 +66,8 @@
 import { defineComponent, ref, onMounted } from 'vue';
 import ListElement from '../ListElement.vue';
 import axios from 'axios';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default defineComponent({
   name: 'Clients',
@@ -65,13 +77,20 @@ export default defineComponent({
   setup() {
     const dialog = ref(false);
     const clients = ref([]);
+    const form = ref({
+      name: '',
+      email: '',
+      country: '',
+      avatar: null
+    });
+
     const rules = [
       value => {
         return !value || !value.length || value[0].size < 2000000 || 'Avatar size should be less than 2 MB!'
       },
     ];
 
-    const getAllClients = async () => {
+    const updateClients = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/clients');
         clients.value = response.data;
@@ -80,15 +99,61 @@ export default defineComponent({
       }
     };
 
+    const submitForm = async () => {
+      const formData = new FormData();
+      formData.append('name', form.value.name);
+      formData.append('email', form.value.email);
+      formData.append('country', form.value.country);
+      if (form.value.avatar) {
+        formData.append('avatar', form.value.avatar);
+      }
+      if (!isValidEmail(form.value.email)) {
+        toast("Invalid email address!", {
+          "theme": "auto",
+          "type": "error",
+          "position": "top-center",
+          "autoClose": 1800,
+          "dangerouslyHTMLString": true
+        });
+        return; // Прерываем выполнение функции
+      }
+
+      try {
+        const response = await axios.post('http://localhost:8000/api/clients', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        if (response.status === 201) {
+          dialog.value = false;
+          toast("Client created successfully!", {
+          "theme": "auto",
+          "type": "success",
+          "position": "top-center",
+          "autoClose": 1800,
+          "dangerouslyHTMLString": true
+        });
+          updateClients();
+        }
+      } catch (error) {
+        console.error('Ошибка при отправке формы:', error);
+      }
+    };
+    const isValidEmail = (email) => {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
     onMounted(() => {
-      getAllClients();
+      updateClients();
     });
 
     return {
       dialog,
       clients,
+      form,
       rules,
-      getAllClients,
+      updateClients,
+      submitForm
     };
   }
 });

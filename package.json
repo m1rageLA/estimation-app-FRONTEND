@@ -31,6 +31,7 @@
     "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/js": "^7.4.47",
     "axios": "^1.7.2",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.2",
+    "vue3-toastify": "^0.2.1"
   }
 }
