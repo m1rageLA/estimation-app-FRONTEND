@@ -60,7 +60,7 @@ import 'vue3-toastify/dist/index.css';
 
 export default {
 
-    name: "ListElement",
+    name: "LiElementClient",
     components: {
         SvgIcon
     },
@@ -97,7 +97,7 @@ export default {
         },
         async deleteClient() {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/clients/${this.ClientId}`);
+                const response = await axios.delete(`http://localhost:8000/api/projects/${this.ClientId}`);
 
                 if (response.status === 200) {
                     toast("Client deleted successfully!", {

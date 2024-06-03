@@ -63,16 +63,16 @@
                         <p>Client</p>
                         <p>Estimate</p>
                     </div>
-                    <ListElement
+                    <LiElementClient
                         ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
                         ProjectName="First project" Estimate="1448 $" Client="Tymur Rozhkovskyi" />
-                    <ListElement
+                    <LiElementClient
                         ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
                         ProjectName="Second" Estimate="608 $" Client="Wladislaw Dawiduk" />
-                    <ListElement
+                    <LiElementClient
                         ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
                         ProjectName="Test35" Estimate="1200 $" Client="Dawid Kond" />
-                    <ListElement
+                    <LiElementClient
                         ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
                         ProjectName="WebStore" Estimate="2540 $" Client="Jame Smit" />
                 </ul>
@@ -82,12 +82,12 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import ListElement from '../ListElement.vue';
+import LiElementClient from '../LiElementClient.vue';
 
 export default defineComponent({
     name: 'Workspace',
     components: {
-        ListElement
+        LiElementClient
     },
     data: () => ({
         dialog: false,

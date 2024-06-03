@@ -59,7 +59,7 @@
       </div>
       <ul class="workspace__list">
         <ul>
-          <ListElement v-for="client in sortedClients(sortKey)" :key="client.id" :ClientId="client.id"
+          <LiElementClient v-for="client in sortedClients(sortKey)" :key="client.id" :ClientId="client.id"
             :ImageUrl="client.avatar ? `http://localhost:8000/storage/${client.avatar}` : ''" :Name="client.name"
             :Email="client.email" :Country="client.country" :Created_ad="client.created_at"
             :updateClients="updateClients" />
@@ -72,7 +72,7 @@
 
 <script>
 import { defineComponent, ref, onMounted } from 'vue';
-import ListElement from '../ListElement.vue';
+import LiElementClient from '../LiElementClient.vue';
 import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
@@ -80,7 +80,7 @@ import 'vue3-toastify/dist/index.css';
 export default defineComponent({
   name: 'Clients',
   components: {
-    ListElement
+    LiElementClient
   },
   data() {
     return {
