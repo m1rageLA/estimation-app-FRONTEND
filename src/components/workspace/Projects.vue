@@ -14,18 +14,31 @@
                                 <v-form @submit.prevent="submitForm">
                                     <v-row dense>
                                         <v-col cols="12" md="12" sm="6">
-                                            <v-text-field v-model="form.name" label="Name" hint="Tymur Rozhkovskyi"
+                                            <v-text-field v-model="form.name" label="Title" hint="Web site"
                                                 required></v-text-field>
                                         </v-col>
                                         <v-col cols="12" md="12" sm="6">
-                                            <v-text-field v-model="form.client" hint="example@gmail.com"
-                                                label="Client"></v-text-field>
+                                            <v-text-field v-model="form.description" label="Description" hint="Description"
+                                                required></v-text-field>
                                         </v-col>
-                                        <v-col cols="12" md="12" sm="6">
-                                            <v-text-field v-model="form.estimate" hint="United kingdom"
-                                                label="Estimate"></v-text-field>
+
+                                        <v-col cols="12">
+                                            <v-autocomplete v-model="form.client" :disabled="isUpdating" :items="clients"
+                                                color="blue-grey-lighten-2" item-title="name" item-value="name"
+                                                label="Client" chips closable-chips>
+                                                <template v-slot:chip="{ props, item }">
+                                                    <v-chip v-bind="props" :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
+                                                        :text="item.raw.name"></v-chip>
+                                                </template>
+
+                                                <template v-slot:item="{ props, item }">
+                                                    <v-list-item v-bind="props" :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
+                                                        :subtitle="item.raw.country" :title="item.raw.name"></v-list-item>
+                                                </template>
+                                            </v-autocomplete>
                                         </v-col>
-                                        <v-col cols="12" md="12" sm="6">
+
+                                        <v-col cols="12">
                                             <v-file-input v-model="form.preview" :rules="rules"
                                                 accept="image/png, image/jpeg, image/bmp" label="Preview"
                                                 placeholder="Pick an avatar" prepend-icon="mdi-camera"></v-file-input>
@@ -64,10 +77,11 @@
             </div>
             <ul class="workspace__list">
                 <ul>
-                    <LiElementProject v-for="projects in sortedClients(sortKey)" :key="projects.id" :ClientId="projects.id"
+                    <LiElementProject v-for="projects in sortedClients(sortKey)" :key="projects.id"
+                        :ClientId="projects.id"
                         :ImageUrl="projects.preview ? `http://localhost:8000/storage/${projects.preview}` : ''"
-                        :Name="projects.name" :Email="projects.client" :Country="projects.estimate"
-                        :Created_ad="projects.created_at" :updateClients="updateClients" />
+                        :Name="projects.name" :Email="projects.client" :Country="projects.description"
+                        :Created_ad="projects.created_at" :updateClients="updateProjects" />
                 </ul>
 
             </ul>
@@ -93,7 +107,9 @@ export default defineComponent({
             createdAtSortOrder: 'new',
             emailSortOrder: 'a - z',
             countrySortOrder: 'a - z',
-            sortKey: 'created_at'
+            sortKey: 'created_at',
+            friends: [], 
+            isUpdating: false, // флаг для отключения или включения автокомплита
         };
     },
     methods: {
@@ -170,10 +186,11 @@ export default defineComponent({
     setup() {
         const dialog = ref(false);
         const projects = ref([]);
+        const clients = ref([]);
         const form = ref({
             name: '',
             client: '',
-            estimate: '',
+            description: '',
             preview: null
         });
 
@@ -183,10 +200,18 @@ export default defineComponent({
             },
         ];
 
-        const updateClients = async () => {
+        const updateProjects = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/projects');
                 projects.value = response.data;
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        };
+        const updateClients = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/clients');
+                clients.value = response.data;
             } catch (error) {
                 console.error('Ошибка:', error);
             }
@@ -196,10 +221,12 @@ export default defineComponent({
             const formData = new FormData();
             formData.append('name', form.value.name);
             formData.append('client', form.value.client);
-            formData.append('estimate', form.value.estimate);
+
+            formData.append('description', form.value.description);
             if (form.value.preview) {
                 formData.append('preview', form.value.preview);
             }
+            console.log(form.value);
 
             try {
                 const response = await axios.post('http://localhost:8000/api/projects', formData, {
@@ -216,6 +243,7 @@ export default defineComponent({
                         "autoClose": 1800,
                         "dangerouslyHTMLString": true
                     });
+                    updateProjects();
                     updateClients();
                 }
             } catch (error) {
@@ -224,15 +252,17 @@ export default defineComponent({
         };
 
         onMounted(() => {
+            updateProjects();
             updateClients();
         });
 
         return {
             dialog,
             projects,
+            clients,
             form,
             rules,
-            updateClients,
+            updateProjects,
             submitForm
         };
     }
