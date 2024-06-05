@@ -3,6 +3,7 @@
         <v-checkbox class="checkbox"></v-checkbox>
         <div class="avatar"><img :src="ImageUrl" alt="avatar" /></div>
         <p class="name">{{ Name }}</p>
+        <p class="id">#{{ ClientId }}</p>
         <p class="created_ad">{{ Created_ad }}</p>
         <p class="email">{{ Email }}</p>
         <p class="country" style="margin-left: 10px;">{{ Country }}</p>

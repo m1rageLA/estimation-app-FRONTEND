@@ -44,16 +44,31 @@
       <div class="list-markup">
         <p></p>
         <p>Image</p>
-        <p><a href="#" @click.prevent="toggleSortOrder('name')" :class="{ 'active': sortKey === 'name' }">Name (<b>{{
-            nameSortOrder }}</b>)</a></p>
-        <p><a href="#" @click.prevent="toggleSortOrder('created_at')"
-            :class="{ 'active': sortKey === 'created_at' }">Created
-            at (<b>{{ createdAtSortOrder }}</b>)</a></p>
-        <p><a href="#" @click.prevent="toggleSortOrder('email')" :class="{ 'active': sortKey === 'email' }">Email (<b>{{
-            emailSortOrder }}</b>)</a></p>
-        <p><a href="#" @click.prevent="toggleSortOrder('country')" :class="{ 'active': sortKey === 'country' }">Country
-            (<b>{{
-            countrySortOrder }}</b>)</a></p>
+        <p>
+          <a href="#" @click.prevent="toggleSortOrder('name')" :class="{ 'active': sortKey === 'name' }">
+            Name (<b>{{ nameSortOrder }}</b>)
+          </a>
+        </p>
+        <p>
+          <a href="#" @click.prevent="toggleSortOrder('id')" :class="{ 'active': sortKey === 'id' }">
+            #id (<b>{{ idSortOrder }}</b>)
+          </a>
+        </p>
+        <p>
+          <a href="#" @click.prevent="toggleSortOrder('created_at')" :class="{ 'active': sortKey === 'created_at' }">
+            Created at (<b>{{ createdAtSortOrder }}</b>)
+          </a>
+        </p>
+        <p>
+          <a href="#" @click.prevent="toggleSortOrder('email')" :class="{ 'active': sortKey === 'email' }">
+            Email (<b>{{ emailSortOrder }}</b>)
+          </a>
+        </p>
+        <p>
+          <a href="#" @click.prevent="toggleSortOrder('country')" :class="{ 'active': sortKey === 'country' }">
+            Country (<b>{{ countrySortOrder }}</b>)
+          </a>
+        </p>
 
         <p>Edit</p>
       </div>
@@ -86,6 +101,7 @@ export default defineComponent({
     return {
       nameSortOrder: 'a - z',
       createdAtSortOrder: 'new',
+      idSortOrder: 'asc',
       emailSortOrder: 'a - z',
       countrySortOrder: 'a - z',
       sortKey: 'created_at'
@@ -96,6 +112,9 @@ export default defineComponent({
       switch (category) {
         case 'name':
           this.nameSortOrder = this.nameSortOrder === 'a - z' ? 'z - a' : 'a - z';
+          break;
+        case 'id':
+          this.idSortOrder = this.idSortOrder === 'asc' ? 'desc' : 'asc';
           break;
         case 'created_at':
           this.createdAtSortOrder = this.createdAtSortOrder === 'new' ? 'old' : 'new';
@@ -134,6 +153,15 @@ export default defineComponent({
               return dateB - dateA;
             } else {
               return dateA - dateB;
+            }
+          });
+          break;
+        case 'id':
+          sortedArray.sort((a, b) => {
+            if (this.idSortOrder === 'asc') {
+              return a.id - b.id;
+            } else if (this.idSortOrder === 'desc') {
+              return b.id - a.id;
             }
           });
           break;
@@ -195,6 +223,7 @@ export default defineComponent({
       if (form.value.avatar) {
         formData.append('avatar', form.value.avatar);
       }
+      console.log(form.value);
       if (!isValidEmail(form.value.email)) {
         toast("Invalid email address!", {
           "theme": "auto",

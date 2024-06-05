@@ -18,22 +18,25 @@
                                                 required></v-text-field>
                                         </v-col>
                                         <v-col cols="12" md="12" sm="6">
-                                            <v-text-field v-model="form.description" label="Description" hint="Description"
-                                                required></v-text-field>
+                                            <v-text-field v-model="form.description" label="Description"
+                                                hint="Description" required></v-text-field>
                                         </v-col>
 
                                         <v-col cols="12">
-                                            <v-autocomplete v-model="form.client" :disabled="isUpdating" :items="clients"
-                                                color="blue-grey-lighten-2" item-title="name" item-value="name"
-                                                label="Client" chips closable-chips>
+                                            <v-autocomplete v-model="form.client" :disabled="isUpdating"
+                                                :items="clients" color="blue-grey-lighten-2" item-title="name"
+                                                item-value="name" label="Client" chips closable-chips>
                                                 <template v-slot:chip="{ props, item }">
-                                                    <v-chip v-bind="props" :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
+                                                    <v-chip v-bind="props"
+                                                        :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
                                                         :text="item.raw.name"></v-chip>
                                                 </template>
 
                                                 <template v-slot:item="{ props, item }">
-                                                    <v-list-item v-bind="props" :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
-                                                        :subtitle="item.raw.country" :title="item.raw.name"></v-list-item>
+                                                    <v-list-item v-bind="props"
+                                                        :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
+                                                        :subtitle="item.raw.country"
+                                                        :title="item.raw.name"></v-list-item>
                                                 </template>
                                             </v-autocomplete>
                                         </v-col>
@@ -59,28 +62,43 @@
             <div class="list-markup">
                 <p></p>
                 <p>Image</p>
-                <p><a href="#" @click.prevent="toggleSortOrder('name')" :class="{ 'active': sortKey === 'name' }">Name
-                        (<b>{{
-                        nameSortOrder }}</b>)</a></p>
-                <p><a href="#" @click.prevent="toggleSortOrder('created_at')"
-                        :class="{ 'active': sortKey === 'created_at' }">Created
-                        at (<b>{{ createdAtSortOrder }}</b>)</a></p>
-                <p><a href="#" @click.prevent="toggleSortOrder('email')"
-                        :class="{ 'active': sortKey === 'email' }">Client (<b>{{
-                        emailSortOrder }}</b>)</a></p>
-                <p><a href="#" @click.prevent="toggleSortOrder('country')"
-                        :class="{ 'active': sortKey === 'country' }">Estimate
-                        (<b>{{
-                        countrySortOrder }}</b>)</a></p>
+
+                <p>
+                    <a href="#" @click.prevent="toggleSortOrder('name')" :class="{ 'active': sortKey === 'name' }">
+                        Title (<b>{{ nameSortOrder }}</b>)
+                    </a>
+                </p>
+                <p>
+                    <a href="#" @click.prevent="toggleSortOrder('id')" :class="{ 'active': sortKey === 'id' }">
+                        #id (<b>{{ idSortOrder }}</b>)
+                    </a>
+                </p>
+                <p>
+                    <a href="#" @click.prevent="toggleSortOrder('created_at')"
+                        :class="{ 'active': sortKey === 'created_at' }">
+                        Created at (<b>{{ createdAtSortOrder }}</b>)
+                    </a>
+                </p>
+                <p>
+                    <a href="#" @click.prevent="toggleSortOrder('client')" :class="{ 'active': sortKey === 'client' }">
+                        Client (<b>{{ clientSortOrder }}</b>)
+                    </a>
+                </p>
+                <p>
+                    <a href="#" @click.prevent="toggleSortOrder('estimate')"
+                        :class="{ 'active': sortKey === 'estimate' }">
+                        Estimate (<b>{{ countrySortOrder }}</b>)
+                    </a>
+                </p>
 
                 <p>Edit</p>
             </div>
             <ul class="workspace__list">
                 <ul>
-                    <LiElementProject v-for="projects in sortedClients(sortKey)" :key="projects.id"
+                    <LiElementProject v-for="projects in sortedClients(sortKey) " :key="projects.id"
                         :ClientId="projects.id"
                         :ImageUrl="projects.preview ? `http://localhost:8000/storage/${projects.preview}` : ''"
-                        :Name="projects.name" :Email="projects.client" :Country="projects.description"
+                        :Name="projects.name" :Email="projects.client" :Country="projects.estimate"
                         :Created_ad="projects.created_at" :updateClients="updateProjects" />
                 </ul>
 
@@ -105,11 +123,12 @@ export default defineComponent({
         return {
             nameSortOrder: 'a - z',
             createdAtSortOrder: 'new',
-            emailSortOrder: 'a - z',
+            idSortOrder: 'asc',
+            clientSortOrder: 'a - z',
             countrySortOrder: 'a - z',
             sortKey: 'created_at',
-            friends: [], 
-            isUpdating: false, // флаг для отключения или включения автокомплита
+            friends: [],
+            isUpdating: false, 
         };
     },
     methods: {
@@ -118,13 +137,16 @@ export default defineComponent({
                 case 'name':
                     this.nameSortOrder = this.nameSortOrder === 'a - z' ? 'z - a' : 'a - z';
                     break;
+                case 'id':
+                    this.idSortOrder = this.idSortOrder === 'asc' ? 'desc' : 'asc';
+                    break;
                 case 'created_at':
                     this.createdAtSortOrder = this.createdAtSortOrder === 'new' ? 'old' : 'new';
                     break;
-                case 'email':
-                    this.emailSortOrder = this.emailSortOrder === 'a - z' ? 'z - a' : 'a - z';
+                case 'client':
+                    this.clientSortOrder = this.clientSortOrder === 'a - z' ? 'z - a' : 'a - z';
                     break;
-                case 'country':
+                case 'estimate':
                     this.countrySortOrder = this.countrySortOrder === 'a - z' ? 'z - a' : 'a - z';
                     break;
                 default:
@@ -147,6 +169,15 @@ export default defineComponent({
                         }
                     });
                     break;
+                case 'id':
+                    sortedArray.sort((a, b) => {
+                        if (this.idSortOrder === 'asc') {
+                            return a.id - b.id;
+                        } else if (this.idSortOrder === 'desc') {
+                            return b.id - a.id;
+                        }
+                    });
+                    break;
                 case 'created_at':
                     sortedArray.sort((a, b) => {
                         const dateA = new Date(a.created_at);
@@ -158,16 +189,16 @@ export default defineComponent({
                         }
                     });
                     break;
-                case 'email':
+                case 'client':
                     sortedArray.sort((a, b) => {
-                        if (this.emailSortOrder === 'a - z') {
-                            return a.email.localeCompare(b.email);
+                        if (this.clientSortOrder === 'a - z') {
+                            return a.client.localeCompare(b.client);
                         } else {
-                            return b.email.localeCompare(a.email);
+                            return b.client.localeCompare(a.client);
                         }
                     });
                     break;
-                case 'country':
+                case 'estimate':
                     sortedArray.sort((a, b) => {
                         if (this.countrySortOrder === 'a - z') {
                             return a.country.localeCompare(b.country);
@@ -191,7 +222,7 @@ export default defineComponent({
             name: '',
             client: '',
             description: '',
-            preview: null
+            preview: 'https://static.thenounproject.com/png/194055-200.png'
         });
 
         const rules = [
@@ -222,7 +253,7 @@ export default defineComponent({
             formData.append('name', form.value.name);
             formData.append('client', form.value.client);
 
-            formData.append('description', form.value.description);
+            formData.append('description', form.value.estimate);
             if (form.value.preview) {
                 formData.append('preview', form.value.preview);
             }

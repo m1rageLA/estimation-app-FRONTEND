@@ -18,16 +18,15 @@ $li-height: 60px;
     grid-row: 1;
   }
 
+  //for client page
   .avatar {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     grid-row: 1;
     width: 52px;
     height: $li-height - 10px;
-
-    
 
     img {
       width: 100%;
@@ -36,12 +35,29 @@ $li-height: 60px;
     }
   }
 
+  //for project page
+  .preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    grid-row: 1;
+    width: 75px;
+    height: $li-height - 10px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 2px;
+    }
+  }
+
   .checkbox {
     margin-left: 8%;
     grid-column: 1;
 
     div {
-        grid-row: 1;
+      grid-row: 1;
     }
   }
 
@@ -49,23 +65,31 @@ $li-height: 60px;
     grid-column: 2;
   }
 
+  .preview {
+    grid-column: 2;
+  }
+
   .name {
     grid-column: 3;
   }
 
-  .created_ad {
+  .id {
     grid-column: 4;
   }
-
-  .email {
+  
+  .created_ad {
     grid-column: 5;
   }
 
-  .country {
+  .email {
     grid-column: 6;
+  }
+
+  .country {
+    grid-column: 7;
   }
 }
 
 .active {
-    color: rgb(0, 174, 190) !important;
-  }
+  color: rgb(0, 174, 190) !important;
+}
