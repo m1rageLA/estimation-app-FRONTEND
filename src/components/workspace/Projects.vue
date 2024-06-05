@@ -21,25 +21,31 @@
                                             <v-text-field v-model="form.description" label="Description"
                                                 hint="Description" required></v-text-field>
                                         </v-col>
+                                        <v-autocomplete v-model="form.client" :disabled="isUpdating" :items="clients"
+                                            color="blue-grey-lighten-2" item-title="name" item-value="name"
+                                            label="Client" chips closable-chips>
+                                            <template v-slot:chip="{ props, item }">
+                                                <v-chip v-bind="props"
+                                                    :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
+                                                    :text="item.raw.name"></v-chip>
+                                            </template>
+                                            <template v-slot:item="{ props, item }">
+                                                <v-list-item v-bind="props"
+                                                    :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
+                                                    :subtitle="item.raw.country" :title="item.raw.name"></v-list-item>
+                                            </template>
+                                            <template v-slot:prepend-item>
+                                                <v-btn class="my-2" text="Open Dialog 2"
+                                                    @click="dialog2 = true"></v-btn>
 
-                                        <v-col cols="12">
-                                            <v-autocomplete v-model="form.client" :disabled="isUpdating"
-                                                :items="clients" color="blue-grey-lighten-2" item-title="name"
-                                                item-value="name" label="Client" chips closable-chips>
-                                                <template v-slot:chip="{ props, item }">
-                                                    <v-chip v-bind="props"
-                                                        :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
-                                                        :text="item.raw.name"></v-chip>
-                                                </template>
+                                            </template>
 
-                                                <template v-slot:item="{ props, item }">
-                                                    <v-list-item v-bind="props"
-                                                        :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
-                                                        :subtitle="item.raw.country"
-                                                        :title="item.raw.name"></v-list-item>
-                                                </template>
-                                            </v-autocomplete>
-                                        </v-col>
+                                        </v-autocomplete>
+
+
+
+
+
 
                                         <v-col cols="12">
                                             <v-file-input v-model="form.preview" :rules="rules"
@@ -54,6 +60,7 @@
                                     </v-card-actions>
                                 </v-form>
                             </v-card-text>
+                            <AddClientDialog v-if="dialog2" :IsOpen="dialog2" :sendData="handleDataFromChild" />
                             <v-divider></v-divider>
                         </v-card>
                     </v-dialog>
@@ -113,11 +120,13 @@ import LiElementProject from '../LiElementProject.vue';
 import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import AddClientDialog from './modals/AddClientDialog.vue';
 
 export default defineComponent({
     name: 'Clients',
     components: {
-        LiElementProject
+        LiElementProject,
+        AddClientDialog
     },
     data() {
         return {
@@ -128,10 +137,20 @@ export default defineComponent({
             countrySortOrder: 'a - z',
             sortKey: 'created_at',
             friends: [],
-            isUpdating: false, 
+            isUpdating: false,
+            dialog2: false,
+            isOpen: false,
         };
     },
     methods: {
+        // close with parent and child (Closures funct.)
+        handleDataFromChild(data) {
+            this.dialog2 = data;
+            this.updateClients();
+        },
+        openDialog() {
+            this.dialog2 = true;
+        },
         toggleSortOrder(category) {
             switch (category) {
                 case 'name':
@@ -216,6 +235,7 @@ export default defineComponent({
     },
     setup() {
         const dialog = ref(false);
+        const dialog2 = ref(false);
         const projects = ref([]);
         const clients = ref([]);
         const form = ref({
@@ -240,6 +260,7 @@ export default defineComponent({
             }
         };
         const updateClients = async () => {
+            console.log("UPDATE");
             try {
                 const response = await axios.get('http://localhost:8000/api/clients');
                 clients.value = response.data;
@@ -289,11 +310,13 @@ export default defineComponent({
 
         return {
             dialog,
+            dialog2,
             projects,
             clients,
             form,
             rules,
             updateProjects,
+            updateClients,
             submitForm
         };
     }
