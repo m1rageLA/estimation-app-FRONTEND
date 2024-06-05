@@ -30,13 +30,16 @@
                                                     :text="item.raw.name"></v-chip>
                                             </template>
                                             <template v-slot:item="{ props, item }">
+                                                
                                                 <v-list-item v-bind="props"
                                                     :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
                                                     :subtitle="item.raw.country" :title="item.raw.name"></v-list-item>
+                                                    
                                             </template>
                                             <template v-slot:prepend-item>
-                                                <v-btn class="my-2" text="Open Dialog 2"
-                                                    @click="dialog2 = true"></v-btn>
+                                                <v-btn class="my-2 ml-4 text-none font-weight-regular"
+                                                    prepend-icon="mdi mdi-plus" text="Quick add"
+                                                    @click="dialog2 = true" variant="outlined"></v-btn>
 
                                             </template>
 
@@ -242,7 +245,7 @@ export default defineComponent({
             name: '',
             client: '',
             description: '',
-            preview: 'https://static.thenounproject.com/png/194055-200.png'
+            preview: ''
         });
 
         const rules = [

@@ -13,7 +13,7 @@
                     <svg-icon style="opacity: 65%;" type="mdi" :path="path"></svg-icon>
                 </v-btn>
             </template>
-            <v-card prepend-icon="mdi-account" title="Add client item">
+            <v-card prepend-icon="mdi-account" title="Edit client item">
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12" sm="6">
@@ -27,7 +27,7 @@
                             <v-text-field v-model="country" hint="United kingdom" label="Country"></v-text-field>
                         </v-col>
                     </v-row>
-                    <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp" label="Avatar"
+                    <v-file-input v-model="avatar" :rules="rules" accept="image/png, image/jpeg, image/bmp" label="Avatar"
                         placeholder="Pick an avatar" prepend-icon="mdi-camera"></v-file-input>
                 </v-card-text>
                 <v-divider></v-divider>
@@ -36,11 +36,11 @@
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
-                    <v-btn color="primary" text="Save" variant="tonal" @click="dialog = false"></v-btn>
+                    <v-btn text="Save" color="primary" variant="tonal" @click="updateClient"></v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="notificationDialog" fullscreen hide-overlay transition="scale-transition">
+        <v-dialog fullscreen hide-overlay transition="scale-transition">
             <v-card class="pa-6 text-center">
                 <v-alert v-if="successMessage" type="success">{{ successMessage }}</v-alert>
                 <v-alert v-if="errorMessage" type="error">{{ errorMessage }}</v-alert>
@@ -57,10 +57,7 @@ import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-
-
 export default {
-
     name: "LiElementClient",
     components: {
         SvgIcon
@@ -86,16 +83,7 @@ export default {
             required: true
         },
     },
-    setup(props) {
-        const { updateClients } = props;
-        return {
-            updateClients
-        };
-    },
     methods: {
-        emitUpdateClients() {
-            this.$emit('update-clients');
-        },
         async deleteClient() {
             try {
                 const response = await axios.delete(`http://localhost:8000/api/clients/${this.ClientId}`);
@@ -112,7 +100,6 @@ export default {
                     this.updateClients();
                 } else {
                     console.error('Error deleting client:', response.status);
-
                 }
             } catch (error) {
                 if (error.response) {
@@ -141,11 +128,41 @@ export default {
                     });
                 }
             }
+        },
+        updateClient() {
+            const clientData = {
+                name: this.name,
+                email: this.email,
+                country: this.country,
+            };
+            axios.put(`http://localhost:8000/api/clients/${this.ClientId}`, clientData)
+                .then(response => {
+                    toast("Client updated successfully!", {
+                        "theme": "auto",
+                        "type": "info",
+                        "position": "top-center",
+                        "autoClose": 1800,
+                        "dangerouslyHTMLString": true
+                    });
+                    this.dialog = false;
+                    this.updateClients();
+                    console.log(clientData);
+                })
+                .catch(error => {
+                    console.error(error.response.data.errors);
+                    toast(error.request, {
+                        "theme": "auto",
+                        "type": "error",
+                        "position": "top-center",
+                        "autoClose": 1800,
+                        "dangerouslyHTMLString": true
+                    });
+                });
         }
     }
 }
 </script>
 
-<style lang="">
+<style scoped>
 
 </style>
