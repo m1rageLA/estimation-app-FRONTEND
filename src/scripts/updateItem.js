@@ -4,7 +4,7 @@ import "vue3-toastify/dist/index.css";
 
 export default async function updateItem(path, formData) {
   try {
-    const response = await axios.put(`http://localhost:8000/api/${path}`, formData);
+    const response = await axios.put(`${process.env.API_URL}/api/${path}`, formData);
 
     toast("Client updated successfully!", {
       theme: "auto",

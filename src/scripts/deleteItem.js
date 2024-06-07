@@ -5,7 +5,7 @@ import "vue3-toastify/dist/index.css";
 export default async function deleteItem(id) {
   try {
     const response = await axios.delete(
-      `http://localhost:8000/api/clients/${id}`
+      `${process.env.API_URL}/api/clients/${id}`
     );
 
     if (response.ok) {

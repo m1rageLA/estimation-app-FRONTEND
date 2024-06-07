@@ -1,5 +1,7 @@
 const path = require("path");
 const { VueLoaderPlugin } = require("vue-loader");
+const Dotenv = require('dotenv-webpack');
+
 
 module.exports = {
   // WebPack build PROJ. starting from main.js
@@ -24,9 +26,12 @@ module.exports = {
         test: /\.s[ac]ss$/,
         use: ["vue-style-loader", "css-loader", "sass-loader"],
       },
+      
     ],
+    
   },
-  plugins: [new VueLoaderPlugin()],
+  plugins: [new VueLoaderPlugin(), new Dotenv()],
+
   devServer: {
     static: {
       directory: path.join(__dirname, "public"),

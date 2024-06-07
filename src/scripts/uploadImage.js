@@ -18,7 +18,7 @@ export default async function uploadImage(imageFile) {
     formData.append("image", imageFile);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/images",
+        `${process.env.API_URL}/api/images`,
         formData,
         {
           headers: {

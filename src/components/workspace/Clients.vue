@@ -92,6 +92,7 @@ import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
+
 export default defineComponent({
   name: 'Clients',
   components: {
@@ -207,8 +208,9 @@ export default defineComponent({
     ];
 
     const updateClients = async () => {
+      console.log("---->", process.env.API_URL);
       try {
-        const response = await axios.get('http://localhost:8000/api/clients');
+        const response = await axios.get(`${process.env.API_URL}/api/clients`);
         clients.value = response.data;
       } catch (error) {
         console.error('Ошибка:', error);
@@ -236,7 +238,7 @@ export default defineComponent({
       }
 
       try {
-        const response = await axios.post('http://localhost:8000/api/clients', formData, {
+        const response = await axios.post(`${process.env.API_URL}/api/clients`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

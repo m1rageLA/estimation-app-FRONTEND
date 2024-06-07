@@ -16,6 +16,7 @@
     "@mdi/font": "^7.4.47",
     "@vue/cli-plugin-babel": "^5.0.8",
     "css-loader": "^7.1.1",
+    "dotenv-webpack": "^8.1.0",
     "sass": "^1.77.2",
     "sass-loader": "^14.2.1",
     "vue": "^3.4.27",
