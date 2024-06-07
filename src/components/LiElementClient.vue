@@ -32,7 +32,7 @@
                                     label="Country"></v-text-field>
                             </v-col>
                         </v-row>
-                        <v-file-input @change="uploadImage" v-model="form.avatar" :rules="rules"
+                        <v-file-input @change="getNewImageName" v-model="form.avatar" :rules="rules"
                             accept="image/png, image/jpeg, image/bmp" label="Avatar" placeholder="Pick an avatar"
                             prepend-icon="mdi-camera"></v-file-input>
                         <v-card-actions>
@@ -64,6 +64,9 @@ import { mdiFileEditOutline } from '@mdi/js';
 import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import uploadImage from '../scripts/uploadImage'
+import deleteItem from '../scripts/deleteItem'
+import updateItem from '../scripts/updateItem';
 
 export default {
     name: "LiElementClient",
@@ -102,50 +105,22 @@ export default {
     methods: {
         async deleteClient() {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/clients/${this.ClientId}`);
-
-                if (response.status === 200) {
-                    toast("Client deleted successfully!", {
-                        "theme": "auto",
-                        "type": "info",
-                        "position": "top-center",
-                        "autoClose": 1800,
-                        "dangerouslyHTMLString": true
-                    });
-                    this.dialog = false;
-                    this.updateClients();
-                } else {
-                    console.error('Error deleting client:', response.status);
-                }
+                await deleteItem(this.ClientId);
+                this.dialog = false;
+                this.updateClients();
             } catch (error) {
-                if (error.response) {
-                    toast(`The issue is on the server side, status: ${error.response.status}`, {
-                        "theme": "auto",
-                        "type": "error",
-                        "position": "top-center",
-                        "autoClose": 1800,
-                        "dangerouslyHTMLString": true
-                    });
-                } else if (error.request) {
-                    toast(error.request, {
-                        "theme": "auto",
-                        "type": "error",
-                        "position": "top-center",
-                        "autoClose": 1800,
-                        "dangerouslyHTMLString": true
-                    });
-                } else {
-                    toast(error.message, {
-                        "theme": "auto",
-                        "type": "error",
-                        "position": "top-center",
-                        "autoClose": 1800,
-                        "dangerouslyHTMLString": true
-                    });
-                }
+                console.error(error);
             }
         },
-
+        async getNewImageName() {
+            try {
+                const imageName = await uploadImage(this.form.avatar);
+                console.log(imageName);
+                this.form.avatar = imageName;
+            } catch (error) {
+                console.error(error);
+            }
+        },
         async updateClient() {
             const clientData = {
                 name: this.form.name,
@@ -153,76 +128,33 @@ export default {
                 country: this.form.country,
                 avatar: this.form.avatar
             };
-            axios.put(`http://localhost:8000/api/clients/${this.ClientId}`, clientData)
-                .then(response => {
-                    toast("Client updated successfully!", {
-                        "theme": "auto",
-                        "type": "success",
-                        "position": "top-center",
-                        "autoClose": 1800,
-                        "dangerouslyHTMLString": true
-                    });
-                    this.dialog = false;
-                    this.updateClients();
-                    console.log(clientData);
-                })
-                .catch(error => {
-                    console.error(error.response.data.errors);
-                    toast(error.request, {
-                        "theme": "auto",
-                        "type": "error",
-                        "position": "top-center",
-                        "autoClose": 1800,
-                        "dangerouslyHTMLString": true
-                    });
-                });
-        },
-
-        async uploadImage() {
-            if (!this.form.avatar === null) {
-                console.log("1");
-                toast("Please select an image to upload.", {
+            if (!isValidEmail(clientData.email)) {
+                toast("Invalid email!", {
                     theme: "auto",
                     type: "error",
                     position: "top-center",
                     autoClose: 1800,
-                    dangerouslyHTMLString: true
+                    dangerouslyHTMLString: true,
                 });
                 return;
-            } else {
-                const formData = new FormData();
-                formData.append('image', this.form.avatar);
-                console.log(formData);
-                try {
-                    const response = await axios.post('http://localhost:8000/api/images', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    });
-                    console.log("-->", response.data.image_name);
-                    this.form.avatar = response.data.image_name;
-                    toast("Image uploaded successfully!", {
-                        theme: "auto",
-                        type: "success",
-                        position: "top-center",
-                        autoClose: 1800,
-                        dangerouslyHTMLString: true
-                    });
-                } catch (error) {
-                    console.error('Error uploading image:', error);
-                    toast("Failed to upload image.", {
-                        theme: "auto",
-                        type: "error",
-                        position: "top-center",
-                        autoClose: 1800,
-                        dangerouslyHTMLString: true
-                    });
-                }
             }
-        }
-
+            try {
+                const response = await updateItem(`clients/${this.ClientId}`, clientData);
+                if (response.ok) {
+                    this.updateClients();
+                }
+                this.dialog = false;
+                this.updateClients();
+            } catch (error) {
+                console.log(error);
+            }
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+        },
     }
 }
 </script>
 
-<style scoped></style>
+<style scoped></style>../scripts/updateItem
