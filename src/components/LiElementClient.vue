@@ -1,7 +1,9 @@
 <template>
     <li class="listElement">
         <v-checkbox class="checkbox"></v-checkbox>
-        <div class="avatar"><img :src="ImageUrl" alt="avatar" /></div>
+        <div class="avatar">
+            <img :src="ImageUrl" alt="avatar" v-if="ImageUrl" />
+        </div>
         <p class="name">{{ Name }}</p>
         <p class="id">#{{ ClientId }}</p>
         <p class="created_ad">{{ Created_ad }}</p>
@@ -15,29 +17,34 @@
             </template>
             <v-card prepend-icon="mdi-account" title="Edit client item">
                 <v-card-text>
-                    <v-row dense>
-                        <v-col cols="12" md="12" sm="6">
-                            <v-text-field v-model="name" label="Full name" hint="Tymur Rozhkovskyi"
-                                required></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12" sm="6">
-                            <v-text-field v-model="email" hint="example@gmail.com" label="Email"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12" sm="6">
-                            <v-text-field v-model="country" hint="United kingdom" label="Country"></v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-file-input v-model="avatar" :rules="rules" accept="image/png, image/jpeg, image/bmp" label="Avatar"
-                        placeholder="Pick an avatar" prepend-icon="mdi-camera"></v-file-input>
+                    <v-form @submit.prevent="updateClient">
+                        <v-row dense>
+                            <v-col cols="12" md="12" sm="6">
+                                <v-text-field v-model="form.name" label="Full name" hint="Tymur Rozhkovskyi"
+                                    required></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="12" sm="6">
+                                <v-text-field v-model="form.email" hint="example@gmail.com"
+                                    label="Email"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="12" sm="6">
+                                <v-text-field v-model="form.country" hint="United kingdom"
+                                    label="Country"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-file-input @change="uploadImage" v-model="form.avatar" :rules="rules"
+                            accept="image/png, image/jpeg, image/bmp" label="Avatar" placeholder="Pick an avatar"
+                            prepend-icon="mdi-camera"></v-file-input>
+                        <v-card-actions>
+                            <v-btn @click="deleteClient" style="opacity: 70%;" icon="mdi mdi-delete"
+                                variant="text"></v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
+                            <v-btn text="Save" color="primary" variant="tonal" type="submit"></v-btn>
+                        </v-card-actions>
+                    </v-form>
                 </v-card-text>
                 <v-divider></v-divider>
-                <v-card-actions>
-                    <v-btn @click="deleteClient" style="opacity: 70%;" icon="mdi mdi-delete" variant="text">
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
-                    <v-btn text="Save" color="primary" variant="tonal" @click="updateClient"></v-btn>
-                </v-card-actions>
             </v-card>
         </v-dialog>
         <v-dialog fullscreen hide-overlay transition="scale-transition">
@@ -51,6 +58,7 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiFileEditOutline } from '@mdi/js';
 import axios from 'axios';
@@ -61,15 +69,6 @@ export default {
     name: "LiElementClient",
     components: {
         SvgIcon
-    },
-    data() {
-        return {
-            path: mdiFileEditOutline,
-            dialog: false,
-            name: this.Name,
-            email: this.Email,
-            country: this.Country,
-        }
     },
     props: {
         ClientId: Number,
@@ -82,6 +81,23 @@ export default {
             type: Function,
             required: true
         },
+    },
+    data() {
+        return {
+            path: mdiFileEditOutline,
+            dialog: false,
+        }
+    },
+    setup(props) {
+        const form = ref({
+            name: props.Name,
+            email: props.Email,
+            country: props.Country,
+            avatar: props.ImageUrl,
+        });
+        return {
+            form
+        }
     },
     methods: {
         async deleteClient() {
@@ -129,17 +145,19 @@ export default {
                 }
             }
         },
-        updateClient() {
+
+        async updateClient() {
             const clientData = {
-                name: this.name,
-                email: this.email,
-                country: this.country,
+                name: this.form.name,
+                email: this.form.email,
+                country: this.form.country,
+                avatar: this.form.avatar
             };
             axios.put(`http://localhost:8000/api/clients/${this.ClientId}`, clientData)
                 .then(response => {
                     toast("Client updated successfully!", {
                         "theme": "auto",
-                        "type": "info",
+                        "type": "success",
                         "position": "top-center",
                         "autoClose": 1800,
                         "dangerouslyHTMLString": true
@@ -158,11 +176,53 @@ export default {
                         "dangerouslyHTMLString": true
                     });
                 });
+        },
+
+        async uploadImage() {
+            if (!this.form.avatar === null) {
+                console.log("1");
+                toast("Please select an image to upload.", {
+                    theme: "auto",
+                    type: "error",
+                    position: "top-center",
+                    autoClose: 1800,
+                    dangerouslyHTMLString: true
+                });
+                return;
+            } else {
+                const formData = new FormData();
+                formData.append('image', this.form.avatar);
+                console.log(formData);
+                try {
+                    const response = await axios.post('http://localhost:8000/api/images', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+                    console.log("-->", response.data.image_name);
+                    this.form.avatar = response.data.image_name;
+                    toast("Image uploaded successfully!", {
+                        theme: "auto",
+                        type: "success",
+                        position: "top-center",
+                        autoClose: 1800,
+                        dangerouslyHTMLString: true
+                    });
+                } catch (error) {
+                    console.error('Error uploading image:', error);
+                    toast("Failed to upload image.", {
+                        theme: "auto",
+                        type: "error",
+                        position: "top-center",
+                        autoClose: 1800,
+                        dangerouslyHTMLString: true
+                    });
+                }
+            }
         }
+
     }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

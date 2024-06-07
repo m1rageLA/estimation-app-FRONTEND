@@ -32,7 +32,7 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
-                    <v-btn color="primary" text="Save" variant="tonal" type="submit">Save</v-btn>
+                    <v-btn color="primary" text="Save" variant="tonal" type="submit" @click="updateClient">Save</v-btn>
                   </v-card-actions>
                 </v-form>
               </v-card-text>
@@ -223,7 +223,7 @@ export default defineComponent({
       if (form.value.avatar) {
         formData.append('avatar', form.value.avatar);
       }
-      console.log(form.value);
+      console.log(form);
       if (!isValidEmail(form.value.email)) {
         toast("Invalid email address!", {
           "theme": "auto",
