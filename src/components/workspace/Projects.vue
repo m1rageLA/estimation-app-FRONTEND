@@ -42,14 +42,7 @@
                                                     @click="dialog2 = true" variant="outlined"></v-btn>
 
                                             </template>
-
                                         </v-autocomplete>
-
-
-
-
-
-
                                         <v-col cols="12">
                                             <v-file-input v-model="form.preview" :rules="rules"
                                                 accept="image/png, image/jpeg, image/bmp" label="Preview"
@@ -106,10 +99,10 @@
             <ul class="workspace__list">
                 <ul>
                     <LiElementProject v-for="projects in sortedClients(sortKey) " :key="projects.id"
-                        :ClientId="projects.id"
+                        :ProjectId="projects.id"
                         :ImageUrl="projects.preview ? `http://localhost:8000/storage/${projects.preview}` : ''"
-                        :Name="projects.name" :Email="projects.client" :Country="projects.estimate"
-                        :Created_ad="projects.created_at" :updateClients="updateProjects" />
+                        :Name="projects.name" :Client="projects.client" :Estimate="projects.estimate"
+                        :Created_ad="projects.created_at" :updateProjects="updateProjects" />
                 </ul>
 
             </ul>
@@ -273,10 +266,10 @@ export default defineComponent({
         };
 
         const submitForm = async () => {
+            console.log("submit");
             const formData = new FormData();
             formData.append('name', form.value.name);
             formData.append('client', form.value.client);
-
             formData.append('description', form.value.estimate);
             if (form.value.preview) {
                 formData.append('preview', form.value.preview);

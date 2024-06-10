@@ -3,10 +3,10 @@
         <v-checkbox class="checkbox"></v-checkbox>
         <div class="preview"><img :src="ImageUrl" alt="avatar" /></div>
         <p class="name">{{ Name }}</p>
-        <p class="id">#{{ ClientId }}</p>
+        <p class="id">#{{ ProjectId }}</p>
         <p class="created_ad">{{ Created_ad }}</p>
-        <p class="email">{{ Email }}</p>
-        <p class="country" style="margin-left: 10px;">{{ Country }}</p>
+        <p class="email">{{ Client }}</p>
+        <p class="country" style="margin-left: 10px;">{{ Estimate }}</p>
         <v-dialog v-model="dialog" max-width="500">
             <template v-slot:activator="{ props: activatorProps }">
                 <v-btn class="text-none font-weight-regular" icon="$vuetify" variant="text" v-bind="activatorProps">
@@ -17,14 +17,13 @@
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12" sm="6">
-                            <v-text-field v-model="name" label="Title" hint="Tymur Rozhkovskyi"
-                                required></v-text-field>
+                            <v-text-field v-model="name" label="Title" hint="Tymur Rozhkovskyi" required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12" sm="6">
-                            <v-text-field v-model="email" hint="example@gmail.com" label="Email"></v-text-field>
+                            <v-text-field v-model="client" hint="Vlad Vatarov" label="Client"></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12" sm="6">
-                            <v-text-field v-model="country" hint="United kingdom" label="Country"></v-text-field>
+                            <v-text-field v-model="country" hint="United kingdom" label="Estimate"></v-text-field>
                         </v-col>
                     </v-row>
                     <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp" label="Avatar"
@@ -70,79 +69,65 @@ export default {
             path: mdiFileEditOutline,
             dialog: false,
             name: this.Name,
-            email: this.Email,
+            client: this.Client,
             country: this.Country,
         }
     },
     props: {
-        ClientId: Number,
-        Country: String,
+        ProjectId: Number,
+        Estimate: String,
         Name: String,
-        Email: String,
+        Client: String,
         ImageUrl: String,
         Created_ad: String,
-        updateClients: {
+        updateProjects: {
             type: Function,
             required: true
         },
     },
-    setup(props) {
-        const { updateClients } = props;
-        return {
-            updateClients
-        };
-    },
+    // setup() {
+    // },
     methods: {
         emitUpdateClients() {
             this.$emit('update-clients');
         },
         async deleteClient() {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/projects/${this.ClientId}`);
-
-                if (response.status === 200) {
-                    toast("Client deleted successfully!", {
-                        "theme": "auto",
-                        "type": "info",
-                        "position": "top-center",
-                        "autoClose": 1800,
-                        "dangerouslyHTMLString": true
-                    });
-                    this.dialog = false;
-                    this.updateClients();
-                } else {
-                    console.error('Error deleting client:', response.status);
-
-                }
+                await deleteItem(this.ProjectId);
+                this.dialog = false;
+                this.updateProjects();
             } catch (error) {
-                if (error.response) {
-                    toast(`The issue is on the server side, status: ${error.response.status}`, {
-                        "theme": "auto",
-                        "type": "error",
-                        "position": "top-center",
-                        "autoClose": 1800,
-                        "dangerouslyHTMLString": true
-                    });
-                } else if (error.request) {
-                    toast(error.request, {
-                        "theme": "auto",
-                        "type": "error",
-                        "position": "top-center",
-                        "autoClose": 1800,
-                        "dangerouslyHTMLString": true
-                    });
-                } else {
-                    toast(error.message, {
-                        "theme": "auto",
-                        "type": "error",
-                        "position": "top-center",
-                        "autoClose": 1800,
-                        "dangerouslyHTMLString": true
-                    });
-                }
+                console.error(error);
             }
+        },
+    },
+    async getNewImageName() {
+        try {
+            const imageName = await uploadImage(this.form.avatar);
+            console.log(imageName);
+            this.form.avatar = imageName;
+        } catch (error) {
+            console.error(error);
         }
-    }
+    },
+    async updateProject() {
+        const projectData = {
+            name: this.form.name,
+            client: this.form.client,
+            country: this.form.country,
+            avatar: this.form.avatar
+        };
+        try {
+            const response = await updateItem(`projects/${this.ProjectId}`, projectData);
+            if (response.ok) {
+                this.updateProjects();
+            }
+            this.dialog = false;
+            this.updateProjects();
+        } catch (error) {
+            console.log(error);
+        }
+    },
 }
 </script>
 

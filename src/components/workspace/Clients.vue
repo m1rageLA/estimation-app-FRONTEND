@@ -75,7 +75,7 @@
       <ul class="workspace__list">
         <ul>
           <LiElementClient v-for="client in sortedClients(sortKey)" :key="client.id" :ClientId="client.id"
-            :ImageUrl="client.avatar ? `http://localhost:8000/storage/${client.avatar}` : ''" :Name="client.name"
+            :ImageUrl="client.avatar" :Name="client.name"
             :Email="client.email" :Country="client.country" :Created_ad="client.created_at"
             :updateClients="updateClients" />
         </ul>
