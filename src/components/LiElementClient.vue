@@ -2,7 +2,7 @@
     <li class="listElement">
         <v-checkbox class="checkbox"></v-checkbox>
         <div class="avatar">
-            <img :src="`http://localhost:8000   /storage/${ImageUrl}`" alt="avatar" v-if="ImageUrl" />
+            <img :src="`http://localhost:8000/storage/${ImageUrl}`" alt="avatar" v-if="ImageUrl" />
         </div>
         <p class="name">{{ Name }}</p>
         <p class="id">#{{ ClientId }}</p>
