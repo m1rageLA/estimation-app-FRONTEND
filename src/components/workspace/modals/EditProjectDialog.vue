@@ -17,11 +17,11 @@
                             <v-col cols="12" md="12" sm="6">
                                 <v-text-field v-model="form.сlient" hint="Tyler Durden" label="Client"></v-text-field>
                             </v-col>
-
                         </v-row>
                         <v-file-input @change="getNewImageName" v-model="form.preview" :rules="rules"
                             accept="image/png, image/jpeg, image/bmp" label="Avatar" placeholder="Pick an avatar"
-                            prepend-icon="mdi-camera"></v-file-input>
+                            prepend-icon="mdi-camera">
+                        </v-file-input>
                         <v-card-actions>
                             <v-btn @click="deleteClient" style="opacity: 70%;" icon="mdi mdi-delete"
                                 variant="text"></v-btn>

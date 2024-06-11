@@ -2,96 +2,234 @@
     <div class="workspace">
         <div class="workspace__container">
             <div class="workspace__top-block">
-                <h2>Estimation</h2>
-                <div class="py-5">
-                    <v-dialog v-model="dialog" max-width="500">
-                        <template v-slot:activator="{ props: activatorProps }">
-                            <v-btn class="text-none font-weight-regular" prepend-icon="$vuetify" text="Edit Profile"
-                                variant="outlined" v-bind="activatorProps"></v-btn>
-                        </template>
+                <h2>Estimates </h2>
+                <AddProjectDialog :Dialog="dialog" :Dialog2="dialog2" :UpdateProjects="updateProjects" />
+            </div>
+            <div class="list-markup">
+                <p></p>
+                <p>Image</p>
 
-                        <v-card prepend-icon="mdi-account" title="Create item">
-                            <v-card-text>
-                                <v-row dense>
-                                    <v-col cols="12" md="12" sm="6">
-                                        <v-text-field label="Title" hint="Project Title" required></v-text-field>
-                                    </v-col>
+                <p>
+                    <a href="#" @click.prevent="toggleSortOrder('name')" :class="{ 'active': sortKey === 'name' }">
+                        Title (<b>{{ nameSortOrder }}</b>)
+                    </a>
+                </p>
+                <p>
+                    <a href="#" @click.prevent="toggleSortOrder('id')" :class="{ 'active': sortKey === 'id' }">
+                        #id (<b>{{ idSortOrder }}</b>)
+                    </a>
+                </p>
+                <p>
+                    <a href="#" @click.prevent="toggleSortOrder('created_at')"
+                        :class="{ 'active': sortKey === 'created_at' }">
+                        Created at (<b>{{ createdAtSortOrder }}</b>)
+                    </a>
+                </p>
+                <p>
+                    <a href="#" @click.prevent="toggleSortOrder('client')" :class="{ 'active': sortKey === 'client' }">
+                        Client (<b>{{ clientSortOrder }}</b>)
+                    </a>
+                </p>
+                <p>
+                    <a href="#" @click.prevent="toggleSortOrder('estimate')"
+                        :class="{ 'active': sortKey === 'estimate' }">
+                        Estimate (<b>{{ countrySortOrder }}</b>)
+                    </a>
+                </p>
 
-                                    <v-col cols="12" md="12" sm="6">
-                                        <v-text-field hint="Client Name" label="Clent"></v-text-field>
-                                    </v-col>
-
-                                    <v-col cols="12" sm="6">
-                                        <v-select
-                                            :items="['Single Page Website', 'Business Card Website', 'Landing Page', 'Corporate Website', 'E-commerce Website', 'Portfolio Website', 'Blog', 'News Website', 'Forum/Community Website', 'Educational Website', 'Other...']"
-                                            label="Site type*" required></v-select>
-                                    </v-col>
-
-                                    <v-col cols="12" sm="6">
-                                        <v-autocomplete
-                                            :items="['Full Website Development', 'Bug Fixing', 'Performance Optimization', 'Responsive Design', 'UI/UX Design', 'Third-Party Integrations', 'Maintenance and Updates', 'Back-End Development', 'Security and Data Protection', 'Data and System Migration']"
-                                            label="Technologies" auto-select-first multiple></v-autocomplete>
-                                    </v-col>
-
-                                    <v-col cols="12" md="12" sm="6">
-                                        <v-text-field hint="Total task cost" label="Estimate $"></v-text-field>
-                                    </v-col>
-                                </v-row>
-
-                                <!-- <small class="text-caption text-medium-emphasis">*indicates required field</small> -->
-                            </v-card-text>
-
-                            <v-divider></v-divider>
-
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-
-                                <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
-
-                                <v-btn color="primary" text="Save" variant="tonal" @click="dialog = false"></v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                </div>
-
+                <p>Edit</p>
             </div>
             <div class="workspace__list">
-                <ul>
-                    <div class="list-markup">
-                        <p>Image</p>
-                        <p>Title</p>
-                        <p>Client</p>
-                        <p>Estimate</p>
+                <EstimateBox v-for="projects in sortedClients(sortKey) " :key="projects.id" class="estimate-box"
+                    :ProjectName='projects.name' :ClientName="projects.client">
+                    <LiElementEstimate v-for="projects in sortedClients(sortKey) " :key="projects.id"
+                        :ProjectId="projects.id" :ImageUrl="projects.preview" :Title="projects.name"
+                        :Client="projects.client" :Estimate="projects.estimate" :Created_ad="projects.created_at"
+                        :updateProjects="updateProjects" />
+                    <div class="bottom-info">
+                        <p>14 666$</p>
                     </div>
-                    <LiElementClient
-                        ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
-                        ProjectName="First project" Estimate="1448 $" Client="Tymur Rozhkovskyi" />
-                    <LiElementClient
-                        ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
-                        ProjectName="Second" Estimate="608 $" Client="Wladislaw Dawiduk" />
-                    <LiElementClient
-                        ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
-                        ProjectName="Test35" Estimate="1200 $" Client="Dawid Kond" />
-                    <LiElementClient
-                        ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIfir_e3zfsT-SFb6FhGHDb7T3QmlMyF_uWmm7dunJ4A&s"
-                        ProjectName="WebStore" Estimate="2540 $" Client="Jame Smit" />
-                </ul>
+                </EstimateBox>
             </div>
         </div>
     </div>
 </template>
+
 <script>
-import { defineComponent } from 'vue';
-import LiElementClient from '../LiElementClient.vue';
+import { defineComponent, ref, onMounted } from 'vue';
+import LiElementEstimate from '../workspace/list/LiElementEstimate.vue';
+import axios from 'axios';
+import 'vue3-toastify/dist/index.css';
+import AddClientDialog from './modals/AddClientDialog.vue';
+import AddProjectDialog from './modals/AddProjectDialog.vue';
+import EstimateBox from './list/EstimateBox.vue';
+
 
 export default defineComponent({
-    name: 'Workspace',
+    name: 'Clients',
     components: {
-        LiElementClient
+        LiElementEstimate,
+        AddClientDialog,
+        AddProjectDialog,
+        EstimateBox
     },
-    data: () => ({
-        dialog: false,
-    }),
+    data() {
+        return {
+            nameSortOrder: 'a - z',
+            createdAtSortOrder: 'new',
+            idSortOrder: 'asc',
+            clientSortOrder: 'a - z',
+            countrySortOrder: 'a - z',
+            sortKey: 'created_at',
+            friends: [],
+            isUpdating: false,
+            dialog2: false,
+            isOpen: false,
+        };
+    },
+    methods: {
+        // close with parent and child (Closures funct.)
+        handleDataFromChild(data) {
+            this.dialog2 = data;
+            this.updateClients();
+        },
+        openDialog() {
+            this.dialog2 = true;
+        },
+        toggleSortOrder(category) {
+            switch (category) {
+                case 'name':
+                    this.nameSortOrder = this.nameSortOrder === 'a - z' ? 'z - a' : 'a - z';
+                    break;
+                case 'id':
+                    this.idSortOrder = this.idSortOrder === 'asc' ? 'desc' : 'asc';
+                    break;
+                case 'created_at':
+                    this.createdAtSortOrder = this.createdAtSortOrder === 'new' ? 'old' : 'new';
+                    break;
+                case 'client':
+                    this.clientSortOrder = this.clientSortOrder === 'a - z' ? 'z - a' : 'a - z';
+                    break;
+                case 'estimate':
+                    this.countrySortOrder = this.countrySortOrder === 'a - z' ? 'z - a' : 'a - z';
+                    break;
+                default:
+                    break;
+            }
+
+            this.sortKey = category;
+        },
+        sortedClients() {
+            let sortedArray = this.projects.slice();
+            const key = this.sortKey;
+
+            switch (key) {
+                case 'name':
+                    sortedArray.sort((a, b) => {
+                        if (this.nameSortOrder === 'a - z') {
+                            return a.name.localeCompare(b.name);
+                        } else {
+                            return b.name.localeCompare(a.name);
+                        }
+                    });
+                    break;
+                case 'id':
+                    sortedArray.sort((a, b) => {
+                        if (this.idSortOrder === 'asc') {
+                            return a.id - b.id;
+                        } else if (this.idSortOrder === 'desc') {
+                            return b.id - a.id;
+                        }
+                    });
+                    break;
+                case 'created_at':
+                    sortedArray.sort((a, b) => {
+                        const dateA = new Date(a.created_at);
+                        const dateB = new Date(b.created_at);
+                        if (this.createdAtSortOrder === 'new') {
+                            return dateB - dateA;
+                        } else {
+                            return dateA - dateB;
+                        }
+                    });
+                    break;
+                case 'client':
+                    sortedArray.sort((a, b) => {
+                        if (this.clientSortOrder === 'a - z') {
+                            return a.client.localeCompare(b.client);
+                        } else {
+                            return b.client.localeCompare(a.client);
+                        }
+                    });
+                    break;
+                case 'estimate':
+                    sortedArray.sort((a, b) => {
+                        if (this.countrySortOrder === 'a - z') {
+                            return a.country.localeCompare(b.country);
+                        } else {
+                            return b.country.localeCompare(a.country);
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+
+            return sortedArray;
+        }
+    },
+    setup() {
+        const dialog = ref(false);
+        const dialog2 = ref(false);
+        const projects = ref([]);
+        const clients = ref([]);
+        const form = ref({
+            name: '',
+            client: '',
+            description: '',
+            preview: ''
+        });
+
+        const rules = [
+            value => {
+                return !value || !value.length || value[0].size < 2000000 || 'Avatar size should be less than 2 MB!'
+            },
+        ];
+
+        const updateProjects = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/projects');
+                projects.value = response.data;
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        };
+        const updateClients = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/clients');
+                clients.value = response.data;
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        };
+
+        onMounted(() => {
+            updateProjects();
+            updateClients();
+        });
+
+        return {
+            dialog,
+            dialog2,
+            projects,
+            clients,
+            form,
+            rules,
+            updateProjects,
+            updateClients,
+        };
+    }
 });
 </script>
+
 <style lang="scss"></style>

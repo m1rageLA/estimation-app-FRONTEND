@@ -24,7 +24,7 @@
 <script>
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiFileEditOutline } from '@mdi/js';
-import EditClientDialog from './workspace/modals/EditClientDialog.vue';
+import EditClientDialog from '../modals/EditClientDialog.vue';
 
 export default {
     name: "LiElementClient",

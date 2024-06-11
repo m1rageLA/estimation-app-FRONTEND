@@ -1,5 +1,5 @@
 <template>
-    <li class="listElement">
+    <li class="EstimateElement">
         <v-checkbox class="checkbox"></v-checkbox>
         <div class="preview">
             <img :src="`http://localhost:8000/storage/${ImageUrl}`" alt="avatar" />
@@ -25,7 +25,7 @@
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiFileEditOutline } from '@mdi/js';
 import 'vue3-toastify/dist/index.css';
-import EditProjectDialog from './workspace/modals/EditProjectDialog.vue';
+import EditProjectDialog from '../modals/EditProjectDialog.vue';
 
 
 export default {
@@ -56,8 +56,6 @@ export default {
             required: true
         },
     },
-    // setup() {
-    // },
     methods: {
         emitUpdateClients() {
             this.$emit('update-clients');

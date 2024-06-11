@@ -72,7 +72,7 @@
 
         <p>Edit</p>
       </div>
-      <ul class="workspace__list">
+      <div class="workspace__list">
         <ul>
           <LiElementClient v-for="client in sortedClients(sortKey)" :key="client.id" :ClientId="client.id"
             :ImageUrl="client.avatar" :Name="client.name"
@@ -80,14 +80,14 @@
             :updateClients="updateClients" />
         </ul>
 
-      </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref, onMounted } from 'vue';
-import LiElementClient from '../LiElementClient.vue';
+import LiElementClient from '../workspace/list/LiElementClient.vue'
 import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';

@@ -39,7 +39,7 @@
 
                 <p>Edit</p>
             </div>
-            <ul class="workspace__list">
+            <div class="workspace__list">
                 <ul>
                     <LiElementProject v-for="projects in sortedClients(sortKey) " :key="projects.id"
                         :ProjectId="projects.id"
@@ -48,14 +48,14 @@
                         :Created_ad="projects.created_at" :updateProjects="updateProjects" />
                 </ul>
 
-            </ul>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import { defineComponent, ref, onMounted } from 'vue';
-import LiElementProject from '../LiElementProject.vue';
+import LiElementProject from '../workspace/list/LiElementProject.vue';
 import axios from 'axios';
 import 'vue3-toastify/dist/index.css';
 import AddClientDialog from './modals/AddClientDialog.vue';
