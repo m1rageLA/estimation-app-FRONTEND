@@ -13,7 +13,7 @@
                                 <v-text-field v-model="form.name" label="Title" hint="Web site" required></v-text-field>
                             </v-col>
                             <v-col cols="12" md="12" sm="6">
-                                <v-text-field v-model="form.description" label="Description" hint="Description"
+                                <v-text-field v-model="form.description" label="Description" hint="Project about creating neural networks"
                                     required></v-text-field>
                             </v-col>
                             <v-autocomplete v-model="form.client" :disabled="isUpdating" :items="clients"

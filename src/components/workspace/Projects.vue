@@ -43,8 +43,8 @@
                 <ul>
                     <LiElementProject v-for="projects in sortedClients(sortKey) " :key="projects.id"
                         :ProjectId="projects.id"
-                        :ImageUrl="projects.preview ? `http://localhost:8000/storage/${projects.preview}` : ''"
-                        :Name="projects.name" :Client="projects.client" :Estimate="projects.estimate"
+                        :ImageUrl="projects.preview"
+                        :Title="projects.name" :Client="projects.client" :Estimate="projects.estimate"
                         :Created_ad="projects.created_at" :updateProjects="updateProjects" />
                 </ul>
 
