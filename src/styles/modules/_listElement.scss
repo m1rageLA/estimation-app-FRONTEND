@@ -112,19 +112,23 @@ $estimition-height: 40px;
 .top-info {
   width: 100%;
   display: flex;
-  justify-content: start;
-  gap: 30px;
+  justify-content: space-between;
+  align-items: center;
+
   padding: 0 10px;
   margin-bottom: 15px;
 }
-.bottom-info{
+.bottom-info {
   width: 100%;
   display: flex;
   justify-content: end;
   padding: 0 15px;
   margin-top: 20px;
 }
-
+.top-info__left {
+  display: flex;
+  gap: 30px;
+}
 
 .EstimateElement {
   display: grid;

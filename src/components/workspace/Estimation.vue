@@ -3,7 +3,7 @@
         <div class="workspace__container">
             <div class="workspace__top-block">
                 <h2>Estimates </h2>
-                <AddProjectDialog :Dialog="dialog" :Dialog2="dialog2" :UpdateProjects="updateProjects" />
+                <AddEstimateDialog :Dialog="dialog" :Dialog2="dialog2" :UpdateProjects="updateProjects" />
             </div>
             <div class="list-markup">
                 <p></p>
@@ -62,6 +62,7 @@ import axios from 'axios';
 import 'vue3-toastify/dist/index.css';
 import AddClientDialog from './modals/AddClientDialog.vue';
 import AddProjectDialog from './modals/AddProjectDialog.vue';
+import AddEstimateDialog from './modals/AddEstimateDialog.vue';
 import EstimateBox from './list/EstimateBox.vue';
 
 
@@ -71,6 +72,7 @@ export default defineComponent({
         LiElementEstimate,
         AddClientDialog,
         AddProjectDialog,
+        AddEstimateDialog,
         EstimateBox
     },
     data() {
@@ -212,10 +214,19 @@ export default defineComponent({
                 console.error('Ошибка:', error);
             }
         };
+        const updateEstimates = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/estimates');
+                clients.value = response.data;
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        };
 
         onMounted(() => {
             updateProjects();
             updateClients();
+            updateEstimates();
         });
 
         return {
