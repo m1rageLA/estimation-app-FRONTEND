@@ -41,7 +41,6 @@
 import uploadImage from '../../../scripts/uploadImage';
 import deleteItem from '../../../scripts/deleteItem';
 import updateItem from '../../../scripts/updateItem';
-import { toast } from 'vue3-toastify';
 
 export default {
     name: "EditProjectDialog",

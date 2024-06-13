@@ -5,10 +5,10 @@
         <p class="id">#{{ EstimateId }}</p>
         <p class="cost">{{ Cost }}</p>
         <p class="created_ad">{{ DateEst }}</p>
-        <p class="email">{{ Client }}</p>
+        <p class="email">{{ Description }}</p>
         <p class="country" style="margin-left: 10px;">{{ Estimate }}</p>
         <EditProjectDialog :ProjectId="ProjectId" :Title="Title" :Client="Client" :Estimate="Estimate" 
-            :updateProjects="updateProjects" />
+            :updateProjects="updateProjects"  :Description="Description"/>
         <v-dialog v-model="notificationDialog" fullscreen hide-overlay transition="scale-transition">
             <v-card class="pa-6 text-center">
                 <v-alert v-if="successMessage" type="success">{{ successMessage }}</v-alert>
@@ -46,7 +46,7 @@ export default {
         EstimateId: Number,
         Estimate: String,
         Title: String,
-        Client: String,
+        Description: String,
         Cost: String,
         DateEst: String,
         Created_ad: String,

@@ -13,11 +13,11 @@
                                 <v-text-field v-model="form.name" label="Title" hint="Web site" required></v-text-field>
                             </v-col>
                             <v-col cols="12" md="12" sm="6">
-                                <v-text-field v-model="form.description" label="Description" hint="Project about creating neural networks"
-                                    required></v-text-field>
+                                <v-text-field v-model="form.description" label="Description"
+                                    hint="Project about creating neural networks" required></v-text-field>
                             </v-col>
                             <v-autocomplete v-model="form.client" :disabled="isUpdating" :items="clients"
-                                color="blue-grey-lighten-2" item-title="name" item-value="name" label="Client" chips
+                                color="blue-grey-lighten-2" item-title="name" item-value="id" label="Client" chips
                                 closable-chips>
                                 <template v-slot:chip="{ props, item }">
                                     <v-chip v-bind="props"

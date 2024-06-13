@@ -7,13 +7,14 @@
             </div>
             <div class="list-markup">
                 <p></p>
-                <p>Image</p>
+
 
                 <p>
                     <a href="#" @click.prevent="toggleSortOrder('name')" :class="{ 'active': sortKey === 'name' }">
                         Title (<b>{{ nameSortOrder }}</b>)
                     </a>
                 </p>
+                <p>Image</p>
                 <p>
                     <a href="#" @click.prevent="toggleSortOrder('id')" :class="{ 'active': sortKey === 'id' }">
                         #id (<b>{{ idSortOrder }}</b>)
@@ -41,15 +42,14 @@
             </div>
             <div class="workspace__list">
                 <EstimateBox v-for="project in sortedClients(sortKey)" :key="project.id" class="estimate-box"
-                    :ProjectName="project.name" :ClientName="project.client">
+                    :ProjectName="project.name" :ClientName="project.client" :ClientId="project.client"
+                    :GetClients="clients" :Estimates="estimates" :Projects="project.id">
                     <!-- Фильтрация и отображение LiElementEstimate -->
                     <LiElementEstimate v-for="estimate in filteredEstimates(project.id)" :key="estimate.id"
                         :EstimateId="estimate.id" :Title="estimate.title" :ProjectId="project.id"
-                        :Client="estimate.description" :Estimate="estimate.type" :DateEst="estimate.date"
+                        :Description="estimate.description" :Estimate="estimate.type" :DateEst="estimate.date"
                         :Cost="estimate.cost" :Created_ad="estimate.created_at" :updateProjects="updateProjects" />
-                    <div class="bottom-info">
-                        <p>14 666$</p>
-                    </div>
+
                 </EstimateBox>
             </div>
         </div>
@@ -74,7 +74,7 @@ export default defineComponent({
         AddClientDialog,
         AddProjectDialog,
         AddEstimateDialog,
-        EstimateBox
+        EstimateBox,
     },
     data() {
         return {
@@ -219,6 +219,7 @@ export default defineComponent({
                 console.error('Ошибка:', error);
             }
         };
+
         const updateEstimates = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/estimates');

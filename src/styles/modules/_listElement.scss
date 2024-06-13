@@ -133,9 +133,9 @@ $estimition-height: 40px;
 .EstimateElement {
   display: grid;
   align-items: center;
-  justify-content: center;
+  justify-items: center;
   grid-template-rows: 1fr;
-  grid-template-columns: $workspace_column_marking;
+  grid-template-columns: $estimates_column_marking;
   width: 100%;
   min-height: $estimition-height;
   background-color: rgb(231, 231, 231);

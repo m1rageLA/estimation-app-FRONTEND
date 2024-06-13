@@ -7,10 +7,9 @@
                     <template v-slot:activator="{ props }">
                         <v-chip v-bind="props" link pill>
                             <v-avatar start>
-                                <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                                <v-img :src="getClientAvatarUrl"></v-img>
                             </v-avatar>
-
-                            {{ ClientName }}
+                            {{ getClientName }}
                         </v-chip>
                     </template>
 
@@ -18,13 +17,12 @@
                         <v-list bg-color="black">
                             <v-list-item>
                                 <template v-slot:prepend>
-                                    <v-avatar image="https://cdn.vuetifyjs.com/images/john.png"></v-avatar>
+                                    <v-avatar>
+                                        <v-img :src="getClientAvatarUrl"></v-img>
+                                    </v-avatar>
                                 </template>
-
-                                <v-list-item-title>{{ ClientName }}</v-list-item-title>
-
-                                <v-list-item-subtitle>john@google.com</v-list-item-subtitle>
-
+                                <v-list-item-title>{{ getClientName }}</v-list-item-title>
+                                <v-list-item-subtitle>{{ getClientEmail }}</v-list-item-subtitle>
                                 <template v-slot:append>
                                     <v-list-item-action>
                                         <v-btn variant="text" icon @click="menu = false">
@@ -34,7 +32,6 @@
                                 </template>
                             </v-list-item>
                         </v-list>
-
                     </v-card>
                 </v-menu>
             </div>
@@ -42,20 +39,69 @@
                 @click="dialog2 = true" variant="outlined"></v-btn>
         </div>
         <slot class="slot"></slot>
+        <div class="bottom-info">
+            <p>{{ totalEstimate }}</p>
+        </div>
     </ul>
 </template>
+
 <script>
+import axios from 'axios';
+
 export default {
     name: "EstimateBox",
     props: {
         ProjectName: String,
         ClientName: String,
+        ClientId: String,
+        GetClients: Array, 
+        Estimates: Array, 
+        Projects: Number, 
     },
-    data: () => ({
-        menu: false,
-    }),
-}
-</script>
-<style lang="">
+    computed: {
+        getClientAvatarUrl() {
+            const client = this.GetClients.find(c => c.id === parseInt(this.ClientId));
+            if (client) {
+                return `http://localhost:8000/storage/${client.avatar}`;
+            }
+            return ''; 
+        },
+        getClientName() {
+            const client = this.GetClients.find(c => c.id === parseInt(this.ClientId));
+            if (client) {
+                return client.name;
+            }
+            return ''; 
+        },
+        getClientEmail() {
+            const client = this.GetClients.find(c => c.id === parseInt(this.ClientId));
+            if (client) {
+                return client.email;
+            }
+            return ''; 
+        },
+        totalEstimate() {
+            console.log("Projects:", this.Projects); 
 
+            const clientEstimates = this.Estimates.filter(estimate => estimate.project_id === this.Projects);
+            console.log("Filtered Estimates:", clientEstimates);  
+
+            const total = clientEstimates.reduce((accumulator, estimate) => {
+                return accumulator + parseFloat(estimate.cost);
+            }, 0);
+
+            console.log("Total:", total);  
+
+            return total.toFixed(2);
+        },
+    },
+    data() {
+        return {
+            menu: false,
+        };
+    },
+};
+</script>
+
+<style lang="scss">
 </style>
