@@ -38,7 +38,7 @@
                     </v-card>
                 </v-menu>
             </div>
-            <v-btn class="my-2 ml-4 text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add estimate"
+            <v-btn class="my-2 ml-4 text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add"
                 @click="dialog2 = true" variant="outlined"></v-btn>
         </div>
         <slot class="slot"></slot>

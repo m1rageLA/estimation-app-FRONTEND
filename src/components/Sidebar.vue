@@ -43,7 +43,7 @@
                         </template>
                     </v-list-item>
                     <v-list-item :to="'/estimation'" prepend-icon="mdi mdi-google-analytics" title="Estimation"
-                        value="Projects" class="liElement">
+                        value="Estimation" class="liElement">
                         <template #prepend>
                             <v-icon color="white">mdi mdi-google-analytics</v-icon>
                         </template>

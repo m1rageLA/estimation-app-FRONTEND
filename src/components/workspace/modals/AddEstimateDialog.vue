@@ -2,7 +2,7 @@
     <div class="py-5">
         <v-dialog v-model="dialog" max-width="500">
             <template v-slot:activator="{ props: activatorProps }">
-                <v-btn class="text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add project"
+                <v-btn class="text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add estimate"
                     variant="outlined" v-bind="activatorProps"></v-btn>
             </template>
             <v-card prepend-icon="mdi-account" title="Add estimate item">

@@ -191,28 +191,31 @@ $estimition-height: 40px;
     }
   }
 
-  .avatar {
-    grid-column: 2;
-  }
 
-  .preview {
-    grid-column: 2;
-  }
+  // .preview {
+  //   grid-column: 2;
+  // }
 
   .name {
+    grid-column: 2;
+  }
+
+
+
+  .id {
     grid-column: 3;
   }
 
-  .id {
+  .created_ad {
     grid-column: 4;
   }
 
-  .created_ad {
-    grid-column: 5;
+  .cost {
+    grid-column: 6;
   }
 
   .email {
-    grid-column: 6;
+    grid-column: 5;
   }
 
   .country {

@@ -40,12 +40,13 @@
                 <p>Edit</p>
             </div>
             <div class="workspace__list">
-                <EstimateBox v-for="projects in sortedClients(sortKey) " :key="projects.id" class="estimate-box"
-                    :ProjectName='projects.name' :ClientName="projects.client">
-                    <LiElementEstimate v-for="projects in sortedClients(sortKey) " :key="projects.id"
-                        :ProjectId="projects.id" :ImageUrl="projects.preview" :Title="projects.name"
-                        :Client="projects.client" :Estimate="projects.estimate" :Created_ad="projects.created_at"
-                        :updateProjects="updateProjects" />
+                <EstimateBox v-for="project in sortedClients(sortKey)" :key="project.id" class="estimate-box"
+                    :ProjectName="project.name" :ClientName="project.client">
+                    <!-- Фильтрация и отображение LiElementEstimate -->
+                    <LiElementEstimate v-for="estimate in filteredEstimates(project.id)" :key="estimate.id"
+                        :EstimateId="estimate.id" :Title="estimate.title" :ProjectId="project.id"
+                        :Client="estimate.description" :Estimate="estimate.type" :DateEst="estimate.date"
+                        :Cost="estimate.cost" :Created_ad="estimate.created_at" :updateProjects="updateProjects" />
                     <div class="bottom-info">
                         <p>14 666$</p>
                     </div>
@@ -90,6 +91,9 @@ export default defineComponent({
         };
     },
     methods: {
+        filteredEstimates(projectId) {
+            return this.estimates.filter(estimate => estimate.project_id === projectId);
+        },
         // close with parent and child (Closures funct.)
         handleDataFromChild(data) {
             this.dialog2 = data;
@@ -185,6 +189,7 @@ export default defineComponent({
         const dialog2 = ref(false);
         const projects = ref([]);
         const clients = ref([]);
+        const estimates = ref([]);
         const form = ref({
             name: '',
             client: '',
@@ -217,7 +222,7 @@ export default defineComponent({
         const updateEstimates = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/estimates');
-                clients.value = response.data;
+                estimates.value = response.data;
             } catch (error) {
                 console.error('Ошибка:', error);
             }
@@ -234,6 +239,7 @@ export default defineComponent({
             dialog2,
             projects,
             clients,
+            estimates,
             form,
             rules,
             updateProjects,

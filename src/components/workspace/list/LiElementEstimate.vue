@@ -1,15 +1,13 @@
 <template>
     <li class="EstimateElement">
         <v-checkbox class="checkbox"></v-checkbox>
-        <div class="preview">
-            <img :src="`http://localhost:8000/storage/${ImageUrl}`" alt="avatar" />
-        </div>
         <p class="name">{{ Title }}</p>
-        <p class="id">#{{ ProjectId }}</p>
-        <p class="created_ad">{{ Created_ad }}</p>
+        <p class="id">#{{ EstimateId }}</p>
+        <p class="cost">{{ Cost }}</p>
+        <p class="created_ad">{{ DateEst }}</p>
         <p class="email">{{ Client }}</p>
         <p class="country" style="margin-left: 10px;">{{ Estimate }}</p>
-        <EditProjectDialog :ProjectId="ProjectId" :Title="Title" :Client="Client" :Estimate="Estimate" :ImageUrl="ImageUrl"
+        <EditProjectDialog :ProjectId="ProjectId" :Title="Title" :Client="Client" :Estimate="Estimate" 
             :updateProjects="updateProjects" />
         <v-dialog v-model="notificationDialog" fullscreen hide-overlay transition="scale-transition">
             <v-card class="pa-6 text-center">
@@ -45,11 +43,12 @@ export default {
         }
     },
     props: {
-        ProjectId: Number,
+        EstimateId: Number,
         Estimate: String,
         Title: String,
         Client: String,
-        ImageUrl: String,
+        Cost: String,
+        DateEst: String,
         Created_ad: String,
         updateProjects: {
             type: Function,
