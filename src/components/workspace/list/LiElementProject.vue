@@ -7,10 +7,10 @@
         <p class="name">{{ Title }}</p>
         <p class="id">#{{ ProjectId }}</p>
         <p class="created_ad">{{ Created_ad }}</p>
-        <p class="email">{{ Client }}</p>
+        <p class="email">{{ getClientName }}</p>
         <p class="country" style="margin-left: 10px;">{{ Estimate }}</p>
-        <EditProjectDialog :ProjectId="ProjectId" :Title="Title" :Client="Client" :Estimate="Estimate" :ImageUrl="ImageUrl"
-            :updateProjects="updateProjects" />
+        <EditProjectDialog :ProjectId="ProjectId" :Title="Title" :Client="getClientName" :Estimate="Estimate"
+            :ImageUrl="ImageUrl" :updateProjects="updateProjects" :GetClients="GetClients"/>
         <v-dialog v-model="notificationDialog" fullscreen hide-overlay transition="scale-transition">
             <v-card class="pa-6 text-center">
                 <v-alert v-if="successMessage" type="success">{{ successMessage }}</v-alert>
@@ -35,6 +35,7 @@ export default {
         SvgIcon,
         EditProjectDialog
     },
+
     data() {
         return {
             path: mdiFileEditOutline,
@@ -51,13 +52,21 @@ export default {
         Client: String,
         ImageUrl: String,
         Created_ad: String,
+        GetClients: Array,
         updateProjects: {
             type: Function,
             required: true
         },
     },
-    // setup() {
-    // },
+    computed: {
+        getClientName() {
+            const client = this.GetClients.find(c => c.id === parseInt(this.Client));
+            if (client) {
+                return client.name;
+            }
+            return 'ewq';
+        },
+    },
     methods: {
         emitUpdateClients() {
             this.$emit('update-clients');

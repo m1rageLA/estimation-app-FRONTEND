@@ -14,26 +14,9 @@
                                 <v-text-field v-model="form.description" hint="Project about creating neural networks"
                                     label="Description"></v-text-field>
                             </v-col>
-
-                            <v-autocomplete v-model="form.client" :disabled="isUpdating" :items="GetClients"
-                                color="blue-grey-lighten-2" item-title="name" item-value="id" label="Client" chips
-                                closable-chips>
-                                <template v-slot:chip="{ props, item }">
-                                    <v-chip v-bind="props"
-                                        :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
-                                        :text="item.raw.name"></v-chip>
-                                </template>
-                                <template v-slot:item="{ props, item }">
-                                    <v-list-item v-bind="props"
-                                        :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
-                                        :subtitle="item.raw.country" :title="item.raw.name"></v-list-item>
-                                </template>
-                                <template v-slot:prepend-item>
-                                    <v-btn class="my-2 ml-4 text-none font-weight-regular" prepend-icon="mdi mdi-plus"
-                                        text="Quick add" @click="dialog2 = true" variant="outlined"></v-btn>
-                                </template>
-                            </v-autocomplete>
-                            
+                            <v-col cols="12" md="12" sm="6">
+                                <v-text-field v-model="form.сlient" hint="Tyler Durden" label="Client"></v-text-field>
+                            </v-col>
                         </v-row>
                         <v-file-input @change="getNewImageName" v-model="form.preview" :rules="rules"
                             accept="image/png, image/jpeg, image/bmp" label="Avatar" placeholder="Pick an avatar"
@@ -68,7 +51,6 @@ export default {
         Estimate: String,
         ImageUrl: String,
         updateProjects: Function,
-        GetClients: Array
     },
     data() {
         return {
@@ -77,7 +59,7 @@ export default {
                 title: this.Title,
                 сlient: this.Client,
                 estimate: this.Estimate,
-                avatar: this.ImageUrl,
+                preview: this.ImageUrl,
             },
             rules: [(v) => !!v || 'Required.']
         }
@@ -88,7 +70,7 @@ export default {
                 this.form.title = this.Title;
                 this.form.client = this.Client;
                 this.form.estimate = this.Estimate;
-                this.form.avatar = this.ImageUrl;
+                this.form.preview = this.ImageUrl;
             }
         }
     },
@@ -121,7 +103,7 @@ export default {
                 await updateItem(`projects/${this.ProjectId}`, projectData);
                 this.dialog = false;
                 this.updateProjects();
-
+             
             } catch (error) {
                 console.log(error);
             }

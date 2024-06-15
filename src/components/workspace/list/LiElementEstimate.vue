@@ -7,7 +7,7 @@
         <p class="created_ad">{{ DateEst }}</p>
         <p class="email">{{ Description }}</p>
         <p class="country" style="margin-left: 10px;">{{ Estimate }}</p>
-        <EditProjectDialog :ProjectId="ProjectId" :Title="Title" :Client="Client" :Estimate="Estimate" 
+        <EditEstimateDialog :ProjectId="ProjectId" :Title="Title" :Client="Client" :Estimate="Estimate" 
             :updateProjects="updateProjects"  :Description="Description"/>
         <v-dialog v-model="notificationDialog" fullscreen hide-overlay transition="scale-transition">
             <v-card class="pa-6 text-center">
@@ -23,7 +23,7 @@
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiFileEditOutline } from '@mdi/js';
 import 'vue3-toastify/dist/index.css';
-import EditProjectDialog from '../modals/EditProjectDialog.vue';
+import EditEstimateDialog from '../modals/EditEstimtaeDialog.vue';
 
 
 export default {
@@ -31,7 +31,7 @@ export default {
     name: "LiElementClient",
     components: {
         SvgIcon,
-        EditProjectDialog
+        EditEstimateDialog
     },
     data() {
         return {

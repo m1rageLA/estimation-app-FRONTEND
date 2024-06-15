@@ -29,12 +29,8 @@
                                 <template v-slot:item="{ props, item }">
                                     <v-list-item v-bind="props"
                                         :prepend-avatar="'http://localhost:8000/storage/' + item.raw.preview"
-                                        :subtitle="item.raw.country" :title="item.raw.name"></v-list-item>
+                                        :subtitle="item.raw.client" :title="item.raw.name"></v-list-item>
                                 </template>
-                                <!-- <template v-slot:prepend-item>
-                                    <v-btn class="my-2 ml-4 text-none font-weight-regular" prepend-icon="mdi mdi-plus"
-                                        text="Quick add" @click="dialog2 = true" variant="outlined"></v-btn>
-                                </template> -->
                             </v-autocomplete>
 
                             <v-col cols="12" md="12" sm="6">
@@ -64,7 +60,6 @@
                         </v-card-actions>
                     </v-form>
                 </v-card-text>
-                <AddClientDialog v-if="dialog2" :IsOpen="dialog2" :sendData="handleDataFromChild" />
                 <v-divider></v-divider>
             </v-card>
         </v-dialog>
@@ -86,7 +81,6 @@ export default {
     },
     props: {
         Dialog: Boolean,
-        Dialog2: Boolean,
         UpdateProjects: {
             type: Function,
             required: true
@@ -94,7 +88,6 @@ export default {
     },
     setup(props) {
         const dialog = ref(props.Dialog);
-        const dialog2 = ref(props.Dialog2);
         const clients = ref([]);
         const projects = ref([]);
         const form = ref({
@@ -161,7 +154,6 @@ export default {
 
         return {
             dialog,
-            dialog2,
             form,
             isUpdating,
             clients,

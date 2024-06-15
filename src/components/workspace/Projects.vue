@@ -3,7 +3,7 @@
         <div class="workspace__container">
             <div class="workspace__top-block">
                 <h2>Projects </h2>
-                <AddProjectDialog :Dialog="dialog" :Dialog2="dialog2" :UpdateProjects="updateProjects"/>
+                <AddProjectDialog :Dialog="dialog" :Dialog2="dialog2" :UpdateProjects="updateProjects" />
             </div>
             <div class="list-markup">
                 <p></p>
@@ -42,8 +42,7 @@
             <div class="workspace__list">
                 <ul>
                     <LiElementProject v-for="projects in sortedClients(sortKey) " :key="projects.id"
-                        :ProjectId="projects.id"
-                        :ImageUrl="projects.preview"
+                        :ProjectId="projects.id" :ImageUrl="projects.preview" :GetClients="clients" 
                         :Title="projects.name" :Client="projects.client" :Estimate="projects.estimate"
                         :Created_ad="projects.created_at" :updateProjects="updateProjects" />
                 </ul>

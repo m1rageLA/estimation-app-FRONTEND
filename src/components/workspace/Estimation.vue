@@ -2,8 +2,8 @@
     <div class="workspace">
         <div class="workspace__container">
             <div class="workspace__top-block">
-                <h2>Estimates </h2>
-                <AddEstimateDialog :Dialog="dialog" :Dialog2="dialog2" :UpdateProjects="updateProjects" />
+                <h2>Estimates</h2>
+                <AddEstimateDialog :Dialog="dialog" :UpdateProjects="updateProjects" />
             </div>
             <div class="list-markup">
                 <p></p>
@@ -43,7 +43,7 @@
             <div class="workspace__list">
                 <EstimateBox v-for="project in sortedClients(sortKey)" :key="project.id" class="estimate-box"
                     :ProjectName="project.name" :ClientName="project.client" :ClientId="project.client"
-                    :GetClients="clients" :Estimates="estimates" :Projects="project.id">
+                    :GetClients="clients" :Estimates="estimates" :Projects="project.id" :Dialog="dialog">
                     <!-- Фильтрация и отображение LiElementEstimate -->
                     <LiElementEstimate v-for="estimate in filteredEstimates(project.id)" :key="estimate.id"
                         :EstimateId="estimate.id" :Title="estimate.title" :ProjectId="project.id"

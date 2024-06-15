@@ -35,8 +35,7 @@
                     </v-card>
                 </v-menu>
             </div>
-            <v-btn class="my-2 ml-4 text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add"
-                @click="dialog2 = true" variant="outlined"></v-btn>
+            <AddEstimateDialog :Dialog="dialog" :UpdateProjects="updateProjects" />
         </div>
         <slot class="slot"></slot>
         <div class="bottom-info">
@@ -47,9 +46,13 @@
 
 <script>
 import axios from 'axios';
+import AddEstimateDialog from '../modals/AddEstimateDialog.vue';
 
 export default {
     name: "EstimateBox",
+    components: {
+        AddEstimateDialog
+    },
     props: {
         ProjectName: String,
         ClientName: String,
@@ -57,6 +60,7 @@ export default {
         GetClients: Array, 
         Estimates: Array, 
         Projects: Number, 
+        Dialog: Boolean,
     },
     computed: {
         getClientAvatarUrl() {
