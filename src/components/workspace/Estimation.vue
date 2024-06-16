@@ -46,9 +46,9 @@
                     :GetClients="clients" :Estimates="estimates" :Projects="project.id" :Dialog="dialog">
                     <!-- Фильтрация и отображение LiElementEstimate -->
                     <LiElementEstimate v-for="estimate in filteredEstimates(project.id)" :key="estimate.id"
-                        :EstimateId="estimate.id" :Title="estimate.title" :ProjectId="project.id"
-                        :Description="estimate.description" :Estimate="estimate.type" :DateEst="estimate.date"
-                        :Cost="estimate.cost" :Created_ad="estimate.created_at" :updateProjects="updateProjects" />
+                        :Projects="projects" :Estimate="estimate" :EstimateId="estimate.id" :Title="estimate.title" :ProjectId="project.id"
+                        :Description="estimate.description" :DateEst="estimate.date"
+                        :Cost="estimate.cost" :Type="estimate.cost" :Created_ad="estimate.created_at" :updateProjects="updateProjects" />
 
                 </EstimateBox>
             </div>

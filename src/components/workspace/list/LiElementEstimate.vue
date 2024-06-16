@@ -1,14 +1,14 @@
 <template>
     <li class="EstimateElement">
         <v-checkbox class="checkbox"></v-checkbox>
-        <p class="name">{{ Title }}</p>
-        <p class="id">#{{ EstimateId }}</p>
-        <p class="cost">{{ Cost }}</p>
-        <p class="created_ad">{{ DateEst }}</p>
-        <p class="email">{{ Description }}</p>
-        <p class="country" style="margin-left: 10px;">{{ Estimate }}</p>
-        <EditEstimateDialog :ProjectId="ProjectId" :Title="Title" :Client="Client" :Estimate="Estimate" 
-            :updateProjects="updateProjects"  :Description="Description"/>
+        <p class="name">{{ Estimate.title }}</p>
+        <p class="id">#{{ Estimate.id }}</p>
+        <p class="cost">{{ Estimate.cost }}</p>
+        <p class="created_ad">{{ Estimate.date }}</p>
+        <p class="email">{{ Estimate.description }}</p>
+        <p class="country" style="margin-left: 10px;">{{ Estimate.type }}</p>
+        <EditEstimateDialog :Projects="Projects" :Cost="Cost" :Client="Client" :Estimate="Estimate" 
+            :updateProjects="updateProjects"/>
         <v-dialog v-model="notificationDialog" fullscreen hide-overlay transition="scale-transition">
             <v-card class="pa-6 text-center">
                 <v-alert v-if="successMessage" type="success">{{ successMessage }}</v-alert>
@@ -43,12 +43,15 @@ export default {
         }
     },
     props: {
+        Estimate: Object,
         EstimateId: Number,
-        Estimate: String,
+        // Estimate: String,
         Title: String,
         Description: String,
         Cost: String,
         DateEst: String,
+        Type: String,
+        Projects: Array,
         Created_ad: String,
         updateProjects: {
             type: Function,
