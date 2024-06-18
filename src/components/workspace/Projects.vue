@@ -7,7 +7,7 @@
                     :UpdateProjects="updateProjects" />
             </div>
             <div class="list-markup">
-                <p></p>
+                <p>Select</p>
                 <p>Image</p>
 
                 <p>

@@ -6,49 +6,80 @@
                 <AddEstimateDialog v-if="projects.length > 0" :Dialog="dialog" :Projects="projects"
                     :UpdateProjects="updateProjects" :UpdateEstimates="updateEstimates" />
             </div>
-            <div class="list-markup">
+            <div class="list-markup-estimate">
                 <p></p>
                 <p>
-                    <a href="#" @click.prevent="toggleSortOrder('name')" :class="{ 'active': sortKey === 'name' }">
-                        Title (<b>{{ nameSortOrder }}</b>)
-                    </a>
-                </p>
-                <p>Image</p>
-                <p>
-                    <a href="#" @click.prevent="toggleSortOrder('id')" :class="{ 'active': sortKey === 'id' }">
-                        #id (<b>{{ idSortOrder }}</b>)
+                    <a href="#" @click.prevent="toggleSortOrder('clientName')"
+                        :class="{ 'active': sortKey === 'clientName' }">
+                        Project date (<b>{{ nameSortOrder }}</b>)
                     </a>
                 </p>
                 <p>
-                    <a href="#" @click.prevent="toggleSortOrder('created_at')"
-                        :class="{ 'active': sortKey === 'created_at' }">
-                        Created at (<b>{{ createdAtSortOrder }}</b>)
+                    <a href="#" @click.prevent="toggleSortOrder('projectName')"
+                        :class="{ 'active': sortKey === 'projectName' }">
+                        Project name (<b>{{ idSortOrder }}</b>)
                     </a>
                 </p>
                 <p>
-                    <a href="#" @click.prevent="toggleSortOrder('client')" :class="{ 'active': sortKey === 'client' }">
-                        Client (<b>{{ clientSortOrder }}</b>)
-                    </a>
-                </p>
-                <p>
-                    <a href="#" @click.prevent="toggleSortOrder('estimate')"
-                        :class="{ 'active': sortKey === 'estimate' }">
-                        Estimate (<b>{{ countrySortOrder }}</b>)
+                    <a href="#" @click.prevent="toggleSortOrder('clientName')"
+                        :class="{ 'active': sortKey === 'clientName' }">
+                        Client (<b>{{ nameSortOrder }}</b>)
                     </a>
                 </p>
 
-                <p>Edit</p>
+                <!-- <p>
+                    <a href="#" @click.prevent="toggleSortOrder('created_at')"
+                        :class="{ 'active': sortKey === 'created_at' }">
+                        Estimate (<b>{{ createdAtSortOrder }}</b>)
+                    </a>
+                </p> -->
             </div>
             <div class="workspace__list">
-                <EstimateBox v-for="project in sortedClients(sortKey)" :key="project.id" class="estimate-box"
+                <EstimateBox v-for="project in sortedList(sortKey)" :key="project.id" class="estimate-box"
                     :ProjectName="project.name" :ClientName="project.client" :ClientId="project.client"
                     :GetClients="clients" :Estimates="estimates" :Projects="project.id" :Dialog="dialog">
-                    <!-- Фильтрация и отображение LiElementEstimate -->
+                    <div class="list_estimateBox">
+                        <p>Select</p>
+
+                        <p>
+                            <a href="#" @click.prevent="toggleSortOrder('name')"
+                                :class="{ 'active': sortKey === 'name' }">
+                                Title (<b>{{ nameSortOrder }}</b>)
+                            </a>
+                        </p>
+                        <p>
+                            <a href="#" @click.prevent="toggleSortOrder('id')" :class="{ 'active': sortKey === 'id' }">
+                                #id (<b>{{ idSortOrder }}</b>)
+                            </a>
+                        </p>
+                        <p>
+                            <a href="#" @click.prevent="toggleSortOrder('created_at')"
+                                :class="{ 'active': sortKey === 'created_at' }">
+                                Created at (<b>{{ createdAtSortOrder }}</b>)
+                            </a>
+                        </p>
+                        <p>
+                            <a href="#" @click.prevent="toggleSortOrder('client')"
+                                :class="{ 'active': sortKey === 'client' }">
+                                Client (<b>{{ clientSortOrder }}</b>)
+                            </a>
+                        </p>
+                        <p>
+                            <a href="#" @click.prevent="toggleSortOrder('estimate')"
+                                :class="{ 'active': sortKey === 'estimate' }">
+                                Estimate (<b>{{ estimateSortOrder }}</b>)
+                            </a>
+                        </p>
+
+                        <p>Type</p>
+                        <p>Edit</p>
+                    </div>
+
                     <LiElementEstimate v-for="estimate in filteredEstimates(project.id)" :key="estimate.id"
-                        :Projects="projects" :Estimate="estimate" :EstimateId="estimate.id" :UpdateEstimates="updateEstimates"  :Title="estimate.title"
-                        :ProjectId="project.id" :Description="estimate.description" :DateEst="estimate.date"
-                        :Cost="estimate.cost" :Type="estimate.cost" :Created_ad="estimate.created_at"
-                        :updateProjects="updateProjects" />
+                        :Projects="projects" :Estimate="estimate" :EstimateId="estimate.id"
+                        :UpdateEstimates="updateEstimates" :Title="estimate.title" :ProjectId="project.id"
+                        :Description="estimate.description" :DateEst="estimate.date" :Cost="estimate.cost"
+                        :Type="estimate.cost" :Created_ad="estimate.created_at" :updateProjects="updateProjects" />
 
                 </EstimateBox>
             </div>
@@ -79,11 +110,9 @@ export default defineComponent({
     data() {
         return {
             nameSortOrder: 'a - z',
-            createdAtSortOrder: 'new',
-            idSortOrder: 'asc',
-            clientSortOrder: 'a - z',
-            countrySortOrder: 'a - z',
-            sortKey: 'created_at',
+            createdAtSortOrder: 'a - z',
+            idSortOrder: 'a - z',
+            sortKey: 'projectName',
             friends: [],
             isUpdating: false,
             dialog2: false,
@@ -94,7 +123,6 @@ export default defineComponent({
         filteredEstimates(projectId) {
             return this.estimates.filter(estimate => estimate.project_id === projectId);
         },
-        // close with parent and child (Closures funct.)
         handleDataFromChild(data) {
             this.dialog2 = data;
             this.updateClients();
@@ -104,20 +132,14 @@ export default defineComponent({
         },
         toggleSortOrder(category) {
             switch (category) {
-                case 'name':
+                case 'clientName':
                     this.nameSortOrder = this.nameSortOrder === 'a - z' ? 'z - a' : 'a - z';
                     break;
-                case 'id':
-                    this.idSortOrder = this.idSortOrder === 'asc' ? 'desc' : 'asc';
+                case 'projectName':
+                    this.idSortOrder = this.idSortOrder === 'a - z' ? 'z - a' : 'a - z';
                     break;
                 case 'created_at':
-                    this.createdAtSortOrder = this.createdAtSortOrder === 'new' ? 'old' : 'new';
-                    break;
-                case 'client':
-                    this.clientSortOrder = this.clientSortOrder === 'a - z' ? 'z - a' : 'a - z';
-                    break;
-                case 'estimate':
-                    this.countrySortOrder = this.countrySortOrder === 'a - z' ? 'z - a' : 'a - z';
+                    this.createdAtSortOrder = this.createdAtSortOrder === 'a - z' ? 'z - a' : 'a - z';
                     break;
                 default:
                     break;
@@ -125,64 +147,41 @@ export default defineComponent({
 
             this.sortKey = category;
         },
-        sortedClients() {
-            let sortedArray = this.projects.slice();
-            const key = this.sortKey;
+        sortedList(sortKey) {
+            if (sortKey === 'clientName' || sortKey === 'projectName') {
+                console.log("CLIENT&&PROJECT SORT TYPE");
+                let sortedArray = this.projects.slice();
+                const key = this.sortKey;
 
-            switch (key) {
-                case 'name':
-                    sortedArray.sort((a, b) => {
-                        if (this.nameSortOrder === 'a - z') {
-                            return a.name.localeCompare(b.name);
-                        } else {
-                            return b.name.localeCompare(a.name);
-                        }
-                    });
-                    break;
-                case 'id':
-                    sortedArray.sort((a, b) => {
-                        if (this.idSortOrder === 'asc') {
-                            return a.id - b.id;
-                        } else if (this.idSortOrder === 'desc') {
-                            return b.id - a.id;
-                        }
-                    });
-                    break;
-                case 'created_at':
-                    sortedArray.sort((a, b) => {
-                        const dateA = new Date(a.created_at);
-                        const dateB = new Date(b.created_at);
-                        if (this.createdAtSortOrder === 'new') {
-                            return dateB - dateA;
-                        } else {
-                            return dateA - dateB;
-                        }
-                    });
-                    break;
-                case 'client':
-                    sortedArray.sort((a, b) => {
-                        if (this.clientSortOrder === 'a - z') {
-                            return a.client.localeCompare(b.client);
-                        } else {
-                            return b.client.localeCompare(a.client);
-                        }
-                    });
-                    break;
-                case 'estimate':
-                    sortedArray.sort((a, b) => {
-                        if (this.countrySortOrder === 'a - z') {
-                            return a.country.localeCompare(b.country);
-                        } else {
-                            return b.country.localeCompare(a.country);
-                        }
-                    });
-                    break;
-                default:
-                    break;
+                switch (sortKey) {
+                    case 'clientName':
+                        sortedArray.sort((a, b) => {
+                            if (this.nameSortOrder === 'a - z') {
+                                return a.client.localeCompare(b.client); // Sort by client name ascending
+                            } else {
+                                return b.client.localeCompare(a.client); // Sort by client name descending
+                            }
+                        });
+                        break;
+                    case 'projectName':
+                        sortedArray.sort((a, b) => {
+                            if (this.idSortOrder === 'a - z') {
+                                return a.name.localeCompare(b.name); // Sort by project name ascending
+                            } else {
+                                return b.name.localeCompare(a.name); // Sort by project name descending
+                            }
+                        });
+                        break;
+                    default:
+                        break;
+                }
+
+                return sortedArray;
+            } else if (sortKey === 'estimateName') {
+                console.log("ESTIMATE SORT TYPE");
             }
-
-            return sortedArray;
         }
+
     },
     setup() {
         const dialog = ref(false);

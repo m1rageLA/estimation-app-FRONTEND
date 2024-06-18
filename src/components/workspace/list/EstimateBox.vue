@@ -36,9 +36,9 @@
                 </v-menu>
             </div>
         </div>
-        <slot class="slot"></slot>
+                <slot class="slot"></slot>
         <div class="bottom-info">
-            <p>{{ totalEstimate }}</p>
+            <p>total: {{ totalEstimate }}</p>
         </div>
     </ul>
 </template>
