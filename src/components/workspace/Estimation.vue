@@ -196,13 +196,11 @@ export default defineComponent({
             description: '',
             preview: ''
         });
-
         const rules = [
             value => {
                 return !value || !value.length || value[0].size < 2000000 || 'Avatar size should be less than 2 MB!'
             },
         ];
-
         const updateProjects = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/projects');

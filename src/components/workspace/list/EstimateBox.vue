@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import AddEstimateDialog from '../modals/AddEstimateDialog.vue';
 
 export default {
