@@ -10,7 +10,7 @@
         <p class="email">{{ getClientName }}</p>
         <p class="country" style="margin-left: 10px;">{{ Estimate }}</p>
         <EditProjectDialog :ProjectId="ProjectId" :Title="Title" :Client="getClientName" :Estimate="Estimate"
-            :ImageUrl="ImageUrl" :updateProjects="updateProjects" :GetClients="GetClients"/>
+            :ImageUrl="ImageUrl" :updateProjects="updateProjects" :GetClients="GetClients" />
         <v-dialog v-model="notificationDialog" fullscreen hide-overlay transition="scale-transition">
             <v-card class="pa-6 text-center">
                 <v-alert v-if="successMessage" type="success">{{ successMessage }}</v-alert>
@@ -111,5 +111,5 @@ export default {
 </script>
 
 <style lang="">
-
+        
 </style>
