@@ -96,7 +96,6 @@ export default {
         async updateClient() {
             const checkAvatar = () => {
                 if (this.form.avatar != null) {
-                    console.log(this.form.avatar);
                     return this.form.avatar;
                 }
                 else {

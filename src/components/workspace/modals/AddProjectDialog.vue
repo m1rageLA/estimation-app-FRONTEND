@@ -109,7 +109,6 @@ export default {
                         "dangerouslyHTMLString": true
                     });
                     props.UpdateProjects();
-                    updateClients();
                 }
             } catch (error) {
                 console.error('Ошибка при отправке формы:', error);

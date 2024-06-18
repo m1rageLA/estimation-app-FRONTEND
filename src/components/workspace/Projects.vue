@@ -3,7 +3,8 @@
         <div class="workspace__container">
             <div class="workspace__top-block">
                 <h2>Projects </h2>
-                <AddProjectDialog :Dialog="dialog" :Dialog2="dialog2" :UpdateProjects="updateProjects" />
+                <AddProjectDialog v-if="clients.length > 0" :Dialog="dialog" :Dialog2="dialog2"
+                    :UpdateProjects="updateProjects" />
             </div>
             <div class="list-markup">
                 <p></p>
@@ -33,7 +34,7 @@
                 <p>
                     <a href="#" @click.prevent="toggleSortOrder('estimate')"
                         :class="{ 'active': sortKey === 'estimate' }">
-                        Estimate (<b>{{ countrySortOrder }}</b>)
+                        Estimate (<b>{{ estimateSortOrder }}</b>)
                     </a>
                 </p>
 
@@ -42,8 +43,8 @@
             <div class="workspace__list">
                 <ul>
                     <LiElementProject v-for="projects in sortedClients(sortKey) " :key="projects.id"
-                        :ProjectId="projects.id" :ImageUrl="projects.preview" :GetClients="clients" 
-                        :Title="projects.name" :Client="projects.client" :Estimate="projects.estimate"
+                        :ProjectId="projects.id" :ImageUrl="projects.preview" :GetClients="clients"
+                        :Estimate="getTotalEstimate(projects.id)" :Title="projects.name" :Client="projects.client"
                         :Created_ad="projects.created_at" :updateProjects="updateProjects" />
                 </ul>
 
@@ -76,6 +77,7 @@ export default defineComponent({
             clientSortOrder: 'a - z',
             countrySortOrder: 'a - z',
             sortKey: 'created_at',
+            estimateSortOrder: 'min',
             friends: [],
             isUpdating: false,
             dialog2: false,
@@ -106,7 +108,7 @@ export default defineComponent({
                     this.clientSortOrder = this.clientSortOrder === 'a - z' ? 'z - a' : 'a - z';
                     break;
                 case 'estimate':
-                    this.countrySortOrder = this.countrySortOrder === 'a - z' ? 'z - a' : 'a - z';
+                    this.estimateSortOrder = this.estimateSortOrder === 'min' ? 'max' : 'min';
                     break;
                 default:
                     break;
@@ -159,15 +161,17 @@ export default defineComponent({
                     break;
                 case 'estimate':
                     sortedArray.sort((a, b) => {
-                        if (this.countrySortOrder === 'a - z') {
-                            return a.country.localeCompare(b.country);
+                        const estimateA = parseFloat(this.getTotalEstimate(a.id));
+                        const estimateB = parseFloat(this.getTotalEstimate(b.id));
+
+                        if (this.estimateSortOrder === 'min') {
+                            return estimateA - estimateB;
                         } else {
-                            return b.country.localeCompare(a.country);
+                            return estimateB - estimateA;
                         }
                     });
                     break;
-                default:
-                    break;
+
             }
 
             return sortedArray;
@@ -178,6 +182,7 @@ export default defineComponent({
         const dialog2 = ref(false);
         const projects = ref([]);
         const clients = ref([]);
+        const estimates = ref([]);
         const form = ref({
             name: '',
             client: '',
@@ -190,6 +195,14 @@ export default defineComponent({
                 return !value || !value.length || value[0].size < 2000000 || 'Avatar size should be less than 2 MB!'
             },
         ];
+        const getTotalEstimate = (projectId) => {
+            const clientEstimates = estimates.value.filter(estimate => estimate.project_id === projectId);
+            const total = clientEstimates.reduce((accumulator, estimate) => {
+                return accumulator + parseFloat(estimate.cost);
+            }, 0);
+
+            return total.toFixed(2);
+        }
 
         const updateProjects = async () => {
             try {
@@ -208,9 +221,19 @@ export default defineComponent({
             }
         };
 
+        const updateEstimates = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/estimates');
+                estimates.value = response.data;
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        };
+
         onMounted(() => {
             updateProjects();
             updateClients();
+            updateEstimates();
         });
 
         return {
@@ -221,6 +244,8 @@ export default defineComponent({
             form,
             rules,
             updateProjects,
+            getTotalEstimate,
+            updateEstimates,
             updateClients,
         };
     }

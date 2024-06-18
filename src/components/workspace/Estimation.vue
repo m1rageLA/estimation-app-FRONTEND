@@ -3,12 +3,11 @@
         <div class="workspace__container">
             <div class="workspace__top-block">
                 <h2>Estimates</h2>
-                <AddEstimateDialog :Dialog="dialog" :UpdateProjects="updateProjects" />
+                <AddEstimateDialog v-if="projects.length > 0" :Dialog="dialog" :Projects="projects"
+                    :UpdateProjects="updateProjects" :UpdateEstimates="updateEstimates" />
             </div>
             <div class="list-markup">
                 <p></p>
-
-
                 <p>
                     <a href="#" @click.prevent="toggleSortOrder('name')" :class="{ 'active': sortKey === 'name' }">
                         Title (<b>{{ nameSortOrder }}</b>)
@@ -46,9 +45,10 @@
                     :GetClients="clients" :Estimates="estimates" :Projects="project.id" :Dialog="dialog">
                     <!-- Фильтрация и отображение LiElementEstimate -->
                     <LiElementEstimate v-for="estimate in filteredEstimates(project.id)" :key="estimate.id"
-                        :Projects="projects" :Estimate="estimate" :EstimateId="estimate.id" :Title="estimate.title" :ProjectId="project.id"
-                        :Description="estimate.description" :DateEst="estimate.date"
-                        :Cost="estimate.cost" :Type="estimate.cost" :Created_ad="estimate.created_at" :updateProjects="updateProjects" />
+                        :Projects="projects" :Estimate="estimate" :EstimateId="estimate.id" :UpdateEstimates="updateEstimates"  :Title="estimate.title"
+                        :ProjectId="project.id" :Description="estimate.description" :DateEst="estimate.date"
+                        :Cost="estimate.cost" :Type="estimate.cost" :Created_ad="estimate.created_at"
+                        :updateProjects="updateProjects" />
 
                 </EstimateBox>
             </div>
@@ -243,6 +243,7 @@ export default defineComponent({
             rules,
             updateProjects,
             updateClients,
+            updateEstimates
         };
     }
 });

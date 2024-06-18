@@ -208,7 +208,6 @@ export default defineComponent({
     ];
 
     const updateClients = async () => {
-      console.log("---->", process.env.API_URL);
       try {
         const response = await axios.get(`${process.env.API_URL}/api/clients`);
         clients.value = response.data;
@@ -225,7 +224,6 @@ export default defineComponent({
       if (form.value.avatar) {
         formData.append('avatar', form.value.avatar);
       }
-      console.log(form);
       if (!isValidEmail(form.value.email)) {
         toast("Invalid email address!", {
           "theme": "auto",
@@ -234,7 +232,7 @@ export default defineComponent({
           "autoClose": 1800,
           "dangerouslyHTMLString": true
         });
-        return; // Прерываем выполнение функции
+        return;
       }
 
       try {

@@ -4,7 +4,6 @@ import 'vue3-toastify/dist/index.css';
 
 export default async function uploadImage(imageFile) {
   if (!imageFile === null) {
-    console.log("1");
     toast("Please select an image to upload.", {
       theme: "auto",
       type: "error",

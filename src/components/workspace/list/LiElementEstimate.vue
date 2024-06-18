@@ -7,7 +7,7 @@
         <p class="created_ad">{{ Estimate.date }}</p>
         <p class="email">{{ Estimate.description }}</p>
         <p class="country" style="margin-left: 10px;">{{ Estimate.type }}</p>
-        <EditEstimateDialog :Projects="Projects" :Cost="Cost" :Client="Client" :Estimate="Estimate" 
+        <EditEstimateDialog :Projects="Projects" :Cost="Cost" :Client="Client" :UpdateEstimates="UpdateEstimates" :Estimate="Estimate" 
             :updateProjects="updateProjects"/>
         <v-dialog v-model="notificationDialog" fullscreen hide-overlay transition="scale-transition">
             <v-card class="pa-6 text-center">
@@ -45,7 +45,6 @@ export default {
     props: {
         Estimate: Object,
         EstimateId: Number,
-        // Estimate: String,
         Title: String,
         Description: String,
         Cost: String,
@@ -53,6 +52,10 @@ export default {
         Type: String,
         Projects: Array,
         Created_ad: String,
+        UpdateEstimates: {
+            type: Function,
+            required: true
+        },
         updateProjects: {
             type: Function,
             required: true
@@ -75,7 +78,6 @@ export default {
     async getNewImageName() {
         try {
             const imageName = await uploadImage(this.form.avatar);
-            console.log(imageName);
             this.form.avatar = imageName;
         } catch (error) {
             console.error(error);

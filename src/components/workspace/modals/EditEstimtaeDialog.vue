@@ -7,23 +7,31 @@
                     <v-form @submit.prevent="updateProject">
                         <v-row dense>
                             <v-col cols="12" md="12" sm="6">
-                                <v-text-field v-model="form.title" label="Title" hint="Web site" required></v-text-field>
+                                <v-text-field v-model="form.title" label="Title" hint="Web site"
+                                    required></v-text-field>
                             </v-col>
                             <v-col cols="12" md="12" sm="6">
-                                <v-text-field v-model="form.description" label="Description" hint="Project about creating neural networks" required></v-text-field>
+                                <v-text-field v-model="form.description" label="Description"
+                                    hint="Project about creating neural networks" required></v-text-field>
                             </v-col>
                             <v-col cols="12" md="12" sm="6">
-                                <v-autocomplete v-model="form.project_id" :items="Projects" color="blue-grey-lighten-2" item-title="title" item-value="id" label="Project" chips closable-chips>
+                                <v-autocomplete v-model="form.project_id" :items="Projects" color="blue-grey-lighten-2"
+                                    item-title="title" item-value="id" label="Project" chips closable-chips>
                                     <template v-slot:chip="{ props, item }">
-                                        <v-chip v-bind="props" :prepend-avatar="'http://localhost:8000/storage/' + item.raw.preview" :text="item.raw.name"></v-chip>
+                                        <v-chip v-bind="props"
+                                            :prepend-avatar="'http://localhost:8000/storage/' + item.raw.preview"
+                                            :text="item.raw.name"></v-chip>
                                     </template>
                                     <template v-slot:item="{ props, item }">
-                                        <v-list-item v-bind="props" :prepend-avatar="'http://localhost:8000/storage/' + item.raw.preview" :subtitle="item.raw.client" :title="item.raw.name"></v-list-item>
+                                        <v-list-item v-bind="props"
+                                            :prepend-avatar="'http://localhost:8000/storage/' + item.raw.preview"
+                                            :subtitle="item.raw.client" :title="item.raw.name"></v-list-item>
                                     </template>
                                 </v-autocomplete>
                             </v-col>
                             <v-col cols="12" md="12" sm="6">
-                                <v-date-input v-model="form.date" label="Date input" :allowed-dates="allowedDates"></v-date-input>
+                                <v-date-input v-model="form.date" label="Date input"
+                                    :allowed-dates="allowedDates"></v-date-input>
                             </v-col>
                             <v-col cols="12" md="12" sm="6">
                                 <v-text-field v-model="form.cost" label="Estimate" hint="1400$" required></v-text-field>
@@ -36,7 +44,8 @@
                             </v-col>
                         </v-row>
                         <v-card-actions>
-                            <v-btn @click="deleteClient" style="opacity: 70%;" icon="mdi mdi-delete" variant="text"></v-btn>
+                            <v-btn @click="deleteClient" style="opacity: 70%;" icon="mdi mdi-delete"
+                                variant="text"></v-btn>
                             <v-spacer></v-spacer>
                             <v-btn text="Close" variant="plain" @click="dialog = false">Close</v-btn>
                             <v-btn color="primary" text="Save" variant="tonal" type="submit">Save</v-btn>
@@ -62,7 +71,11 @@ export default {
         ImageUrl: String,
         updateProjects: Function,
         Projects: Array,
-        Cost: String
+        Cost: String,
+        UpdateEstimates: {
+            type: Function,
+            required: true
+        },
     },
     components: {
         VDateInput
@@ -100,22 +113,17 @@ export default {
             }
         }
     },
+
     methods: {
         allowedDates(date) {
             const parsedDate = new Date(date);
             return parsedDate >= new Date('2023-01-01') && parsedDate <= new Date('2024-12-31');
         },
-
         async deleteClient() {
             try {
-                if (!this.form.id) {
-                    throw new Error('ID is missing');
-                }
-
-                console.log(`Deleting item with ID: ${this.form.id}`); // Для отладки
-
                 await deleteItem(`estimates/${this.form.id}`);
                 this.dialog = false;
+                this.UpdateEstimates();
                 this.updateProjects();
             } catch (error) {
                 console.error(error);
@@ -151,7 +159,8 @@ export default {
             try {
                 await updateItem(`estimates/${this.Estimate.id}`, estimateData);
                 this.dialog = false;
-                this.updateProjects();
+                this.UpdateEstimates();
+                this.updateEstimates();
             } catch (error) {
                 console.error(error);
             }

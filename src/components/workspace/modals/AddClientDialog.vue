@@ -68,23 +68,13 @@ export default defineComponent({
         };
 
         const dialog2 = ref(props.IsOpen);
-        const clients = ref([]);
         const form = ref({
             name: '',
             email: '',
             country: '',
             avatar: null
         });
-
-        const updateClients = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/api/clients');
-                clients.value = response.data;
-            } catch (error) {
-                console.error('Ошибка:', error);
-            }
-        };
-
+        
         const submitForm = async () => {
             const formData = new FormData();
             formData.append('name', form.value.name);
@@ -93,7 +83,6 @@ export default defineComponent({
             if (form.value.avatar) {
                 formData.append('avatar', form.value.avatar);
             }
-            console.log(form.value);
             if (!isValidEmail(form.value.email)) {
                 toast("Invalid email address!", {
                     "theme": "auto",
@@ -119,7 +108,6 @@ export default defineComponent({
                         "autoClose": 1800,
                         "dangerouslyHTMLString": true
                     });
-                    
                     closeModal();
                 }
             } catch (error) {

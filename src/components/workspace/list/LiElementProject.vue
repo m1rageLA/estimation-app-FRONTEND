@@ -84,7 +84,6 @@ export default {
     async getNewImageName() {
         try {
             const imageName = await uploadImage(this.form.avatar);
-            console.log(imageName);
             this.form.avatar = imageName;
         } catch (error) {
             console.error(error);

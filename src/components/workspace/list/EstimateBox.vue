@@ -35,7 +35,6 @@
                     </v-card>
                 </v-menu>
             </div>
-            <AddEstimateDialog :Dialog="dialog" :UpdateProjects="updateProjects" />
         </div>
         <slot class="slot"></slot>
         <div class="bottom-info">
@@ -45,13 +44,9 @@
 </template>
 
 <script>
-import AddEstimateDialog from '../modals/AddEstimateDialog.vue';
 
 export default {
     name: "EstimateBox",
-    components: {
-        AddEstimateDialog
-    },
     props: {
         ProjectName: String,
         ClientName: String,
@@ -84,16 +79,11 @@ export default {
             return ''; 
         },
         totalEstimate() {
-            console.log("Projects:", this.Projects); 
-
             const clientEstimates = this.Estimates.filter(estimate => estimate.project_id === this.Projects);
-            console.log("Filtered Estimates:", clientEstimates);  
 
             const total = clientEstimates.reduce((accumulator, estimate) => {
                 return accumulator + parseFloat(estimate.cost);
             }, 0);
-
-            console.log("Total:", total);  
 
             return total.toFixed(2);
         },

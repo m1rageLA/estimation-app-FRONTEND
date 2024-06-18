@@ -40,13 +40,6 @@
                                 <v-text-field v-model="form.cost" label="Estimate" hint="1400$" required></v-text-field>
                             </v-col>
 
-                            <!-- 'title' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'cost' => 'required|numeric|min:0',
-            'project_id' => 'required|exists:projects,id',
-            'date' => 'sometimes|required|date' -->
-
                             <v-radio-group inline v-model="form.type">
                                 <v-radio label="Hourly" value="hourly"></v-radio>
                                 <v-radio label="Fixed price" value="fixed"></v-radio>
@@ -67,7 +60,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import AddClientDialog from '../modals/AddClientDialog.vue';
 import axios from 'axios';
 import { toast } from 'vue3-toastify';
@@ -85,11 +78,15 @@ export default {
             type: Function,
             required: true
         },
+        UpdateEstimates: {
+            type: Function,
+            required: true
+        },
+        Projects: Object,
     },
     setup(props) {
         const dialog = ref(props.Dialog);
-        const clients = ref([]);
-        const projects = ref([]);
+        const projects = ref(props.Projects);
         const form = ref({
             title: '',
             description: '',
@@ -117,53 +114,31 @@ export default {
                 });
                 if (response.status === 201) {
                     dialog.value = false;
-                    toast("Client created successfully!", {
+                    toast("Estimate created successfully!", {
                         "theme": "auto",
                         "type": "success",
                         "position": "top-center",
                         "autoClose": 1800,
-                        "dangerouslyHTMLString": true
+                        "dangerouslyHTMLString": true,
                     });
+                    props.UpdateEstimates();
                     props.UpdateProjects();
-                    updateClients();
                 }
             } catch (error) {
-                console.error('Ошибка при отправке формы:', error);
+                console.error('Error submitting form:', error);
             }
         };
-        const updateClients = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/api/clients');
-                clients.value = response.data;
-            } catch (error) {
-                console.error('Ошибка:', error);
-            }
-        };
-        const updateProjects = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/api/projects');
-                projects.value = response.data;
-            } catch (error) {
-                console.error('Ошибка:', error);
-            }
-        };
-        onMounted(() => {
-            updateClients();
-            updateProjects();
-        });
 
         return {
             dialog,
             form,
             isUpdating,
-            clients,
             projects,
             submitForm,
-            updateClients
         }
     },
+
 }
 </script>
 
 <style scoped></style>
-        
