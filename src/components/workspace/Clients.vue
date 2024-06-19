@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="list-markup">
-        <p></p>
+        <p>Select</p>
         <p>Image</p>
         <p>
           <a href="#" @click.prevent="toggleSortOrder('name')" :class="{ 'active': sortKey === 'name' }">

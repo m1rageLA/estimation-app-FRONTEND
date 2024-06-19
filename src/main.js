@@ -14,12 +14,16 @@ import Home from './components/workspace/Projects.vue';
 import Projects from './components/workspace/Projects.vue';
 import Clients from './components/workspace/Clients.vue';
 import Estimation from './components/workspace/Estimation.vue'
+import Account from './components/auth/Account.vue'
 
 const routes = [ 
   { path: '/', component: Home },
   { path: '/projects', component: Projects },
   { path: '/clients', component: Clients },
   { path: '/estimation', component: Estimation },
+  { path: '/account', component: Account },
+  { path: '/login', component: Estimation },
+  { path: '/registration', component: Estimation },
 ];
 
 const router = createRouter({

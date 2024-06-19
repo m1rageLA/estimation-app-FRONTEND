@@ -1,7 +1,9 @@
 @import './common/variables';
+@import './common/mixins';
 @import './modules/sidebar';
 @import './modules/workspace';
 @import './modules/listElement';
+@import './modules/auth';
 
 body {
     background-color: $BACKGROUND_COLOR;
