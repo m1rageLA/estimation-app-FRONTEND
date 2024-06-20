@@ -31,6 +31,7 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn text="Close" variant="plain" @click="closeModal()"></v-btn>
+
                                 <v-btn color="primary" text="Save" variant="tonal" type="submit">Save</v-btn>
                             </v-card-actions>
                         </v-form>
@@ -43,7 +44,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref } from 'vue';
 import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
@@ -54,19 +55,7 @@ export default defineComponent({
         IsOpen: Boolean,
         sendData: Function
     },
-    // close with parent and child (Closures funct.)
-    // methods: {
-    //     closeModal() {
-    //         this.dialog2 = false;
-    //         this.sendData(false);
-    //     }
-    // },
     setup(props) {
-        const closeModal = () => {
-            dialog2.value = false;
-            props.sendData(false);
-        };
-
         const dialog2 = ref(props.IsOpen);
         const form = ref({
             name: '',
@@ -74,7 +63,7 @@ export default defineComponent({
             country: '',
             avatar: null
         });
-        
+
         const submitForm = async () => {
             const formData = new FormData();
             formData.append('name', form.value.name);
@@ -83,21 +72,12 @@ export default defineComponent({
             if (form.value.avatar) {
                 formData.append('avatar', form.value.avatar);
             }
-            if (!isValidEmail(form.value.email)) {
-                toast("Invalid email address!", {
-                    "theme": "auto",
-                    "type": "error",
-                    "position": "top-center",
-                    "autoClose": 1800,
-                    "dangerouslyHTMLString": true
-                });
-                return; // Прерываем выполнение функции
-            }
 
             try {
+                const token = localStorage.getItem('token');
                 const response = await axios.post('http://localhost:8000/api/clients', formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
                     }
                 });
                 if (response.status === 201) {
@@ -114,19 +94,29 @@ export default defineComponent({
                 console.error('Ошибка при отправке формы:', error);
             }
         };
-        const isValidEmail = (email) => {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        const closeModal = () => {
+            dialog2.value = false;
+            props.sendData(false);
         };
 
 
 
+
+        const isValidEmail = (email) => {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        };
+
         return {
             dialog2,
             form,
-            updateClients,
             submitForm,
             closeModal
         };
     }
 });
 </script>
+
+<style scoped>
+/* Ваши стили */
+</style>

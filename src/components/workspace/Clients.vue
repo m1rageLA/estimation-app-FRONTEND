@@ -74,10 +74,9 @@
       </div>
       <div class="workspace__list">
         <ul>
-          <LiElementClient v-for="client in sortedClients(sortKey)" :key="client.id" :ClientId="client.id"
-            :ImageUrl="client.avatar" :Name="client.name"
-            :Email="client.email" :Country="client.country" :Created_ad="client.created_at"
-            :updateClients="updateClients" />
+          <LiElementClient v-for="client in sortedClients" :key="client.id" :ClientId="client.id"
+            :ImageUrl="client.avatar" :Name="client.name" :Email="client.email" :Country="client.country"
+            :Created_ad="client.created_at" :updateClients="updateClients" />
         </ul>
 
       </div>
@@ -92,7 +91,6 @@ import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-
 export default defineComponent({
   name: 'Clients',
   components: {
@@ -105,7 +103,20 @@ export default defineComponent({
       idSortOrder: 'asc',
       emailSortOrder: 'a - z',
       countrySortOrder: 'a - z',
-      sortKey: 'created_at'
+      sortKey: 'created_at',
+      dialog: false,
+      clients: [],
+      form: {
+        name: '',
+        email: '',
+        country: '',
+        avatar: null
+      },
+      rules: [
+        value => {
+          return !value || !value.length || value[0].size < 2000000 || 'Avatar size should be less than 2 MB!'
+        },
+      ]
     };
   },
   methods: {
@@ -132,6 +143,53 @@ export default defineComponent({
 
       this.sortKey = category;
     },
+    async updateClients() {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${process.env.API_URL}/api/clients`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        this.clients = response.data;
+      } catch (error) {
+        console.error('Ошибка:', error);
+      }
+    },
+    async submitForm() {
+      const formData = new FormData();
+      formData.append('name', this.form.name);
+      formData.append('email', this.form.email);
+      formData.append('country', this.form.country);
+      if (this.form.avatar) {
+        formData.append('avatar', this.form.avatar);
+      }
+
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post(`${process.env.API_URL}/api/clients`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (response.status === 201) {
+          this.dialog = false;
+          toast("Client created successfully!", {
+            "theme": "auto",
+            "type": "success",
+            "position": "top-center",
+            "autoClose": 1800,
+            "dangerouslyHTMLString": true
+          });
+          this.updateClients();
+        }
+      } catch (error) {
+        console.error('Ошибка при отправке формы:', error);
+      }
+    }
+  },
+  computed: {
     sortedClients() {
       let sortedArray = this.clients.slice();
       const key = this.sortKey;
@@ -191,58 +249,62 @@ export default defineComponent({
       return sortedArray;
     }
   },
-  setup() {
-    const dialog = ref(false);
-    const clients = ref([]);
-    const form = ref({
-      name: '',
-      email: '',
-      country: '',
-      avatar: null
-    });
+  methods: {
+    toggleSortOrder(category) {
+      switch (category) {
+        case 'name':
+          this.nameSortOrder = this.nameSortOrder === 'a - z' ? 'z - a' : 'a - z';
+          break;
+        case 'id':
+          this.idSortOrder = this.idSortOrder === 'asc' ? 'desc' : 'asc';
+          break;
+        case 'created_at':
+          this.createdAtSortOrder = this.createdAtSortOrder === 'new' ? 'old' : 'new';
+          break;
+        case 'email':
+          this.emailSortOrder = this.emailSortOrder === 'a - z' ? 'z - a' : 'a - z';
+          break;
+        case 'country':
+          this.countrySortOrder = this.countrySortOrder === 'a - z' ? 'z - a' : 'a - z';
+          break;
+        default:
+          break;
+      }
 
-    const rules = [
-      value => {
-        return !value || !value.length || value[0].size < 2000000 || 'Avatar size should be less than 2 MB!'
-      },
-    ];
-
-    const updateClients = async () => {
+      this.sortKey = category;
+    },
+    async updateClients() {
       try {
-        const response = await axios.get(`${process.env.API_URL}/api/clients`);
-        clients.value = response.data;
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${process.env.API_URL}/api/clients`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        this.clients = response.data;
       } catch (error) {
         console.error('Ошибка:', error);
       }
-    };
-
-    const submitForm = async () => {
+    },
+    async submitForm() {
       const formData = new FormData();
-      formData.append('name', form.value.name);
-      formData.append('email', form.value.email);
-      formData.append('country', form.value.country);
-      if (form.value.avatar) {
-        formData.append('avatar', form.value.avatar);
-      }
-      if (!isValidEmail(form.value.email)) {
-        toast("Invalid email address!", {
-          "theme": "auto",
-          "type": "error",
-          "position": "top-center",
-          "autoClose": 1800,
-          "dangerouslyHTMLString": true
-        });
-        return;
+      formData.append('name', this.form.name);
+      formData.append('email', this.form.email);
+      formData.append('country', this.form.country);
+      if (this.form.avatar) {
+        formData.append('avatar', this.form.avatar);
       }
 
       try {
+        const token = localStorage.getItem('token');
         const response = await axios.post(`${process.env.API_URL}/api/clients`, formData, {
           headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
           }
         });
         if (response.status === 201) {
-          dialog.value = false;
+          this.dialog = false;
           toast("Client created successfully!", {
             "theme": "auto",
             "type": "success",
@@ -250,28 +312,15 @@ export default defineComponent({
             "autoClose": 1800,
             "dangerouslyHTMLString": true
           });
-          updateClients();
+          this.updateClients();
         }
       } catch (error) {
         console.error('Ошибка при отправке формы:', error);
       }
-    };
-    const isValidEmail = (email) => {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
-
-    onMounted(() => {
-      updateClients();
-    });
-
-    return {
-      dialog,
-      clients,
-      form,
-      rules,
-      updateClients,
-      submitForm
-    };
+    }
+  },
+  mounted() {
+    this.updateClients();
   }
 });
 </script>
