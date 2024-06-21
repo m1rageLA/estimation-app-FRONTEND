@@ -1,12 +1,13 @@
 <template>
   <div class="container">
-      <Sidebar></Sidebar>
+      <Sidebar v-if="showSidebar"></Sidebar>
       <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
+import { useRoute } from 'vue-router';
 import Sidebar from './Sidebar.vue';
 import Workspace from './workspace/Projects.vue';
 import { toast } from 'vue3-toastify';
@@ -17,6 +18,17 @@ export default defineComponent({
   components: {
     Workspace,
     Sidebar
+  },
+  setup() {
+    const route = useRoute();
+
+    const showSidebar = computed(() => {
+      return route.name !== 'Login' && route.name !== 'Registration';
+    });
+
+    return {
+      showSidebar
+    };
   },
   methods: {
     showToast() {

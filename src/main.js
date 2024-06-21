@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "./components/App.vue";
 import "vuetify/styles"; // Import Vuetify styles
 
-import { createRouter, createWebHistory } from 'vue-router'; // Import Vue Router
+import { createRouter, createWebHistory } from "vue-router"; // Import Vue Router
 
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
@@ -10,25 +10,46 @@ import * as directives from "vuetify/directives";
 import "./styles/main.scss";
 import "@mdi/font/css/materialdesignicons.css";
 
-import Home from './components/workspace/Projects.vue';
-import Projects from './components/workspace/Projects.vue';
-import Clients from './components/workspace/Clients.vue';
-import Estimation from './components/workspace/Estimation.vue'
-import Account from './components/auth/Account.vue'
+import Home from "./components/workspace/Projects.vue";
+import Projects from "./components/workspace/Projects.vue";
+import Clients from "./components/workspace/Clients.vue";
+import Estimation from "./components/workspace/Estimation.vue";
+import Account from "./components/auth/Account.vue";
+import Login from "./components/auth/Login.vue"; // Assuming you have a Login.vue component
+import Registration from "./components/auth/Registration.vue"; // Assuming you have a Registration.vue component
 
-const routes = [ 
-  { path: '/', component: Home },
-  { path: '/projects', component: Projects },
-  { path: '/clients', component: Clients },
-  { path: '/estimation', component: Estimation },
-  { path: '/account', component: Account },
-  { path: '/login', component: Estimation },
-  { path: '/registration', component: Estimation },
+const routes = [
+  { path: "/", component: Home },
+  { path: "/projects", name: "Projects", component: Projects },
+  { path: "/clients", name: "Clients", component: Clients },
+  { path: "/estimation", name: "Estimation", component: Estimation },
+  { path: "/account", name: "Account", component: Account },
+  { path: "/login", name: "Login", component: Login },
+  { path: "/registration", name: "Registration", component: Registration },
 ];
 
 const router = createRouter({
-  history: createWebHistory(), 
+  history: createWebHistory(),
   routes,
+});
+
+// Function to check token
+function isAuthenticated() {
+  const token = localStorage.getItem("token");
+  return !!token; // Return true if token exists
+}
+
+// Navigation guard
+router.beforeEach((to, from, next) => {
+  const publicPages = ["/login", "/registration"];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = isAuthenticated();
+
+  if (authRequired && !loggedIn) {
+    return next("/login");
+  }
+
+  next();
 });
 
 const vuetify = createVuetify({
@@ -36,7 +57,4 @@ const vuetify = createVuetify({
   directives,
 });
 
-createApp(App)
-  .use(router) 
-  .use(vuetify)
-  .mount("#app");
+createApp(App).use(router).use(vuetify).mount("#app");

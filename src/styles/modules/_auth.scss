@@ -106,3 +106,105 @@ p {
     gap: 25px;
   }
 }
+
+.login {
+  @include initComponent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(244, 244, 244);
+
+  &__box {
+    width: 1000px;
+    height: 550px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 5px rgba(186, 186, 186, 0.5);
+    border-radius: 20px;
+    display: flex;
+  }
+  &__left-side {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    height: 100%;
+    border-radius: 20px 0 0 20px;
+    background-color: rgb(255, 255, 255);
+  }
+  &__right-side {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+    border-radius: 0 20px 20px 0;
+    background-color: #43adb5;
+
+    .texture {
+      width: 100%;
+      position: absolute;
+      opacity: 12%;
+    }
+  }
+  &__left-side-container {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    height: 100%;
+    h3 {
+      text-align: center;
+      font-size: 25px;
+    }
+  }
+  .login__right-side-imgbox {
+    position: relative;
+    display: flex;
+    width: 70%;
+    height: 70%;
+    border-radius: 25px;
+    border: 1px ridge rgb(201, 233, 239);
+    background-color: rgba(116, 192, 195, 0.485); /* пример прозрачности 50% */
+
+    div {
+      padding: 15px 15px;
+      width: 58%;
+    }
+    h2 {
+      color: white;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      z-index: 9;
+      margin-left: 30px;
+      border-radius: 50px;
+      position: absolute;
+    }
+  }
+
+  &__line {
+    width: 80%;
+    height: 1px;
+    background-color: rgb(208, 208, 208);
+    margin-top: 25px;
+
+    p {
+      width: 20%;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: -10px;
+      color: rgb(150, 150, 150);
+      background-color: rgb(255, 255, 255);
+    }
+  }
+  .registr-button {
+    margin-top: 15px;
+    font-size: 18px;
+
+
+    a {
+      color: rgb(19, 183, 195);
+    }
+  }
+}

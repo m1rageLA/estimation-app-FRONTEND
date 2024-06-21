@@ -1,7 +1,6 @@
 const path = require("path");
 const { VueLoaderPlugin } = require("vue-loader");
-const Dotenv = require('dotenv-webpack');
-
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   // WebPack build PROJ. starting from main.js
@@ -15,6 +14,17 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              outputPath: "images",
+            },
+          },
+        ],
+      },
+      {
         test: /\.vue$/,
         use: "vue-loader",
       },
@@ -26,9 +36,7 @@ module.exports = {
         test: /\.s[ac]ss$/,
         use: ["vue-style-loader", "css-loader", "sass-loader"],
       },
-      
     ],
-    
   },
   plugins: [new VueLoaderPlugin(), new Dotenv()],
 

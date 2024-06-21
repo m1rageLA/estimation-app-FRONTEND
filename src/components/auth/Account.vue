@@ -16,7 +16,7 @@
                     </div>
                 </div>
 
-                <v-btn class="logout"  @click="logout()" prepend-icon="mdi mdi-logout" variant="outlined">
+                <v-btn class="logout" @click="logout()" prepend-icon="mdi mdi-logout" variant="outlined">
                     Logout
                 </v-btn>
             </div>
@@ -57,9 +57,10 @@
         </div>
     </div>
 </template>
+
 <script>
 import axios from 'axios';
-import { onMounted, ref } from 'vue'; // Импорт необходимого хука из Vue 3
+import { onMounted, ref } from 'vue';
 export default {
     name: "Account",
     setup() {
