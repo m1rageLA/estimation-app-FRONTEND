@@ -53,10 +53,15 @@ export default defineComponent({
     name: 'AddClientDialog',
     props: {
         IsOpen: Boolean,
-        sendData: Function
+        sendData: {
+            type: Function,
+            required: true
+        },
     },
     setup(props) {
+
         const dialog2 = ref(props.IsOpen);
+        console.log(dialog2);
         const form = ref({
             name: '',
             email: '',
@@ -78,6 +83,7 @@ export default defineComponent({
                 const response = await axios.post('http://localhost:8000/api/clients', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
                     }
                 });
                 if (response.status === 201) {
@@ -99,10 +105,6 @@ export default defineComponent({
             dialog2.value = false;
             props.sendData(false);
         };
-
-
-
-
         const isValidEmail = (email) => {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         };

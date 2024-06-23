@@ -4,7 +4,16 @@ import "vue3-toastify/dist/index.css";
 
 export default async function updateItem(path, formData) {
   try {
-    const response = await axios.put(`${process.env.API_URL}/api/${path}`, formData);
+    const token = localStorage.getItem('token');
+    const response = await axios.put(
+      `${process.env.API_URL}/api/${path}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     toast("Client updated successfully!", {
       theme: "auto",

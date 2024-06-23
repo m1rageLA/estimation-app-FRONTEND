@@ -4,9 +4,12 @@ import "vue3-toastify/dist/index.css";
 
 export default async function deleteItem(path) {
   try {
-    const response = await axios.delete(
-      `${process.env.API_URL}/api/${path}`
-    );
+    const token = localStorage.getItem("token");
+    const response = await axios.delete(`${process.env.API_URL}/api/${path}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (response.ok) {
       toast("Client deleted successfully!", {

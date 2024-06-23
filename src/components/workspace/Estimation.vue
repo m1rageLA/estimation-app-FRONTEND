@@ -3,8 +3,9 @@
         <div class="workspace__container">
             <div class="workspace__top-block">
                 <h2>Estimates</h2>
-                <AddEstimateDialog v-if="projects.length > 0" :Dialog="dialog" :Projects="projects"
-                    :UpdateProjects="updateProjects" :UpdateEstimates="updateEstimates" />
+                <AddEstimateDialog :Dialog="dialog" :Projects="projects" :UpdateProjects="updateProjects"
+                    :UpdateEstimates="updateEstimates" />
+                <!-- v-if="projects.length > 0" -->
             </div>
             <div class="list-markup-estimate">
                 <p>
@@ -219,7 +220,12 @@ export default defineComponent({
 
         const updateProjects = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/projects');
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:8000/api/projects', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 projects.value = response.data;
             } catch (error) {
                 console.error('Error:', error);
@@ -228,7 +234,12 @@ export default defineComponent({
 
         const updateClients = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/clients');
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:8000/api/clients', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 clients.value = response.data;
             } catch (error) {
                 console.error('Error:', error);
@@ -237,7 +248,12 @@ export default defineComponent({
 
         const updateEstimates = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/estimates');
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:8000/api/estimates', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 estimates.value = response.data;
             } catch (error) {
                 console.error('Error:', error);

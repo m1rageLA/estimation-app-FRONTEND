@@ -56,9 +56,9 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import AddClientDialog from '../modals/AddClientDialog.vue';
 import axios from 'axios';
 import { toast } from 'vue3-toastify';
+import AddClientDialog from '../modals/AddClientDialog.vue';
 
 export default {
     name: 'AddProjectDialog',
@@ -71,6 +71,13 @@ export default {
         UpdateProjects: {
             type: Function,
             required: true
+        }
+
+    },
+    methods: {
+        handleDataFromChild(data) {
+            this.dialog2 = data;
+            this.updateClients();
         },
     },
     setup(props) {
@@ -94,9 +101,11 @@ export default {
                 formData.append('preview', form.value.preview);
             }
             try {
+                const token = localStorage.getItem('token');
                 const response = await axios.post('http://localhost:8000/api/projects', formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
                     }
                 });
                 if (response.status === 201) {
@@ -116,7 +125,12 @@ export default {
         };
         const updateClients = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/clients');
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:8000/api/clients', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 clients.value = response.data;
             } catch (error) {
                 console.error('Ошибка:', error);

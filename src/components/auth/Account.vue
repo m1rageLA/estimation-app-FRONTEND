@@ -61,10 +61,14 @@
 <script>
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
 export default {
     name: "Account",
     setup() {
+        const router = useRouter(); // Get router instance
         const userData = ref({});
+
         const getInfo = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -76,21 +80,25 @@ export default {
                 userData.value = response.data;
                 console.log(userData.value);
             } catch (error) {
-                console.error('Ошибка:', error);
+                console.error('Error:', error);
             }
         };
+
         const logout = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.post(`${process.env.API_URL}/api/logout`, {
+                const response = await axios.post(`${process.env.API_URL}/api/logout`, null, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                userData.value = response.data;
-                console.log(userData.value);
+                userData.value = response.data; 
+                if (response.status === 200) {
+                    localStorage.removeItem('token');
+                    router.push('/login'); // Use router instance to navigate
+                }
             } catch (error) {
-                console.error('Ошибка:', error);
+                console.error('Error:', error);
             }
         };
 
@@ -106,4 +114,5 @@ export default {
     }
 }
 </script>
+
 <style></style>

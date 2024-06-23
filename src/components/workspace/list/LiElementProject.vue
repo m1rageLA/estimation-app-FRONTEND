@@ -1,8 +1,18 @@
+<!-- Регестрация  -->
+<!-- Поиск -->
+<!-- Закрытие модалки -->
+<!-- Quick add  -->
+<!-- Homa page -->
+<!-- Avatar to user + add to sidebar -->
+
+
+
+
 <template>
     <li class="listElement">
         <v-checkbox class="checkbox"></v-checkbox>
         <div class="preview">
-            <img :src="`http://localhost:8000/storage/${ImageUrl}`" alt="avatar" />
+            <img :src="`http://localhost:8000/storage/previews/${ImageUrl}`" alt="зкумшуц" />
         </div>
         <p class="name">{{ Title }}</p>
         <p class="id">#{{ ProjectId }}</p>
@@ -64,7 +74,7 @@ export default {
             if (client) {
                 return client.name;
             }
-            return 'ewq';
+            return '';
         },
     },
     methods: {

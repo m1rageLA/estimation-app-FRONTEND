@@ -18,17 +18,17 @@
                                     hint="Project about creating neural networks" required></v-text-field>
                             </v-col>
 
-                            <v-autocomplete v-model="form.project_id" :disabled="isUpdating" :items="projects"
+                            <v-autocomplete v-model="form.project_id" :disabled="isUpdating" :items="Projects"
                                 color="blue-grey-lighten-2" item-title="title" item-value="id" label="Project" chips
                                 closable-chips>
                                 <template v-slot:chip="{ props, item }">
                                     <v-chip v-bind="props"
-                                        :prepend-avatar="'http://localhost:8000/storage/' + item.raw.preview"
+                                        :prepend-avatar="'http://localhost:8000/storage/previews/' + item.raw.preview"
                                         :text="item.raw.name"></v-chip>
                                 </template>
                                 <template v-slot:item="{ props, item }">
                                     <v-list-item v-bind="props"
-                                        :prepend-avatar="'http://localhost:8000/storage/' + item.raw.preview"
+                                        :prepend-avatar="'http://localhost:8000/storage/previews/' + item.raw.preview"
                                         :subtitle="item.raw.client" :title="item.raw.name"></v-list-item>
                                 </template>
                             </v-autocomplete>
@@ -107,9 +107,11 @@ export default {
             formData.append('date', form.value.date.toISOString());
 
             try {
+                const token = localStorage.getItem('token');
                 const response = await axios.post('http://localhost:8000/api/estimates', formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
                     }
                 });
                 if (response.status === 201) {

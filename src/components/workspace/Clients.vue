@@ -6,8 +6,26 @@
         <div class="py-5">
           <v-dialog v-model="dialog" max-width="500">
             <template v-slot:activator="{ props: activatorProps }">
-              <v-btn class="text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add client"
-                variant="outlined" v-bind="activatorProps"></v-btn>
+              <div class="workspace__button-container">
+                <div>
+                  <v-btn class="text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add client"
+                    variant="outlined" v-bind="activatorProps"></v-btn>
+                </div>
+                <div class="workspace__button-container-input">
+                  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"
+                    rel="stylesheet">
+                  <div id="searchBox" class="mobile-form">
+                    <form @submit.prevent="searchClients" class="search-form" id="searchform" method="get">
+                      <span id="noEasy"><input class="sb-search-submit" type="submit" value="">
+                        <span class="sb-icon-search"></span></span>
+                      <input v-model="searchQuery" id="sbox" name="q"
+                        onblur="if (this.placeholder == '') {this.placeholder = 'search';}"
+                        onfocus="if (this.placeholder == 'search') {this.placeholder = '';}" placeholder="Search"
+                        type="text" x-webkit-speech="">
+                    </form>
+                  </div>
+                </div>
+              </div>
             </template>
             <v-card prepend-icon="mdi-account" title="Add client item">
               <v-card-text>
@@ -69,7 +87,6 @@
             Country (<b>{{ countrySortOrder }}</b>)
           </a>
         </p>
-
         <p>Edit</p>
       </div>
       <div class="workspace__list">
@@ -78,7 +95,6 @@
             :ImageUrl="client.avatar" :Name="client.name" :Email="client.email" :Country="client.country"
             :Created_ad="client.created_at" :updateClients="updateClients" />
         </ul>
-
       </div>
     </div>
   </div>
@@ -106,6 +122,7 @@ export default defineComponent({
       sortKey: 'created_at',
       dialog: false,
       clients: [],
+      searchQuery: '',
       form: {
         name: '',
         email: '',
@@ -187,16 +204,26 @@ export default defineComponent({
       } catch (error) {
         console.error('Ошибка при отправке формы:', error);
       }
+    },
+    searchClients() {
+      this.sortKey = 'name';
     }
   },
   computed: {
     sortedClients() {
-      let sortedArray = this.clients.slice();
+      let filteredArray = this.clients;
+
+      if (this.searchQuery) {
+        filteredArray = filteredArray.filter(client =>
+          client.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
+
       const key = this.sortKey;
 
       switch (key) {
         case 'name':
-          sortedArray.sort((a, b) => {
+          filteredArray.sort((a, b) => {
             if (this.nameSortOrder === 'a - z') {
               return a.name.localeCompare(b.name);
             } else {
@@ -205,7 +232,7 @@ export default defineComponent({
           });
           break;
         case 'created_at':
-          sortedArray.sort((a, b) => {
+          filteredArray.sort((a, b) => {
             const dateA = new Date(a.created_at);
             const dateB = new Date(b.created_at);
             if (this.createdAtSortOrder === 'new') {
@@ -216,7 +243,7 @@ export default defineComponent({
           });
           break;
         case 'id':
-          sortedArray.sort((a, b) => {
+          filteredArray.sort((a, b) => {
             if (this.idSortOrder === 'asc') {
               return a.id - b.id;
             } else if (this.idSortOrder === 'desc') {
@@ -225,7 +252,7 @@ export default defineComponent({
           });
           break;
         case 'email':
-          sortedArray.sort((a, b) => {
+          filteredArray.sort((a, b) => {
             if (this.emailSortOrder === 'a - z') {
               return a.email.localeCompare(b.email);
             } else {
@@ -234,7 +261,7 @@ export default defineComponent({
           });
           break;
         case 'country':
-          sortedArray.sort((a, b) => {
+          filteredArray.sort((a, b) => {
             if (this.countrySortOrder === 'a - z') {
               return a.country.localeCompare(b.country);
             } else {
@@ -246,77 +273,7 @@ export default defineComponent({
           break;
       }
 
-      return sortedArray;
-    }
-  },
-  methods: {
-    toggleSortOrder(category) {
-      switch (category) {
-        case 'name':
-          this.nameSortOrder = this.nameSortOrder === 'a - z' ? 'z - a' : 'a - z';
-          break;
-        case 'id':
-          this.idSortOrder = this.idSortOrder === 'asc' ? 'desc' : 'asc';
-          break;
-        case 'created_at':
-          this.createdAtSortOrder = this.createdAtSortOrder === 'new' ? 'old' : 'new';
-          break;
-        case 'email':
-          this.emailSortOrder = this.emailSortOrder === 'a - z' ? 'z - a' : 'a - z';
-          break;
-        case 'country':
-          this.countrySortOrder = this.countrySortOrder === 'a - z' ? 'z - a' : 'a - z';
-          break;
-        default:
-          break;
-      }
-
-      this.sortKey = category;
-    },
-    async updateClients() {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${process.env.API_URL}/api/clients`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        this.clients = response.data;
-      } catch (error) {
-        console.error('Ошибка:', error);
-      }
-    },
-    async submitForm() {
-      const formData = new FormData();
-      formData.append('name', this.form.name);
-      formData.append('email', this.form.email);
-      formData.append('country', this.form.country);
-      if (this.form.avatar) {
-        formData.append('avatar', this.form.avatar);
-      }
-
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.post(`${process.env.API_URL}/api/clients`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        if (response.status === 201) {
-          this.dialog = false;
-          toast("Client created successfully!", {
-            "theme": "auto",
-            "type": "success",
-            "position": "top-center",
-            "autoClose": 1800,
-            "dangerouslyHTMLString": true
-          });
-          this.updateClients();
-        }
-      } catch (error) {
-        console.error('Ошибка при отправке формы:', error);
-      }
+      return filteredArray;
     }
   },
   mounted() {
@@ -324,5 +281,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<style lang="scss"></style>
