@@ -60,7 +60,7 @@ export default {
         getClientAvatarUrl() {
             const client = this.GetClients.find(c => c.id === parseInt(this.ClientId));
             if (client) {
-                return `http://localhost:8000/storage/${client.avatar}`;
+                return `${process.env.API_URL}/storage/${client.avatar}`;
             }
             return ''; 
         },

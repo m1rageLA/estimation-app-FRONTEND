@@ -11,12 +11,11 @@
                         </div>
                         <v-form @submit.prevent="login">
                             <v-row>
-                                
                                 <v-col cols="6">
-                                    <v-text-field v-model="loginForm.firstname" label="First name" hide-details="auto" dense variant="solo-filled"></v-text-field>
+                                    <v-text-field v-model="loginForm.first_name" label="First name" hide-details="auto" dense variant="solo-filled"></v-text-field>
                                 </v-col>
                                 <v-col cols="6">
-                                    <v-text-field v-model="loginForm.lastname" label="Last name" hide-details="auto"  variant="solo-filled"></v-text-field>
+                                    <v-text-field v-model="loginForm.last_name" label="Last name" hide-details="auto"  variant="solo-filled"></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
                                     <v-text-field v-model="loginForm.email" label="email" hide-details="auto" variant="solo-filled"></v-text-field>
@@ -24,7 +23,7 @@
                                 <v-col cols="12">
                                     <v-text-field v-model="loginForm.password" :type="'password'" label="password" hide-details="auto" variant="solo-filled"></v-text-field>
                                 </v-col>
-                                <v-col cols="12" class="d-flex justify-center"> <!-- добавлен класс justify-end для выравнивания кнопки вправо -->
+                                <v-col cols="12" class="d-flex justify-center">
                                     <v-btn type="submit" variant="outlined" color="#19a2ac">
                                         Sign up 
                                     </v-btn>
@@ -39,7 +38,7 @@
                 </div>
             </div>
             <div class="login__right-side">
-                <img class="texture" src="../../../public/texture.png" alt="man with laptop">
+                <img class="texture" src="texture.png" alt="man with laptop">
                 <div class="login__right-side-imgbox">
                     <div>
                         <h2>Very good
@@ -48,7 +47,7 @@
                             you Login
                             Now!!!</h2>
                     </div>
-                    <img src="../../../public/manWithLaptop.png" alt="man with laptop">
+                    <img src="manWithLaptop.png" alt="man with laptop">
                 </div>
             </div>
         </div>
@@ -86,14 +85,14 @@ export default {
     methods: {
         async login() {
             try {
-                const response = await axiosInstance.post('http://localhost:8000/api/login', this.loginForm);
+                const response = await axiosInstance.post(`${process.env.API_URL}api/register`, this.loginForm);
                 localStorage.setItem('token', response.data.token)
                 if (response.status === 200) {
                     router.push('/login');
                 }
                 this.loginForm = {
-                    email: '',
-                    password: ''
+                    first_name: '',
+                    last_name: ''
                 };
                 this.errors = {};
             } catch (error) {

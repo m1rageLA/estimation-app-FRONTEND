@@ -12,12 +12,14 @@
                         <v-form @submit.prevent="login">
                             <v-row>
                                 <v-col cols="12">
-                                    <v-text-field v-model="loginForm.email" label="email" hide-details="auto" variant="solo-filled"></v-text-field>
+                                    <v-text-field v-model="loginForm.email" label="email" hide-details="auto"
+                                        variant="solo-filled"></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-text-field v-model="loginForm.password" :type="'password'" label="password" hide-details="auto" variant="solo-filled"></v-text-field>
+                                    <v-text-field v-model="loginForm.password" :type="'password'" label="password"
+                                        hide-details="auto" variant="solo-filled"></v-text-field>
                                 </v-col>
-                                <v-col cols="12" class="d-flex justify-center"> <!-- добавлен класс justify-end для выравнивания кнопки вправо -->
+                                <v-col cols="12" class="d-flex justify-center">
                                     <v-btn type="submit" variant="outlined" color="#19a2ac">
                                         Login Now
                                     </v-btn>
@@ -32,7 +34,7 @@
                 </div>
             </div>
             <div class="login__right-side">
-                <img class="texture" src="../../../public/texture.png" alt="man with laptop">
+                <img class="texture" src="texture.png" alt="man with laptop">
                 <div class="login__right-side-imgbox">
                     <div>
                         <h2>Very good
@@ -41,7 +43,7 @@
                             you Login
                             Now!!!</h2>
                     </div>
-                    <img src="../../../public/manWithLaptop.png" alt="man with laptop">
+                    <img src="manWithLaptop.png" alt="man with laptop">
                 </div>
             </div>
         </div>
@@ -78,7 +80,7 @@ export default {
     methods: {
         async login() {
             try {
-                const response = await axiosInstance.post('http://localhost:8000/api/login', this.loginForm);
+                const response = await axiosInstance.post(`${process.env.API_URL}api/login`, this.loginForm);
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('id', response.data.id);
                 if (response.status === 200) {
@@ -102,6 +104,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

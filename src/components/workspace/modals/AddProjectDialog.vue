@@ -100,7 +100,7 @@ export default {
             }
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.post('http://localhost:8000/api/projects', formData, {
+                const response = await axios.post(`${process.env.API_URL}api/projects`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${token}`
@@ -124,7 +124,7 @@ export default {
         const updateClients = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:8000/api/clients', {
+                const response = await axios.get(`${process.env.API_URL}api/clients`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

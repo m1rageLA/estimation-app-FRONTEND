@@ -221,7 +221,7 @@ export default defineComponent({
         const updateProjects = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:8000/api/projects', {
+                const response = await axios.get(`${process.env.API_URL}api/projects`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -235,7 +235,7 @@ export default defineComponent({
         const updateClients = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:8000/api/clients', {
+                const response = await axios.get(`${process.env.API_URL}api/clients`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -249,7 +249,7 @@ export default defineComponent({
         const updateEstimates = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:8000/api/estimates', {
+                const response = await axios.get(`${process.env.API_URL}api/estimates`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

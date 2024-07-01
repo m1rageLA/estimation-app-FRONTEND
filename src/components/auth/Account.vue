@@ -7,7 +7,8 @@
             <div class="account__preview">
                 <div class="leftBox">
                     <div class="avatar">
-                        <img :src="`http://localhost:8000/storage/${userData.image_url}`" alt="avatar">
+                        <img v-if="userData.image_url" :src="`http://localhost:8000/storage/${userData.image_url}`" alt="avatar">
+                        <div v-else class="avatar-placeholder">Avatar not set</div>
                     </div>
 
                     <div class="info">
@@ -130,4 +131,31 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #666;
+}
+</style>
