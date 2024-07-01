@@ -17,6 +17,7 @@ import Estimation from "./components/workspace/Estimation.vue";
 import Account from "./components/auth/Account.vue";
 import Login from "./components/auth/Login.vue"; 
 import Registration from "./components/auth/Registration.vue"; 
+import CheckToken from "./components/CheckToken.vue"
 
 const routes = [
   { path: "/", component: Home },
@@ -34,13 +35,11 @@ const router = createRouter({
   routes,
 });
 
-// Function to check token
 function isAuthenticated() {
   const token = localStorage.getItem("token");
-  return !!token; // Return true if token exists
+  return !!token;
 }
 
-// Navigation guard
 router.beforeEach((to, from, next) => {
   const publicPages = ["/login", "/registration", "/", "/home"];
   const authRequired = !publicPages.includes(to.path);
