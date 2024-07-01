@@ -3,7 +3,28 @@
         <div class="workspace__container">
             <div class="workspace__top-block">
                 <h2>Projects </h2>
-                <AddProjectDialog :Dialog="dialog" :Dialog2="dialog2" :HandleDataFromChild="handleDataFromChild" :UpdateProjects="updateProjects" />
+                <div class="py-5">
+                    <div class="workspace__button-container">
+                        <div>
+                            <AddProjectDialog :Dialog="dialog" :Dialog2="dialog2"
+                                :HandleDataFromChild="handleDataFromChild" :UpdateProjects="updateProjects" />
+                        </div>
+                        <div class="workspace__button-container-input">
+                            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"
+                                rel="stylesheet">
+                            <div id="searchBox" class="mobile-form">
+                                <form @submit.prevent="searchClients" class="search-form" id="searchform" method="get">
+                                    <span id="noEasy"><input class="sb-search-submit" type="submit" value="">
+                                        <span class="sb-icon-search"></span></span>
+                                    <input v-model="searchQuery" id="sbox" name="q"
+                                        onblur="if (this.placeholder == '') {this.placeholder = 'search';}"
+                                        onfocus="if (this.placeholder == 'search') {this.placeholder = '';}"
+                                        placeholder="Search" type="text" x-webkit-speech="">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- v-if="clients.length > 0" -->
             </div>
             <div class="list-markup">
@@ -78,6 +99,7 @@ export default defineComponent({
             countrySortOrder: 'a - z',
             sortKey: 'created_at',
             estimateSortOrder: 'min',
+            searchQuery: '',
             friends: [],
             isUpdating: false,
             dialog2: false,
@@ -86,10 +108,6 @@ export default defineComponent({
     },
     methods: {
         // close with parent and child (Closures funct.)
-
-        openDialog() {
-            this.dialog2 = true;
-        },
         toggleSortOrder(category) {
             switch (category) {
                 case 'name':
@@ -115,6 +133,12 @@ export default defineComponent({
         },
         sortedClients() {
             let sortedArray = this.projects.slice();
+
+            if (this.searchQuery) {
+                sortedArray = sortedArray.filter(projects =>
+                    projects.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+                );
+            }
             const key = this.sortKey;
 
             switch (key) {
@@ -170,6 +194,9 @@ export default defineComponent({
                     break;
             }
             return sortedArray;
+        },
+        searchClients() {
+            this.sortKey = 'name';
         }
     },
     setup() {

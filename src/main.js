@@ -10,16 +10,17 @@ import * as directives from "vuetify/directives";
 import "./styles/main.scss";
 import "@mdi/font/css/materialdesignicons.css";
 
-import Home from "./components/workspace/Projects.vue";
+import Home from "./components/Home.vue";
 import Projects from "./components/workspace/Projects.vue";
 import Clients from "./components/workspace/Clients.vue";
 import Estimation from "./components/workspace/Estimation.vue";
 import Account from "./components/auth/Account.vue";
-import Login from "./components/auth/Login.vue"; // Assuming you have a Login.vue component
-import Registration from "./components/auth/Registration.vue"; // Assuming you have a Registration.vue component
+import Login from "./components/auth/Login.vue"; 
+import Registration from "./components/auth/Registration.vue"; 
 
 const routes = [
   { path: "/", component: Home },
+  { path: "/home", name: "Home", component: Home },
   { path: "/projects", name: "Projects", component: Projects },
   { path: "/clients", name: "Clients", component: Clients },
   { path: "/estimation", name: "Estimation", component: Estimation },
@@ -41,7 +42,7 @@ function isAuthenticated() {
 
 // Navigation guard
 router.beforeEach((to, from, next) => {
-  const publicPages = ["/login", "/registration"];
+  const publicPages = ["/login", "/registration", "/", "/home"];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = isAuthenticated();
 

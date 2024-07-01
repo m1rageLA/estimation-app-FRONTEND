@@ -1,57 +1,55 @@
 <template>
-    <div class="py-5">
-        <v-dialog v-model="dialog" max-width="500">
-            <template v-slot:activator="{ props: activatorProps }">
-                <v-btn class="text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add project"
-                    variant="outlined" v-bind="activatorProps"></v-btn>
-            </template>
-            <v-card prepend-icon="mdi-account" title="Add project item">
-                <v-card-text>
-                    <v-form @submit.prevent="submitForm">
-                        <v-row dense>
-                            <v-col cols="12" md="12" sm="6">
-                                <v-text-field v-model="form.name" label="Title" hint="Web site" required></v-text-field>
-                            </v-col>
-                            <v-col cols="12" md="12" sm="6">
-                                <v-text-field v-model="form.description" label="Description"
-                                    hint="Project about creating neural networks" required></v-text-field>
-                            </v-col>
-                            <v-autocomplete v-model="form.client" :disabled="isUpdating" :items="clients"
-                                color="blue-grey-lighten-2" item-title="name" item-value="id" label="Client" chips
-                                closable-chips>
-                                <template v-slot:chip="{ props, item }">
-                                    <v-chip v-bind="props"
-                                        :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
-                                        :text="item.raw.name"></v-chip>
-                                </template>
-                                <template v-slot:item="{ props, item }">
-                                    <v-list-item v-bind="props"
-                                        :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
-                                        :subtitle="item.raw.country" :title="item.raw.name"></v-list-item>
-                                </template>
-                                <template v-slot:prepend-item>
-                                    <v-btn class="my-2 ml-4 text-none font-weight-regular" prepend-icon="mdi mdi-plus"
-                                        text="Quick add" @click="dialog2 = true" variant="outlined"></v-btn>
-                                </template>
-                            </v-autocomplete>
-                            <v-col cols="12">
-                                <v-file-input v-model="form.preview" :rules="rules"
-                                    accept="image/png, image/jpeg, image/bmp" label="Preview"
-                                    placeholder="Pick an avatar" prepend-icon="mdi-camera"></v-file-input>
-                            </v-col>
-                        </v-row>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
-                            <v-btn color="primary" text="Save" variant="tonal" type="submit">Save</v-btn>
-                        </v-card-actions>
-                    </v-form>
-                </v-card-text>
-                <AddClientDialog v-if="dialog2" :IsOpen="dialog2" :sendData="handleDataFromChild" />
-                <v-divider></v-divider>
-            </v-card>
-        </v-dialog>
-    </div>
+    <v-dialog v-model="dialog" max-width="500">
+        <template v-slot:activator="{ props: activatorProps }">
+            <v-btn class="text-none font-weight-regular" prepend-icon="mdi mdi-plus" text="Add project"
+                variant="outlined" v-bind="activatorProps"></v-btn>
+        </template>
+        <v-card prepend-icon="mdi-account" title="Add project item">
+            <v-card-text>
+                <v-form @submit.prevent="submitForm">
+                    <v-row dense>
+                        <v-col cols="12" md="12" sm="6">
+                            <v-text-field v-model="form.name" label="Title" hint="Web site" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12" sm="6">
+                            <v-text-field v-model="form.description" label="Description"
+                                hint="Project about creating neural networks" required></v-text-field>
+                        </v-col>
+                        <v-autocomplete v-model="form.client" :disabled="isUpdating" :items="clients"
+                            color="blue-grey-lighten-2" item-title="name" item-value="id" label="Client" chips
+                            closable-chips>
+                            <template v-slot:chip="{ props, item }">
+                                <v-chip v-bind="props"
+                                    :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
+                                    :text="item.raw.name"></v-chip>
+                            </template>
+                            <template v-slot:item="{ props, item }">
+                                <v-list-item v-bind="props"
+                                    :prepend-avatar="'http://localhost:8000/storage/' + item.raw.avatar"
+                                    :subtitle="item.raw.country" :title="item.raw.name"></v-list-item>
+                            </template>
+                            <template v-slot:prepend-item>
+                                <v-btn class="my-2 ml-4 text-none font-weight-regular" prepend-icon="mdi mdi-plus"
+                                    text="Quick add" @click="dialog2 = true" variant="outlined"></v-btn>
+                            </template>
+                        </v-autocomplete>
+                        <v-col cols="12">
+                            <v-file-input v-model="form.preview" :rules="rules"
+                                accept="image/png, image/jpeg, image/bmp" label="Preview" placeholder="Pick an avatar"
+                                prepend-icon="mdi-camera"></v-file-input>
+                        </v-col>
+                    </v-row>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
+                        <v-btn color="primary" text="Save" variant="tonal" type="submit">Save</v-btn>
+                    </v-card-actions>
+                </v-form>
+            </v-card-text>
+            <AddClientDialog v-if="dialog2" :IsOpen="dialog2" :sendData="handleDataFromChild" />
+            <v-divider></v-divider>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>

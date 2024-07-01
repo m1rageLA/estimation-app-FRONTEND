@@ -22,7 +22,7 @@
                                     <v-text-field v-model="loginForm.email" label="email" hide-details="auto" variant="solo-filled"></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-text-field v-model="loginForm.password" label="password" hide-details="auto" variant="solo-filled"></v-text-field>
+                                    <v-text-field v-model="loginForm.password" :type="'password'" label="password" hide-details="auto" variant="solo-filled"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" class="d-flex justify-center"> <!-- добавлен класс justify-end для выравнивания кнопки вправо -->
                                     <v-btn type="submit" variant="outlined" color="#19a2ac">
@@ -61,25 +61,25 @@ import { useRouter } from 'vue-router';
 
 const axiosInstance = axios.create();
 
-axiosInstance.interceptors.request.use(
-    config => {
-        const token = 'Bearer 66Kh1iSyLHHhmQGOUjdaFYgZ1bynyrwDCGlmaVXV'; // Ваш токен доступа
-        if (token) {
-            config.headers.Authorization = token;
-        }
-        return config;
-    },
-    error => {
-        return Promise.reject(error);
-    }
-);
+// axiosInstance.interceptors.request.use(
+//     config => {
+//         const token = 'Bearer 66Kh1iSyLHHhmQGOUjdaFYgZ1bynyrwDCGlmaVXV'; // Ваш токен доступа
+//         if (token) {
+//             config.headers.Authorization = token;
+//         }
+//         return config;
+//     },
+//     error => {
+//         return Promise.reject(error);
+//     }
+// );
 
 export default {
     data() {
         return {
             loginForm: {
-                email: 'ewqweq@gmail.com',
-                password: '123321QQQ!wqeq'
+                email: '',
+                password: ''
             },
         }
     },

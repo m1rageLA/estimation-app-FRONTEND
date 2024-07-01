@@ -1,0 +1,52 @@
+.header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 75px;
+  background-color: $PRIMARY_COLOR;
+  box-shadow: 0 0 15px rgba(0, 174, 190, 0.804);
+
+  &__button {
+    background-color: #008894;
+    --v-activated-opacity: 0.2 !important;
+
+    span {
+        color: rgb(255, 255, 255);
+    }
+  }
+
+  &__buttons-box {
+    display: flex;
+    gap: 20px;
+  }
+  &__left-box {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+}
+
+.header__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  width: 80%;
+  height: 100%;
+
+  h2 {
+    color: #ffffff;
+  }
+  ul,
+  a {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    color: $THIRD_TEXT_COLOR;
+  }
+}
+
+main {
+    width: 50%;
+    background-color: red;
+}

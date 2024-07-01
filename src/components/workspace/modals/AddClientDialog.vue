@@ -31,7 +31,6 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn text="Close" variant="plain" @click="closeModal()"></v-btn>
-
                                 <v-btn color="primary" text="Save" variant="tonal" type="submit">Save</v-btn>
                             </v-card-actions>
                         </v-form>

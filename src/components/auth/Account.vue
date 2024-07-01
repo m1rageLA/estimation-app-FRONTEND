@@ -1,28 +1,31 @@
 <template>
     <div class="account">
+        <EditUserDialog v-if="dialog" :Dialog="dialog" :ImageUrl="ImageUrl" :UserId="2"
+            :sendData="handleDataFromChild" />
         <div class="account__container">
             <h2 class="myAccount">My account</h2>
             <div class="account__preview">
                 <div class="leftBox">
                     <div class="avatar">
-                        <img src="https://img.freepik.com/free-photo/smiley-man-relaxing-outdoors_23-2148739334.jpg"
-                            alt="avatar">
+                        <img :src="`http://localhost:8000/storage/${userData.image_url}`" alt="avatar">
                     </div>
 
                     <div class="info">
                         <h3>{{ userData.first_name }}</h3>
-                        <h4>Product manager !!!!</h4>
-                        <h4>Los Angeles !!!!!</h4>
+                        <h4>{{ userData.bio }}</h4>
+                        <h4>{{ userData.address }}</h4>
                     </div>
                 </div>
 
                 <v-btn class="logout" @click="logout()" prepend-icon="mdi mdi-logout" variant="outlined">
                     Logout
                 </v-btn>
+
             </div>
             <div class="account__presonalInfo">
+
                 <h3>Personal information</h3>
-                <v-btn class="edit" prepend-icon="mdi mdi-pencil" variant="outlined">
+                <v-btn @click="dialog = true" class="edit" prepend-icon="mdi mdi-pencil" variant="outlined">
                     Edit
                 </v-btn>
                 <div class="name">
@@ -36,7 +39,7 @@
                     </div>
                     <div>
                         <p class="title">BIO</p>
-                        <p>Project manager !!!</p>
+                        <p>{{ userData.bio }}</p>
                     </div>
                 </div>
                 <div class="contact">
@@ -46,11 +49,11 @@
                     </div>
                     <div>
                         <p class="title">Phone</p>
-                        <p>(213) 415-226 !!!</p>
+                        <p>{{ userData.phone }}</p>
                     </div>
                     <div>
                         <p class="title">Adress</p>
-                        <p>(213) 415-226 !!!</p>
+                        <p>{{ userData.address }}</p>
                     </div>
                 </div>
             </div>
@@ -62,17 +65,27 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import EditUserDialog from '../workspace/modals/EditUserDialog.vue';
 
 export default {
     name: "Account",
+    components: {
+        EditUserDialog,
+    },
+    methods: {
+        handleDataFromChild(data) {
+            this.dialog = data;
+        },
+    },
     setup() {
-        const router = useRouter(); // Get router instance
+        const dialog = ref(false);
+        const router = useRouter(); 
         const userData = ref({});
 
         const getInfo = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`${process.env.API_URL}/api/login/${2}`, {
+                const response = await axios.get(`${process.env.API_URL}/api/login/${localStorage.getItem('id')}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -92,10 +105,11 @@ export default {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                userData.value = response.data; 
+                userData.value = response.data;
                 if (response.status === 200) {
                     localStorage.removeItem('token');
-                    router.push('/login'); // Use router instance to navigate
+                    localStorage.removeItem('id');
+                    router.push('/login');
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -109,7 +123,8 @@ export default {
         return {
             getInfo,
             logout,
-            userData
+            userData,
+            dialog
         };
     }
 }

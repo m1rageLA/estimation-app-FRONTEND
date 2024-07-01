@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-      <Sidebar v-if="showSidebar"></Sidebar>
-      <router-view></router-view>
+    <Sidebar v-if="showSidebar"></Sidebar>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -23,7 +23,7 @@ export default defineComponent({
     const route = useRoute();
 
     const showSidebar = computed(() => {
-      return route.name !== 'Login' && route.name !== 'Registration';
+      return route.name !== 'Login' && route.name !== 'Registration' && route.name !== 'Home' && route.name !== undefined;
     });
 
     return {
@@ -34,7 +34,7 @@ export default defineComponent({
     showToast() {
       toast({
         message: 'Это уведомление!',
-        position: 'top-right',
+        position: 'top-center',
         autoClose: 5000
       });
     }
