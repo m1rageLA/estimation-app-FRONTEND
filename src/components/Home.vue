@@ -92,10 +92,46 @@
             </div>
         </main>
         <footer class="footer">
+            <div class="footer__container">
+                <div class="footer__container-top">
+                    <div class="footer__column">
+                        <h3>Navigate</h3>
+                        <div class="footer__column-line"></div>
+                        <ul>
+                            <li>Home</li>
+                            <li>About us</li>
+                            <li>Contact</li>
+                        </ul>
+                    </div>
+                    <div class="footer__column">
+                        <h3>Navigate</h3>
+                        <div class="footer__column-line"></div>
+                        <ul>
+                            <li>Home</li>
+                            <li>About us</li>
+                            <li>Contact</li>
+                        </ul>
+                        <h2 class="footer__logo">LOGO</h2>
+                    </div>
+                    <div class="footer__column">
+                        <h3>Navigate</h3>
+                        <div class="footer__column-line"></div>
+                        <ul>
+                            <li>Home</li>
+                            <li>About us</li>
+                            <li>Contact</li>
+                        </ul>
+
+                    </div>
+                </div>
+
+
+
+            </div>
             
         </footer>
     </div>
-    
+
 </template>
 
 <script>
