@@ -16,6 +16,7 @@ import Clients from "./components/workspace/Clients.vue";
 import Estimation from "./components/workspace/Estimation.vue";
 import Account from "./components/auth/Account.vue";
 import Login from "./components/auth/Login.vue"; 
+import Admin from "./components/auth/Admin.vue"; 
 import Registration from "./components/auth/Registration.vue"; 
 import CheckToken from "./components/CheckToken.vue"
 
@@ -28,6 +29,7 @@ const routes = [
   { path: "/account", name: "Account", component: Account },
   { path: "/login", name: "Login", component: Login },
   { path: "/registration", name: "Registration", component: Registration },
+  { path: "/admin", name: "Admin", component: Admin },
 ];
 
 const router = createRouter({

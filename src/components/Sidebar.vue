@@ -48,6 +48,12 @@
                             <v-icon color="white">mdi mdi-google-analytics</v-icon>
                         </template>
                     </v-list-item>
+                    <v-list-item :to="'/admin'" prepend-icon="mdi mdi-google-analytics" title="Admin"
+                        value="Admin" class="liElement">
+                        <template #prepend>
+                            <v-icon color="white">mdi mdi-shield-crown</v-icon>
+                        </template>
+                    </v-list-item>
                 </v-list>
             </v-navigation-drawer>
             <v-main style="height: 250px"></v-main>

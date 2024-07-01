@@ -21,7 +21,7 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-
+    console.log(route.name);
     const showSidebar = computed(() => {
       return route.name !== 'Login' && route.name !== 'Registration' && route.name !== 'Home' && route.name !== undefined;
     });
