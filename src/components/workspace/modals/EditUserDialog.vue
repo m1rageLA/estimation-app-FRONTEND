@@ -152,7 +152,7 @@ export default {
                 );
                 toast.success("Client updated successfully!");
                 localStorage.setItem('user_imgUrl', response.data.user.image_url);
-                localStorage.setItem('user_name', response.data.first_name + " " + response.data.user.last_name);
+                localStorage.setItem('user_name', response.data.user.first_name + " " + response.data.user.last_name);
                 this.closeModal()
             } catch (error) {
                 console.error(error);
