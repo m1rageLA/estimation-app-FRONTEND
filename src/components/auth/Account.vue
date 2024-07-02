@@ -1,7 +1,7 @@
 <template>
     <div class="account">
         <EditUserDialog v-if="dialog" :Dialog="dialog" :ImageUrl="ImageUrl" :UserId="2"
-            :sendData="handleDataFromChild" />
+            :sendData="handleDataFromChild" :UserData="userData"/>
         <div class="account__container">
             <h2 class="myAccount">My account</h2>
             <div class="account__preview">
@@ -13,7 +13,7 @@
 
                     <div class="info">
                         <h3>{{ userData.first_name }}</h3>
-                        <h4>{{ userData.bio }}</h4>
+                        <h4>{{ userData.email }}</h4>
                         <h4>{{ userData.address }}</h4>
                     </div>
                 </div>

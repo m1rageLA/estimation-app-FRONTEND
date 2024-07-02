@@ -22,17 +22,13 @@
                                     required></v-text-field>
                             </v-col>
                             <v-col cols="12" md="12" sm="12">
-                                <v-text-field v-model="form.bio" hint="Lorem..."
-                                    label="BIO"></v-text-field>
+                                <v-text-field v-model="form.bio" hint="Lorem..." label="BIO"></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="6" sm="6">
+                            <v-col cols="12" md="6" sm="12">
                                 <v-text-field v-model="form.email" hint="example@gmail.com"
                                     label="Email"></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="6" sm="6">
-                                <v-text-field v-model="form.password" hint="United Kingdom"
-                                    label="Password"></v-text-field>
-                            </v-col>
+
                         </v-row>
                         <v-file-input @change="getNewImageName" v-model="form.image_url" :rules="rules"
                             accept="image/png, image/jpeg, image/bmp" label="Avatar" placeholder="Pick an avatar"
@@ -65,6 +61,7 @@ export default {
         FirstName: String,
         LastName: String,
         Email: String,
+        UserData: Object,
         sendData: {
             type: Function,
             required: true
@@ -73,12 +70,12 @@ export default {
     data() {
         return {
             form: {
-                first_name: this.FirstName,
-                last_name: this.LastName,
-                email: this.Email,
-                phone: '',
-                address: '',
-                bio: '',
+                first_name: this.UserData.first_name,
+                last_name: this.UserData.last_name,
+                email: this.UserData.email,
+                phone: this.UserData.phone,
+                address: this.UserData.address,
+                bio: this.UserData.bio,
                 image_url: '',
                 password: ''
             },
@@ -153,9 +150,10 @@ export default {
                         }
                     }
                 );
-
                 toast.success("Client updated successfully!");
-                this.dialog = false;
+                localStorage.setItem('user_imgUrl', response.data.user.image_url);
+                localStorage.setItem('user_name', response.data.first_name + " " + response.data.user.last_name);
+                this.closeModal()
             } catch (error) {
                 console.error(error);
                 toast.error("Failed to update client");
