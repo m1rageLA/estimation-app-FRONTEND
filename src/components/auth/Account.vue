@@ -92,7 +92,8 @@ export default {
                     }
                 });
                 userData.value = response.data;
-                console.log(userData.value);
+                localStorage.setItem('user_imgUrl', response.data.image_url);
+                localStorage.setItem('user_name', response.data.first_name + " " + response.data.last_name);
             } catch (error) {
                 console.error('Error:', error);
             }

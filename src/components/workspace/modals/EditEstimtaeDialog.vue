@@ -19,12 +19,12 @@
                                     item-title="title" item-value="id" label="Project" chips closable-chips>
                                     <template v-slot:chip="{ props, item }">
                                         <v-chip v-bind="props"
-                                            :prepend-avatar="'http://localhost:8000/storage/' + item.raw.preview"
+                                            :prepend-avatar="'http://localhost:8000/storage/previews/' + item.raw.preview"
                                             :text="item.raw.name"></v-chip>
                                     </template>
                                     <template v-slot:item="{ props, item }">
                                         <v-list-item v-bind="props"
-                                            :prepend-avatar="'http://localhost:8000/storage/' + item.raw.preview"
+                                            :prepend-avatar="'http://localhost:8000/storage/previews/' + item.raw.preview"
                                             :subtitle="item.raw.client" :title="item.raw.name"></v-list-item>
                                     </template>
                                 </v-autocomplete>
