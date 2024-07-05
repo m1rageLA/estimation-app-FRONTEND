@@ -19,6 +19,7 @@
                                     <v-text-field v-model="loginForm.password" :type="'password'" label="password"
                                         hide-details="auto" variant="solo-filled"></v-text-field>
                                 </v-col>
+                                <a href="/forgotpassword">forgot password</a>
                                 <v-col cols="12" class="d-flex justify-center">
                                     <v-btn type="submit" variant="outlined" color="#19a2ac">
                                         Login Now

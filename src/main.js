@@ -19,6 +19,7 @@ import Login from "./components/auth/Login.vue";
 import Admin from "./components/auth/Admin.vue"; 
 import Registration from "./components/auth/Registration.vue"; 
 import CheckToken from "./components/CheckToken.vue"
+import ForgotPassword from "./components/auth/ForgotPassword.vue"
 
 const routes = [
   { path: "/", component: Home },
@@ -29,6 +30,7 @@ const routes = [
   { path: "/account", name: "Account", component: Account },
   { path: "/login", name: "Login", component: Login },
   { path: "/registration", name: "Registration", component: Registration },
+  { path: "/forgotpassword", name: "ForgotPassword", component: ForgotPassword },
   { path: "/admin", name: "Admin", component: Admin },
 ];
 
@@ -43,7 +45,7 @@ function isAuthenticated() {
 }
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ["/login", "/registration", "/", "/home"];
+  const publicPages = ["/login", "/registration", "/", "/home", "/forgotpassword"];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = isAuthenticated();
 

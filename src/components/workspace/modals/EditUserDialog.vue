@@ -24,7 +24,7 @@
                             <v-col cols="12" md="12" sm="12">
                                 <v-text-field v-model="form.bio" hint="Lorem..." label="BIO"></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="6" sm="12">
+                            <v-col cols="12" md="12" sm="12">
                                 <v-text-field v-model="form.email" hint="example@gmail.com"
                                     label="Email"></v-text-field>
                             </v-col>
